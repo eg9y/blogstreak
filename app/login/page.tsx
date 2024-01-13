@@ -1,7 +1,10 @@
-import Link from "next/link";
-import { headers, cookies } from "next/headers";
+import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Field, FieldGroup, Fieldset, Label } from "../components/fieldset";
+import { Input } from "../components/input";
+import { Button } from "../components/button";
+import { LandingNavbar } from "../components/landing-navbar";
 
 export default function Login({
   searchParams,
@@ -16,10 +19,12 @@ export default function Login({
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    console.log("data", data);
 
     if (error) {
       return redirect("/login?message=Could not authenticate user");
@@ -28,79 +33,54 @@ export default function Login({
     return redirect("/");
   };
 
-  const signUp = async (formData: FormData) => {
-    "use server";
-
-    const origin = headers().get("origin");
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
-    });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
-    }
-
-    return redirect("/login?message=Check email to continue sign in process");
-  };
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-        <form
-          className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-          action={signIn}
-        >
-          <div className="">
-            <p>
-              <Link href="/">
-                <h1 className="text-xl font-bold">Sign In</h1>
-              </Link>
-            </p>
-          </div>
-          <label className="text-md" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
-            name="email"
-            placeholder="you@example.com"
-            required
-          />
-          <label className="text-md" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            required
-          />
-          <button className="bg-orange-700 rounded-md px-4 py-2 text-foreground mb-2">
-            Sign In
-          </button>
-          <button
-            formAction={signUp}
-            className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+    <>
+      <LandingNavbar />
+      <main className="flex min-h-screen flex-col items-center p-24">
+        <div className="flex flex-col w-full px-8 sm:max-w-md gap-2">
+          <form
+            className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+            action={signIn}
           >
-            Sign Up
-          </button>
-          {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-              {searchParams.message}
-            </p>
-          )}
-        </form>
-      </div>
-    </main>
+            <Fieldset>
+              <div className="">
+                <h1 className="text-xl font-bold">Sign In</h1>
+              </div>
+              <FieldGroup>
+                <Field>
+                  <Label>Email</Label>
+                  <Input name="email" required />
+                </Field>
+
+                <Field>
+                  <Label>Password</Label>
+                  <Input
+                    name="password"
+                    required
+                    type="password"
+                    placeholder="••••••••"
+                  />
+                </Field>
+                <div className="flex flex-col gap-2 w-full ">
+                  <Button
+                    color="orange"
+                    type="submit"
+                    className="grow cursor-pointer"
+                  >
+                    Sign In
+                  </Button>
+                </div>
+              </FieldGroup>
+
+              {searchParams?.message && (
+                <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+                  {searchParams.message}
+                </p>
+              )}
+            </Fieldset>
+          </form>
+        </div>
+      </main>
+    </>
   );
 }
