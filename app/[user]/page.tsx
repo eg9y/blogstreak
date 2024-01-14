@@ -5,8 +5,8 @@ import { Badge } from "../components/badge";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <main className="flex min-h-full flex-col mx-auto gap-4 min-w-[400px] p-12">
+    <div className="min-h-full">
+      <main className="flex flex-col mx-auto gap-4 min-w-[400px] p-12">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
