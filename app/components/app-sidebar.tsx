@@ -14,6 +14,7 @@ import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
+import { cn } from "@/utils/cn";
 
 const navigation = [
   { name: "Home", href: "#", icon: HomeIcon, current: true },
@@ -28,10 +29,6 @@ const userNavigation = [
   { name: "Your profile", href: "#" },
   { name: "Sign out", href: "#" },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function AppSidebar({
   children,
@@ -112,7 +109,7 @@ export default function AppSidebar({
                               <li key={item.name}>
                                 <a
                                   href={item.href}
-                                  className={classNames(
+                                  className={cn(
                                     item.current
                                       ? "bg-slate-700 text-white"
                                       : "text-slate-200 hover:bg-slate-700 hover:text-white",
@@ -120,7 +117,7 @@ export default function AppSidebar({
                                   )}
                                 >
                                   <item.icon
-                                    className={classNames(
+                                    className={cn(
                                       item.current
                                         ? "text-white"
                                         : "text-slate-200 group-hover:text-white",
@@ -143,7 +140,7 @@ export default function AppSidebar({
                               <li key={tag.name}>
                                 <a
                                   href={tag.href}
-                                  className={classNames(
+                                  className={cn(
                                     tag.current
                                       ? "bg-slate-700 text-white"
                                       : "text-slate-200 hover:bg-slate-700 hover:text-white",
@@ -199,7 +196,7 @@ export default function AppSidebar({
                       <li key={item.name}>
                         <a
                           href={item.href}
-                          className={classNames(
+                          className={cn(
                             item.current
                               ? "bg-slate-700 text-white"
                               : "text-slate-200 hover:bg-slate-700 hover:text-white",
@@ -207,7 +204,7 @@ export default function AppSidebar({
                           )}
                         >
                           <item.icon
-                            className={classNames(
+                            className={cn(
                               item.current
                                 ? "text-white"
                                 : "text-slate-200 group-hover:text-white",
@@ -230,7 +227,7 @@ export default function AppSidebar({
                       <li key={tag.name}>
                         <a
                           href={tag.href}
-                          className={classNames(
+                          className={cn(
                             tag.current
                               ? "bg-slate-700 text-white"
                               : "text-slate-200 hover:bg-slate-700 hover:text-white",
@@ -353,7 +350,7 @@ export default function AppSidebar({
                           {({ active }) => (
                             <a
                               href={item.href}
-                              className={classNames(
+                              className={cn(
                                 active ? "bg-slate-50" : "",
                                 "block px-3 py-1 text-sm leading-6 text-slate-900",
                               )}
