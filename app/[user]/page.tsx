@@ -8,31 +8,40 @@ export default function Home() {
   return (
     <div className="min-h-full">
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-12">
-        <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-        </div>
         <div className="flex flex-col gap-2">
           <Field>
-            <Textarea name="post" placeholder="What is happening?!" rows={4} />
+            <Textarea
+              name="post"
+              placeholder="What is happening?!"
+              className="!border-red-500"
+              rows={4}
+            />
           </Field>
-          <Button color="orange" className="w-40 self-end">
-            Post
-          </Button>
+          <div className="flex justify-between">
+            <div className="flex gap-1">
+              <Badge color="red">Workout</Badge>
+              <Badge color="orange">Full-time job</Badge>
+              <Badge color="blue">Thoughts</Badge>
+            </div>
+            <Button color="orange" className="w-40 self-end">
+              Post
+            </Button>
+          </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold">Posts</h1>
+          <h1 className="text-3xl font-bold dark:text-slate-300">Posts</h1>
           <div className="flex gap-1">
             <div
-              className="cursor-pointer rounded-md px-2 py-1 font-light text-slate-700  ring-1 ring-slate-400 hover:bg-slate-200"
+              className="cursor-pointer rounded-md px-2 py-1 font-light ring-1 ring-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
               color="red"
             >
-              <p className="">Workout</p>
+              <p className="text-slate-700 dark:text-slate-200">Workout</p>
             </div>
             <div
-              className="cursor-pointer rounded-md px-2 py-1 font-light text-slate-700  ring-1 ring-slate-400 hover:bg-slate-200"
+              className="cursor-pointer rounded-md px-2 py-1 font-light ring-1 ring-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
               color="red"
             >
-              <p className="">Thoughts</p>
+              <p className="text-slate-700 dark:text-slate-200">Thoughts</p>
             </div>
           </div>
         </div>
@@ -47,11 +56,11 @@ export default function Home() {
 
 function Post({ text }: { text: string }) {
   return (
-    <div className="min-h-50 flex w-full flex-col gap-8 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-500 dark:ring-slate-400">
-      <p className="">{text}</p>
+    <div className="min-h-50 flex w-full flex-col gap-8 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
+      <p className="dark:text-slate-200">{text}</p>
       <div className="flex w-full justify-between">
         <div className="">
-          <p className="text-sm text-slate-400 dark:text-slate-100">
+          <p className="text-sm text-slate-400 dark:text-slate-500">
             {new Date().toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
