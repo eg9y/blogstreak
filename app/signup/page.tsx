@@ -1,6 +1,8 @@
 import { headers, cookies } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+
+import { createClient } from "@/utils/supabase/server";
+
 import {
   Description,
   Field,
@@ -79,14 +81,14 @@ export default function Signup({
     <>
       <LandingNavbar />
       <main className="flex min-h-screen flex-col items-center p-24">
-        <div className="flex flex-col w-full px-8 sm:max-w-md gap-2">
+        <div className="flex w-full flex-col gap-2 px-8 sm:max-w-md">
           <div className="">
             <h1 className="text-xl font-bold">Sign Up</h1>
           </div>
           <Text>Sign up with Google or Email</Text>
           {/* Google sign up tailwind button */}
           <form className="" action={signUpWithGoogle}>
-            <Fieldset className="flex flex-col gap-2 w-full ">
+            <Fieldset className="flex w-full flex-col gap-2 ">
               <Button color="red" type="submit" className="grow cursor-pointer">
                 Sign Up with Google
               </Button>
@@ -94,11 +96,11 @@ export default function Signup({
           </form>
 
           <form
-            className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+            className="animate-in text-foreground flex w-full flex-1 flex-col justify-center gap-2"
             action={signUp}
           >
             <Fieldset>
-              <div className="w-full h-[0.10rem] bg-slate-300 rounded-full mt-6" />
+              <div className="mt-6 h-[0.10rem] w-full rounded-full bg-slate-300" />
               <FieldGroup>
                 <Field>
                   <Label>Email</Label>
@@ -128,7 +130,7 @@ export default function Signup({
                     placeholder="••••••••"
                   />
                 </Field>
-                <div className="flex flex-col gap-2 w-full ">
+                <div className="flex w-full flex-col gap-2 ">
                   <Button
                     color="orange"
                     type="submit"
@@ -140,7 +142,7 @@ export default function Signup({
               </FieldGroup>
 
               {searchParams?.message && (
-                <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+                <p className="bg-foreground/10 text-foreground mt-4 p-4 text-center">
                   {searchParams.message}
                 </p>
               )}

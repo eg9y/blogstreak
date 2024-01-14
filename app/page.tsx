@@ -1,8 +1,10 @@
-import { Button } from "@/app/components/button";
 import Link from "next/link";
-import { LandingNavbar } from "./components/landing-navbar";
 import { cookies } from "next/headers";
+
+import { Button } from "@/app/components/button";
 import { createClient } from "@/utils/supabase/server";
+
+import { LandingNavbar } from "./components/landing-navbar";
 
 export default async function Home() {
   const cookie = cookies();
@@ -13,10 +15,10 @@ export default async function Home() {
   return (
     <>
       <LandingNavbar />
-      <main className="flex min-h-screen flex-col mx-auto gap-4 w-1/2 min-w-[400px] p-24">
+      <main className="mx-auto flex min-h-screen w-1/2 min-w-[400px] flex-col gap-4 p-24">
         <div className="">
           <h1 className="text-xl font-bold">MiniMicroblog</h1>
-          <ul className="list-disc list-inside">
+          <ul className="list-inside list-disc">
             <li className="">
               Post short-form texts in your own personal website
             </li>

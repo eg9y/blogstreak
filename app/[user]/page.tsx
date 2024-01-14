@@ -1,4 +1,5 @@
 import { Button } from "@/app/components/button";
+
 import { Field } from "../components/fieldset";
 import { Textarea } from "../components/textarea";
 import { Badge } from "../components/badge";
@@ -6,7 +7,7 @@ import { Badge } from "../components/badge";
 export default function Home() {
   return (
     <div className="min-h-full">
-      <main className="flex flex-col mx-auto gap-4 min-w-[400px] p-12">
+      <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-12">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
@@ -22,13 +23,13 @@ export default function Home() {
           <h1 className="text-3xl font-bold">Posts</h1>
           <div className="flex gap-1">
             <div
-              className="cursor-pointer ring-1 ring-slate-400 text-slate-700 font-light hover:bg-slate-200  py-1 px-2 rounded-md"
+              className="cursor-pointer rounded-md px-2 py-1 font-light text-slate-700  ring-1 ring-slate-400 hover:bg-slate-200"
               color="red"
             >
               <p className="">Workout</p>
             </div>
             <div
-              className="cursor-pointer ring-1 ring-slate-400 text-slate-700 font-light hover:bg-slate-200  py-1 px-2 rounded-md"
+              className="cursor-pointer rounded-md px-2 py-1 font-light text-slate-700  ring-1 ring-slate-400 hover:bg-slate-200"
               color="red"
             >
               <p className="">Thoughts</p>
@@ -46,11 +47,11 @@ export default function Home() {
 
 function Post({ text }: { text: string }) {
   return (
-    <div className="w-full min-h-50 rounded-md p-2 ring-1 ring-slate-300 bg-slate-100 flex flex-col gap-8 drop-shadow-sm">
+    <div className="min-h-50 flex w-full flex-col gap-8 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-500 dark:ring-slate-400">
       <p className="">{text}</p>
-      <div className="flex justify-between w-full">
+      <div className="flex w-full justify-between">
         <div className="">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-400 dark:text-slate-100">
             {new Date().toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",

@@ -21,7 +21,6 @@ import {
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Documents", href: "#", icon: DocumentDuplicateIcon, current: false },
@@ -112,7 +111,7 @@ export default function AppSidebar({
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-orange-950 px-6 pb-4">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-orange-950  px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-8 w-auto"
@@ -131,8 +130,8 @@ export default function AppSidebar({
                                   className={classNames(
                                     item.current
                                       ? "bg-orange-700 text-white"
-                                      : "text-orange-200 hover:text-white hover:bg-orange-700",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                      : "text-orange-200 hover:bg-orange-700 hover:text-white",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                                   )}
                                 >
                                   <item.icon
@@ -140,7 +139,7 @@ export default function AppSidebar({
                                       item.current
                                         ? "text-white"
                                         : "text-orange-200 group-hover:text-white",
-                                      "h-6 w-6 shrink-0"
+                                      "h-6 w-6 shrink-0",
                                     )}
                                     aria-hidden="true"
                                   />
@@ -162,8 +161,8 @@ export default function AppSidebar({
                                   className={classNames(
                                     team.current
                                       ? "bg-orange-700 text-white"
-                                      : "text-orange-200 hover:text-white hover:bg-orange-700",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                      : "text-orange-200 hover:bg-orange-700 hover:text-white",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                                   )}
                                 >
                                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-orange-400 bg-orange-500 text-[0.625rem] font-medium text-white">
@@ -218,8 +217,8 @@ export default function AppSidebar({
                           className={classNames(
                             item.current
                               ? "bg-orange-700 text-white"
-                              : "text-orange-200 hover:text-white hover:bg-orange-700",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                              : "text-orange-200 hover:bg-orange-700 hover:text-white",
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                           )}
                         >
                           <item.icon
@@ -227,7 +226,7 @@ export default function AppSidebar({
                               item.current
                                 ? "text-white"
                                 : "text-orange-200 group-hover:text-white",
-                              "h-6 w-6 shrink-0"
+                              "h-6 w-6 shrink-0",
                             )}
                             aria-hidden="true"
                           />
@@ -249,8 +248,8 @@ export default function AppSidebar({
                           className={classNames(
                             team.current
                               ? "bg-orange-700 text-white"
-                              : "text-orange-200 hover:text-white hover:bg-orange-700",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                              : "text-orange-200 hover:bg-orange-700 hover:text-white",
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                           )}
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-orange-400 bg-orange-500 text-[0.625rem] font-medium text-white">
@@ -279,7 +278,7 @@ export default function AppSidebar({
           </div>
         </div>
 
-        <div className="lg:pl-72 flex flex-col">
+        <div className="flex flex-col lg:pl-72">
           <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
@@ -367,7 +366,7 @@ export default function AppSidebar({
                               href={item.href}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                "block px-3 py-1 text-sm leading-6 text-gray-900",
                               )}
                             >
                               {item.name}
