@@ -8,6 +8,11 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
     {
       cookies: {
         get(name: string) {
+          console.log("getname", name);
+          console.log(
+            "cookieStore.get(name)?.value",
+            cookieStore.get(name)?.value
+          );
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {

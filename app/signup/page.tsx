@@ -13,7 +13,7 @@ import { Button } from "../components/button";
 import { LandingNavbar } from "../components/landing-navbar";
 import { Text } from "../components/text";
 
-export default function Login({
+export default function Signup({
   searchParams,
 }: {
   searchParams: { message: string };
@@ -57,6 +57,7 @@ export default function Login({
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
+        redirectTo: `${headers().get("origin")}/auth/callback?next=/app`,
         queryParams: {
           access_type: "offline",
           prompt: "consent",

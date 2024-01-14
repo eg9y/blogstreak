@@ -1,8 +1,15 @@
 import { Button } from "@/app/components/button";
 import Link from "next/link";
 import { LandingNavbar } from "./components/landing-navbar";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const cookie = cookies();
+  const supabase = createClient(cookie);
+
+  console.log(await supabase.auth.getUser());
+
   return (
     <>
       <LandingNavbar />
@@ -20,9 +27,9 @@ export default function Home() {
             </li>
           </ul>
         </div>
-        <Link href="/signup">
-          <Button color="orange">Create my blog</Button>
-        </Link>
+        <Button color="orange" href="/signup" className="w-40">
+          Create my blog
+        </Button>
       </main>
     </>
   );

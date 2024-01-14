@@ -1,12 +1,12 @@
+"use client";
+
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Settings", href: "#", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -36,7 +36,7 @@ export default function AppNavbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=500"
                     alt="Your Company"
                   />
                 </div>
