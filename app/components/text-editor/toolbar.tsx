@@ -1,6 +1,14 @@
 import { cn } from "@/utils/cn";
 import "./editor.css";
 import { Editor } from "@tiptap/react";
+import {
+  CodeIcon,
+  FontBoldIcon,
+  FontItalicIcon,
+  ListBulletIcon,
+  StrikethroughIcon,
+} from "@radix-ui/react-icons";
+import Image from "next/image";
 
 export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
@@ -17,7 +25,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("bold") ? "bg-yellow-100" : "",
         )}
       >
-        bold
+        <FontBoldIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -27,7 +35,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("italic") ? "bg-yellow-100" : "",
         )}
       >
-        italic
+        <FontItalicIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -37,7 +45,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("strike") ? "bg-yellow-100" : "",
         )}
       >
-        strike
+        <StrikethroughIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleCode().run()}
@@ -110,7 +118,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("bulletList") ? "bg-yellow-100" : "",
         )}
       >
-        bullet list
+        <ListBulletIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
@@ -119,7 +127,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("orderedList") ? "bg-yellow-100" : "",
         )}
       >
-        ordered list
+        1.
       </button>
       <button
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
@@ -128,7 +136,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           editor.isActive("codeBlock") ? "bg-yellow-100" : "",
         )}
       >
-        code block
+        <CodeIcon />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -140,27 +148,24 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         blockquote
       </button>
       <button
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("paragraph") ? "bg-yellow-100" : "",
-        )}
-      >
-        paragraph
-      </button>
-      <button
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
+        className={cn(
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
+        )}
       >
-        undo
+        <Image alt="undo" src="/icons/undo-icon.svg" width={16} height={16} />
       </button>
       <button
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
+        className={cn(
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
+        )}
       >
-        redo
+        <Image alt="redo" src="/icons/redo-icon.svg" width={16} height={16} />
       </button>
-      <button
+      {/* <button
         onClick={() => editor.chain().focus().setColor("#958DF1").run()}
         className={
           editor.isActive("textStyle", { color: "#958DF1" })
@@ -169,7 +174,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         }
       >
         purple
-      </button>
+      </button> */}
     </div>
   );
 };
