@@ -15,6 +15,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
+import { createClient } from "@/utils/supabase/client";
 
 const navigation = [
   { name: "Home", href: "#", icon: HomeIcon, current: true },
@@ -37,9 +38,11 @@ export default function AppSidebar({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const supabase = createClient();
+
   return (
     <>
-      <div>
+      <div className="mx-auto w-[1000px]">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -292,8 +295,10 @@ export default function AppSidebar({
                 />
                 <input
                   id="search-field"
-                  className="block h-full w-full border-0 py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm dark:bg-slate-800 dark:text-slate-300"
+                  className="block h-full w-full border-0 py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0  sm:text-sm dark:bg-slate-800 dark:text-slate-300"
                   placeholder="Search..."
+                  autoComplete="off"
+                  autoCorrect="off"
                   type="search"
                   name="search"
                 />
@@ -368,7 +373,9 @@ export default function AppSidebar({
           </div>
 
           <main className="h-[93vh]">
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+            <div className="overflow-y-hidden px-4 sm:px-6 lg:px-8">
+              {children}
+            </div>
           </main>
         </div>
       </div>
