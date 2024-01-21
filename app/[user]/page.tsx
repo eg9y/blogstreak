@@ -8,29 +8,7 @@ export default function Home() {
   return (
     <div className="min-h-full">
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-12">
-        <div className="flex flex-col gap-2">
-          <Field>
-            {/* <Textarea
-              name="post"
-              placeholder="What is happening?!"
-              className="!border-red-500"
-              rows={4}
-            /> */}
-            <div className="">
-              <TextEditor />
-            </div>
-          </Field>
-          <div className="flex justify-between">
-            <div className="flex gap-1">
-              <Badge color="red">Workout</Badge>
-              <Badge color="orange">Full-time job</Badge>
-              <Badge color="blue">Thoughts</Badge>
-            </div>
-            <Button color="orange" className="w-40 self-end">
-              Post
-            </Button>
-          </div>
-        </div>
+        <TextEditor />
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-bold dark:text-slate-300">Posts</h1>
           <div className="flex gap-1">

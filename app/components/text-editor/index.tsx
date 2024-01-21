@@ -4,15 +4,11 @@ import "./editor.css";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
-import {
-  EditorContent,
-  EditorOptions,
-  EditorProvider,
-  useEditor,
-} from "@tiptap/react";
+import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
 import { Toolbar } from "./toolbar";
+import { Button } from "@/app/components/button";
+import { Badge } from "@/app/components/badge";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -32,24 +28,8 @@ const extensions = [
         class: "",
       },
     },
-    heading: {
-      HTMLAttributes: {
-        // class: "leading-3",
-      },
-    },
-    code: {
-      HTMLAttributes: {
-        // class: "bg-slate-50 text-slate-600",
-      },
-    },
   }),
 ];
-
-const content = `
-<h2>
-  Hello World
-</h2>
-`;
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -60,17 +40,30 @@ const editorOptions: Partial<EditorOptions> = {
 };
 
 export const TextEditor = () => {
-  const editor = useEditor({
-    extensions,
-    content,
-    ...editorOptions,
-  });
+  const editor = useEditor({ extensions, content: "", ...editorOptions });
+
+  function submitPost() {
+    const content = JSON.stringify(editor?.getJSON());
+    console.log(content);
+  }
 
   return (
-    <div className="flex flex-col gap-1">
-      <Toolbar editor={editor} />
-      <div className="h-[20vh] w-full overflow-y-scroll rounded-md bg-white p-2 ring-1 ring-slate-500 dark:bg-slate-800 dark:ring-slate-500 ">
-        <EditorContent editor={editor} />
+    <div className="flex flex-col gap-2">
+      <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-500 dark:bg-slate-800 dark:ring-slate-500 ">
+        <Toolbar editor={editor} />
+        <div className="h-[20vh] overflow-y-scroll ">
+          <EditorContent editor={editor} />
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <div className="flex gap-1">
+          <Badge color="red">Workout</Badge>
+          <Badge color="orange">Full-time job</Badge>
+          <Badge color="blue">Thoughts</Badge>
+        </div>
+        <Button color="orange" className="w-40 self-end" onClick={submitPost}>
+          Post
+        </Button>
       </div>
     </div>
   );

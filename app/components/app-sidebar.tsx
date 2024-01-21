@@ -96,7 +96,7 @@ export default function AppSidebar({
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700  px-6 pb-4">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6  pb-4">
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-8 w-auto"
@@ -183,7 +183,7 @@ export default function AppSidebar({
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6 pb-4">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700  px-6 pb-4 dark:border-r dark:border-r-slate-600 dark:bg-transparent">
             <div className="flex h-16 shrink-0 items-center">
               <img
                 className="h-8 w-auto"
@@ -264,7 +264,7 @@ export default function AppSidebar({
         </div>
 
         <div className="flex flex-col lg:pl-72">
-          <div className="flex h-[7vh] shrink-0 items-center gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:border-slate-600 dark:bg-slate-800">
+          <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:border-slate-600 dark:bg-slate-800">
             <button
               type="button"
               className="-m-2.5 p-2.5 text-slate-700 lg:hidden"
