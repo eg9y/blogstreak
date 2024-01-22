@@ -1,8 +1,9 @@
+import { Database } from "@/schema";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -11,7 +12,7 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
           console.log("getname", name);
           console.log(
             "cookieStore.get(name)?.value",
-            cookieStore.get(name)?.value
+            cookieStore.get(name)?.value,
           );
           return cookieStore.get(name)?.value;
         },
@@ -34,6 +35,6 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
           }
         },
       },
-    }
+    },
   );
 };

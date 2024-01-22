@@ -1,7 +1,17 @@
+import { cookies } from "next/headers";
 import { Badge } from "../components/badge";
 import { TextEditor } from "../components/text-editor";
+import { createClient } from "@/utils/supabase/server";
+import { Post } from "../components/feed/post";
 
-export default function Home() {
+export default async function Home() {
+  const cookie = cookies();
+  const supabase = createClient(cookie);
+
+  const { data: posts, error } = await supabase.from("posts").select("*");
+
+  console.log("posts", posts);
+
   return (
     <div className="min-h-full">
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-12">
@@ -28,32 +38,11 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <Post text="Hello World"></Post>
-          <Post text="Bench Presses: 10x10"></Post>
+          {posts
+            ?.filter((post) => post.text)
+            .map((post) => <Post text={post.text!}></Post>)}
         </div>
       </main>
-    </div>
-  );
-}
-
-function Post({ text }: { text: string }) {
-  return (
-    <div className="min-h-50 flex w-full flex-col gap-8 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
-      <p className="text-sm dark:text-slate-200">{text}</p>
-      <div className="flex w-full justify-between">
-        <div className="">
-          <p className="text-xs text-slate-400 dark:text-slate-500">
-            {new Date().toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-        <div className="">
-          <Badge color="red">Workout</Badge>
-        </div>
-      </div>
     </div>
   );
 }
