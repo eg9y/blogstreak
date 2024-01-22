@@ -54,16 +54,22 @@ export const TextEditor = () => {
         <div className="h-[20vh] overflow-y-scroll ">
           <EditorContent editor={editor} />
         </div>
-      </div>
-      <div className="flex justify-between">
-        <div className="flex gap-1">
-          <Badge color="red">Workout</Badge>
-          <Badge color="orange">Full-time job</Badge>
-          <Badge color="blue">Thoughts</Badge>
+        <div className="flex justify-between">
+          <div className="flex gap-1">
+            <Badge className="cursor-pointer" color="red">
+              Workout
+            </Badge>
+            <Badge className="cursor-pointer" color="orange">
+              Full-time job
+            </Badge>
+            <Badge className="cursor-pointer" color="blue">
+              Thoughts
+            </Badge>
+          </div>
+          <Button color="orange" className="w-40 self-end" onClick={submitPost}>
+            Post
+          </Button>
         </div>
-        <Button color="orange" className="w-40 self-end" onClick={submitPost}>
-          Post
-        </Button>
       </div>
     </div>
   );

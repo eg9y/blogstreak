@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -16,19 +16,13 @@ import {
 } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
+import { User } from "@supabase/supabase-js";
 
-const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "Design", href: "#", icon: PaintBrushIcon, current: false },
-];
+const navigation = [{ name: "Home", href: "#", icon: HomeIcon, current: true }];
 const tags = [
   { id: 1, name: "Workout", href: "#", initial: "W", current: false },
   { id: 2, name: "Thoughts", href: "#", initial: "T", current: false },
   { id: 3, name: "Full-time Job", href: "#", initial: "F", current: false },
-];
-const userNavigation = [
-  { name: "Your profile", href: "#" },
-  { name: "Sign out", href: "#" },
 ];
 
 export default function AppSidebar({
@@ -37,8 +31,28 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null as null | User);
 
   const supabase = createClient();
+
+  const userNavigation = [
+    { name: "Sign out", onClick: () => supabase.auth.signOut() },
+  ];
+
+  useEffect(() => {
+    async function fetchUser() {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (error) {
+        console.log("error", error);
+        return;
+      }
+      setCurrentUser(user);
+    }
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -332,7 +346,7 @@ export default function AppSidebar({
                         className="ml-4 text-sm font-semibold leading-6 text-slate-900 dark:text-slate-300"
                         aria-hidden="true"
                       >
-                        Tom Cook
+                        {currentUser?.email}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-slate-400 dark:text-slate-300"
@@ -354,11 +368,11 @@ export default function AppSidebar({
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
-                              href={item.href}
                               className={cn(
                                 active ? "bg-slate-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-slate-900",
+                                "block cursor-pointer px-3 py-1 text-sm leading-6 text-slate-900 hover:bg-slate-100",
                               )}
+                              onClick={item.onClick}
                             >
                               {item.name}
                             </a>

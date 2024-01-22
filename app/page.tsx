@@ -10,8 +10,6 @@ export default async function Home() {
   const cookie = cookies();
   const supabase = createClient(cookie);
 
-  console.log(await supabase.auth.getUser());
-
   return (
     <>
       <LandingNavbar />

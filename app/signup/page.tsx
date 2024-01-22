@@ -14,6 +14,7 @@ import { Input } from "../components/input";
 import { Button } from "../components/button";
 import { LandingNavbar } from "../components/landing-navbar";
 import { Text } from "../components/text";
+import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
 
 export default function Signup({
   searchParams,
@@ -48,33 +49,6 @@ export default function Signup({
     }
 
     return redirect("/signup?message=Check email to continue sign in process");
-  };
-
-  const signUpWithGoogle = async () => {
-    "use server";
-
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${headers().get("origin")}/auth/callback?next=/app`,
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
-        },
-      },
-    });
-
-    console.log("error", error);
-    console.log("data", data);
-
-    if (error) {
-      return redirect("/signup?message=Could not authenticate user via Google");
-    }
-
-    return redirect(data.url);
   };
 
   return (
