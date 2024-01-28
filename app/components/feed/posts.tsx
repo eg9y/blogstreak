@@ -49,7 +49,7 @@ export function Posts() {
     <div className="flex flex-col gap-2">
       {posts
         ?.filter((post) => post.text)
-        .map((post) => <Post text={post.text!}></Post>)}
+        .map((post) => <Post post={post}></Post>)}
     </div>
   );
 }

@@ -6,8 +6,14 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { PostOptions } from "./post-options";
+import { Database } from "@/schema";
 
-export function Post({ text }: { text: string }) {
+export function Post({
+  post,
+}: {
+  post: Database["public"]["Tables"]["posts"]["Row"];
+}) {
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({}),
@@ -30,8 +36,8 @@ export function Post({ text }: { text: string }) {
   ];
 
   const output = useMemo(() => {
-    return generateHTML(JSON.parse(text), extensions);
-  }, [text]);
+    return generateHTML(JSON.parse(post.text!), extensions);
+  }, [post.text]);
 
   return (
     <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
@@ -40,12 +46,12 @@ export function Post({ text }: { text: string }) {
           className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
           dangerouslySetInnerHTML={{ __html: output }}
         />
-        <DotsHorizontalIcon className="h-5 w-5 cursor-pointer text-slate-400 dark:text-slate-500" />
+        <PostOptions post={post} />
       </div>
       <div className="flex w-full justify-between">
         <div className="">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            {new Date().toLocaleDateString("en-US", {
+            {new Date(post.created_at).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",

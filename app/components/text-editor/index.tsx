@@ -53,7 +53,7 @@ export const TextEditor = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-500 dark:bg-slate-800 dark:ring-slate-500 ">
+      <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-500 ">
         <Toolbar editor={editor} />
         <div className="h-[20vh] overflow-y-scroll ">
           <EditorContent editor={editor} />

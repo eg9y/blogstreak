@@ -1,26 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "../supabase/client";
 
-export function useSubmitPost() {
+export function useDeletePost() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  async function mutationFn(content: string) {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-
-    if (error || !user) {
-      console.error(error);
-      return;
-    }
-
-    const res = await supabase.from("posts").insert({
-      text: content,
-      user_id: user?.id,
-    });
-
+  async function mutationFn(postId: number) {
+    const res = await supabase.from("posts").delete().eq("id", postId);
     console.log(res);
   }
 

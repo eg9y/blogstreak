@@ -14,7 +14,7 @@ export default async function Home() {
     <>
       <LandingNavbar />
       <main className="mx-auto flex min-h-screen w-1/2 min-w-[400px] flex-col gap-4 p-24">
-        <div className="">
+        <div className="dark:text-slate-50">
           <h1 className="text-xl font-bold">MiniMicroblog</h1>
           <ul className="list-inside list-disc">
             <li className="">

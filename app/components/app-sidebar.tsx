@@ -60,7 +60,7 @@ export default function AppSidebar({
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="relative z-50 lg:hidden"
+            className="relative z-40 lg:hidden"
             onClose={setSidebarOpen}
           >
             <Transition.Child
@@ -112,11 +112,9 @@ export default function AppSidebar({
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6  pb-4">
                     <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                        alt="Your Company"
-                      />
+                      <p className="text-xl font-bold tracking-tight text-slate-700">
+                        MiniWriting
+                      </p>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -195,15 +193,13 @@ export default function AppSidebar({
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="hidden lg:fixed lg:inset-y-0  lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700  px-6 pb-4 dark:border-r dark:border-r-slate-600 dark:bg-transparent">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-r-slate-400 bg-transparent px-6 pb-4 dark:border-r-slate-600 dark:bg-transparent">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                alt="Your Company"
-              />
+              <p className="text-xl font-bold tracking-tight text-slate-700">
+                MiniWriting
+              </p>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -216,7 +212,7 @@ export default function AppSidebar({
                           className={cn(
                             item.current
                               ? "bg-slate-700 text-white"
-                              : "text-slate-200 hover:bg-slate-700 hover:text-white",
+                              : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
                             "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                           )}
                         >
@@ -236,7 +232,7 @@ export default function AppSidebar({
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs font-semibold leading-6 text-slate-200">
+                  <div className="text-xs font-semibold leading-6 text-slate-500 dark:text-slate-200">
                     Your tags
                   </div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
@@ -247,7 +243,7 @@ export default function AppSidebar({
                           className={cn(
                             tag.current
                               ? "bg-slate-700 text-white"
-                              : "text-slate-200 hover:bg-slate-700 hover:text-white",
+                              : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
                             "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                           )}
                         >
@@ -278,7 +274,7 @@ export default function AppSidebar({
         </div>
 
         <div className="flex flex-col lg:pl-72">
-          <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:border-slate-600 dark:bg-slate-800">
+          <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:border-slate-600 dark:bg-slate-800">
             <button
               type="button"
               className="-m-2.5 p-2.5 text-slate-700 lg:hidden"
@@ -296,7 +292,7 @@ export default function AppSidebar({
 
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <form
-                className="relative flex flex-1 bg-slate-600"
+                className="relative flex flex-1 dark:bg-slate-600"
                 action="#"
                 method="GET"
               >
@@ -309,7 +305,7 @@ export default function AppSidebar({
                 />
                 <input
                   id="search-field"
-                  className="block h-full w-full border-0 py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0  sm:text-sm dark:bg-slate-800 dark:text-slate-300"
+                  className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0  sm:text-sm dark:bg-slate-800 dark:text-slate-300"
                   placeholder="Search..."
                   autoComplete="off"
                   autoCorrect="off"

@@ -12,6 +12,9 @@ export function usePostsQuery(user: User | null) {
       .from("posts")
       .select("*")
       .eq("user_id", user!.id)
+      .order("created_at", {
+        ascending: false,
+      })
       .throwOnError();
   };
 
