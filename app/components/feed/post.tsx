@@ -5,7 +5,7 @@ import Color from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
-import { json } from "stream/consumers";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
 export function Post({ text }: { text: string }) {
   const extensions = [
@@ -31,14 +31,17 @@ export function Post({ text }: { text: string }) {
 
   const output = useMemo(() => {
     return generateHTML(JSON.parse(text), extensions);
-  }, [json]);
+  }, [text]);
 
   return (
-    <div className="min-h-50 flex w-full flex-col gap-8 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
-      <div
-        className="prose prose-sm m-5 dark:prose-invert focus:outline-none"
-        dangerouslySetInnerHTML={{ __html: output }}
-      />
+    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
+      <div className="flex gap-1">
+        <div
+          className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
+          dangerouslySetInnerHTML={{ __html: output }}
+        />
+        <DotsHorizontalIcon className="h-5 w-5 cursor-pointer text-slate-400 dark:text-slate-500" />
+      </div>
       <div className="flex w-full justify-between">
         <div className="">
           <p className="text-xs text-slate-400 dark:text-slate-500">

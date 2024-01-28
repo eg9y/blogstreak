@@ -10,6 +10,7 @@ import { Toolbar } from "./toolbar";
 import { Button } from "@/app/components/button";
 import { Badge } from "@/app/components/badge";
 import { createClient } from "@/utils/supabase/client";
+import { useSubmitPost } from "@/utils/hooks/use-submit-post";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -43,26 +44,11 @@ const editorOptions: Partial<EditorOptions> = {
 export const TextEditor = () => {
   const supabase = createClient();
   const editor = useEditor({ extensions, content: "", ...editorOptions });
+  const submitPostMutation = useSubmitPost();
 
   async function submitPost() {
     const content = JSON.stringify(editor?.getJSON());
-    console.log(content);
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-
-    if (error || !user) {
-      console.error(error);
-      return;
-    }
-
-    const res = await supabase.from("posts").insert({
-      text: content,
-      user_id: user?.id,
-    });
-
-    console.log(res);
+    submitPostMutation.mutate(content);
   }
 
   return (

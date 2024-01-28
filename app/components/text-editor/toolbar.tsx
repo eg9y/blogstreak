@@ -16,13 +16,13 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="sticky flex w-full flex-wrap gap-1 rounded-md bg-slate-100 p-2">
+    <div className="sticky flex w-full flex-wrap gap-1 rounded-md bg-slate-100 p-2 dark:bg-slate-600">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("bold") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("bold") ? "bg-yellow-200 dark:bg-yellow-500" : "",
         )}
       >
         <FontBoldIcon />
@@ -31,8 +31,8 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("italic") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("italic") ? "bg-yellow-200 dark:bg-yellow-500" : "",
         )}
       >
         <FontItalicIcon />
@@ -41,8 +41,8 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("strike") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("strike") ? "bg-yellow-200 dark:bg-yellow-500" : "",
         )}
       >
         <StrikethroughIcon />
@@ -51,8 +51,8 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().toggleCode().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("code") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("code") ? "bg-yellow-200 dark:bg-yellow-500" : "",
         )}
       >
         code
@@ -60,8 +60,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 1 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 1 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h1
@@ -69,8 +71,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 2 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 2 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h2
@@ -78,8 +82,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 3 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 3 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h3
@@ -87,8 +93,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 4 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 4 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h4
@@ -96,8 +104,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 5 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 5 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h5
@@ -105,8 +115,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("heading", { level: 6 }) ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("heading", { level: 6 })
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         h6
@@ -114,8 +126,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("bulletList") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("bulletList")
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         <ListBulletIcon />
@@ -123,8 +137,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("orderedList") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("orderedList")
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         1.
@@ -132,8 +148,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("codeBlock") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("codeBlock")
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         <CodeIcon />
@@ -141,8 +159,10 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <button
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
-          editor.isActive("blockquote") ? "bg-yellow-100" : "",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+          editor.isActive("blockquote")
+            ? "bg-yellow-200 dark:bg-yellow-500"
+            : "",
         )}
       >
         blockquote
@@ -151,7 +171,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
         )}
       >
         <Image alt="undo" src="/icons/undo-icon.svg" width={16} height={16} />
@@ -160,7 +180,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
         className={cn(
-          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500",
+          "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
         )}
       >
         <Image alt="redo" src="/icons/redo-icon.svg" width={16} height={16} />
@@ -169,7 +189,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
         onClick={() => editor.chain().focus().setColor("#958DF1").run()}
         className={
           editor.isActive("textStyle", { color: "#958DF1" })
-            ? "bg-yellow-100"
+            ? "bg-yellow-200 dark:bg-yellow-500"
             : ""
         }
       >
