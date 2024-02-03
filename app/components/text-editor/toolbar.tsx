@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-import "./editor.css";
 import { Editor } from "@tiptap/react";
 import {
   CodeIcon,

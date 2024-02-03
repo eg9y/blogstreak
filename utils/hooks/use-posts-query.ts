@@ -18,5 +18,5 @@ export function usePostsQuery(user: User | null) {
       .throwOnError();
   };
 
-  return useQuery({ queryKey, queryFn, enabled: !!user });
+  return useQuery({ queryKey, queryFn, enabled: !!user, staleTime: 60 * 1000 });
 }

@@ -5,9 +5,9 @@ import Color from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { PostOptions } from "./post-options";
 import { Database } from "@/schema";
+import Link from "next/link";
 
 export function Post({
   post,
@@ -40,7 +40,10 @@ export function Post({
   }, [post.text]);
 
   return (
-    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
+    <Link
+      className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700"
+      href={`/app/post/${post.id}`}
+    >
       <div className="flex gap-1">
         <div
           className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
@@ -62,6 +65,6 @@ export function Post({
           <Badge color="red">Workout</Badge>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

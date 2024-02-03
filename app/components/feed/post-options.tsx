@@ -36,7 +36,7 @@ export function PostOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href="/profile">My profile</DropdownItem>
+          <DropdownItem href="/profile">Edit</DropdownItem>
           <DropdownSeparator />
           <DropdownItem
             onClick={() => {

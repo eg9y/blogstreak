@@ -7,9 +7,6 @@ import { createClient } from "@/utils/supabase/server";
 import { LandingNavbar } from "./components/landing-navbar";
 
 export default async function Home() {
-  const cookie = cookies();
-  const supabase = createClient(cookie);
-
   return (
     <>
       <LandingNavbar />

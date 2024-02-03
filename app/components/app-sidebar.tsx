@@ -6,7 +6,6 @@ import {
   Bars3Icon,
   BellIcon,
   Cog6ToothIcon,
-  PaintBrushIcon,
   HomeIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -17,12 +16,15 @@ import {
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { usePathname } from "next/navigation";
+import { Pencil1Icon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
-const navigation = [{ name: "Home", href: "#", icon: HomeIcon, current: true }];
 const tags = [
-  { id: 1, name: "Workout", href: "#", initial: "W", current: false },
-  { id: 2, name: "Thoughts", href: "#", initial: "T", current: false },
-  { id: 3, name: "Full-time Job", href: "#", initial: "F", current: false },
+  { id: 1, name: "All", href: "#", initial: "A", current: true },
+  { id: 2, name: "Workout", href: "#", initial: "W", current: false },
+  { id: 3, name: "Thoughts", href: "#", initial: "T", current: false },
+  { id: 4, name: "Full-time Job", href: "#", initial: "F", current: false },
 ];
 
 export default function AppSidebar({
@@ -30,7 +32,9 @@ export default function AppSidebar({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentUser, setCurrentUser] = useState(null as null | User);
 
   const supabase = createClient();
@@ -112,38 +116,58 @@ export default function AppSidebar({
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6  pb-4">
                     <div className="flex h-16 shrink-0 items-center">
-                      <p className="text-xl font-bold tracking-tight text-slate-700">
-                        MiniWriting
+                      <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
+                        TypingBits
                       </p>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
-                            {navigation.map((item) => (
-                              <li key={item.name}>
-                                <a
-                                  href={item.href}
+                            <li>
+                              <Link
+                                href="/app/write"
+                                className={cn(
+                                  pathname === "/app/write"
+                                    ? "bg-slate-700 text-white"
+                                    : "text-slate-200 hover:bg-slate-700 hover:text-white",
+                                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                                )}
+                              >
+                                <Pencil1Icon
                                   className={cn(
-                                    item.current
-                                      ? "bg-slate-700 text-white"
-                                      : "text-slate-200 hover:bg-slate-700 hover:text-white",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                                    pathname === "/app/write"
+                                      ? "text-white"
+                                      : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
+                                    "h-6 w-6 shrink-0",
                                   )}
-                                >
-                                  <item.icon
-                                    className={cn(
-                                      item.current
-                                        ? "text-white"
-                                        : "text-slate-200 group-hover:text-white",
-                                      "h-6 w-6 shrink-0",
-                                    )}
-                                    aria-hidden="true"
-                                  />
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
+                                  aria-hidden="true"
+                                />
+                                Write
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                href="/app"
+                                className={cn(
+                                  pathname === "/app"
+                                    ? "bg-slate-700 text-white"
+                                    : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
+                                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                                )}
+                              >
+                                <HomeIcon
+                                  className={cn(
+                                    pathname === "/app"
+                                      ? "text-white"
+                                      : "text-slate-200 group-hover:text-white",
+                                    "h-6 w-6 shrink-0",
+                                  )}
+                                  aria-hidden="true"
+                                />
+                                Home
+                              </Link>
+                            </li>
                           </ul>
                         </li>
                         <li>
@@ -197,43 +221,63 @@ export default function AppSidebar({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-r-slate-400 bg-transparent px-6 pb-4 dark:border-r-slate-600 dark:bg-transparent">
             <div className="flex h-16 shrink-0 items-center">
-              <p className="text-xl font-bold tracking-tight text-slate-700">
-                MiniWriting
+              <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
+                TypingBits
               </p>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        <a
-                          href={item.href}
+                    <li>
+                      <Link
+                        href="/app/write"
+                        className={cn(
+                          pathname === "/app/write"
+                            ? "bg-slate-700 text-white"
+                            : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                        )}
+                      >
+                        <Pencil1Icon
                           className={cn(
-                            item.current
-                              ? "bg-slate-700 text-white"
-                              : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                            pathname === "/app/write"
+                              ? "text-white"
+                              : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
+                            "h-6 w-6 shrink-0",
                           )}
-                        >
-                          <item.icon
-                            className={cn(
-                              item.current
-                                ? "text-white"
-                                : "text-slate-200 group-hover:text-white",
-                              "h-6 w-6 shrink-0",
-                            )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
+                          aria-hidden="true"
+                        />
+                        Write
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/app"
+                        className={cn(
+                          pathname === "/app"
+                            ? "bg-slate-700 text-white"
+                            : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                        )}
+                      >
+                        <HomeIcon
+                          className={cn(
+                            pathname === "/app"
+                              ? "text-white"
+                              : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
+                            "h-6 w-6 shrink-0",
+                          )}
+                          aria-hidden="true"
+                        />
+                        Home
+                      </Link>
+                    </li>
                   </ul>
                 </li>
                 <li>
                   <div className="text-xs font-semibold leading-6 text-slate-500 dark:text-slate-200">
-                    Your tags
+                    Your Posts
                   </div>
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {tags.map((tag) => (

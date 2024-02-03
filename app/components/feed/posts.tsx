@@ -25,20 +25,18 @@ export function Posts() {
     fetchUser();
   }, []);
 
-  const { data, isLoading } = usePostsQuery(currentUser);
+  const { data, isLoading, isFetching, isPending } = usePostsQuery(currentUser);
 
-  if (isLoading) {
+  if (isLoading || isFetching || isPending) {
     return (
       <div className="flex flex-col gap-2">
-        <p>Loading Posts...</p>
+        <p className="dark:text-slate-100">Loading Posts...</p>
       </div>
     );
-  }
-
-  if (!data) {
+  } else if (!data) {
     return (
       <div className="flex flex-col gap-2">
-        <p>No Posts</p>
+        <p className="dark:text-slate-100">No Posts</p>
       </div>
     );
   }
@@ -49,7 +47,7 @@ export function Posts() {
     <div className="flex flex-col gap-2">
       {posts
         ?.filter((post) => post.text)
-        .map((post) => <Post post={post}></Post>)}
+        .map((post) => <Post post={post} key={post.id}></Post>)}
     </div>
   );
 }
