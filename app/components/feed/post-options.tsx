@@ -16,6 +16,8 @@ import {
 import { Button } from "../button";
 import { Database } from "@/schema";
 import { useDeletePost } from "@/utils/hooks/use-delete-post";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export function PostOptions({
   post,
@@ -29,14 +31,14 @@ export function PostOptions({
     <>
       <Dropdown>
         <DropdownButton
-          className="size-10 cursor-pointer"
+          className=" size-10 cursor-pointer"
           plain
           aria-label="Account options"
         >
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href="/profile">Edit</DropdownItem>
+          <DropdownItem href={`/app/post/${post.id}/edit`}>Edit</DropdownItem>
           <DropdownSeparator />
           <DropdownItem
             onClick={() => {
@@ -64,6 +66,7 @@ export function PostOptions({
             onClick={() => {
               submitPostMutation.mutate(post.id, {
                 onSuccess() {
+                  console.log("nice!");
                   setIsOpenDelete(false);
                 },
               });

@@ -5,25 +5,10 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useState, useEffect } from "react";
 import { Post } from "./post";
+import { getUser } from "@/utils/getUser";
 
 export function Posts() {
-  const supabase = createClient();
-  const [currentUser, setCurrentUser] = useState(null as null | User);
-
-  useEffect(() => {
-    async function fetchUser() {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      if (error) {
-        console.log("error", error);
-        return;
-      }
-      setCurrentUser(user);
-    }
-    fetchUser();
-  }, []);
+  const { currentUser } = getUser();
 
   const { data, isLoading, isFetching, isPending } = usePostsQuery(currentUser);
 

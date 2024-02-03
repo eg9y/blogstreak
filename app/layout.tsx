@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { cn } from "@/utils/cn";
 import { ReactQueryProvider } from "./components/react-query-provider";
@@ -24,7 +25,10 @@ export default function RootLayout({
           "dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-800",
         )}
       >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          {children}
+          <Toaster />
+        </ReactQueryProvider>
       </body>
     </html>
   );

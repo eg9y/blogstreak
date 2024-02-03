@@ -40,12 +40,10 @@ export function Post({
   }, [post.text]);
 
   return (
-    <Link
-      className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700"
-      href={`/app/post/${post.id}`}
-    >
+    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
       <div className="flex gap-1">
-        <div
+        <Link
+          href={`/app/post/${post.id}`}
           className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
           dangerouslySetInnerHTML={{ __html: output }}
         />
@@ -65,6 +63,6 @@ export function Post({
           <Badge color="red">Workout</Badge>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

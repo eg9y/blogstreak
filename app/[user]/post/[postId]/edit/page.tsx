@@ -1,4 +1,4 @@
-import { ViewTextEditor } from "@/app/components/text-editor/view";
+import { EditTextEditor } from "@/app/components/text-editor/edit";
 import { createClient } from "@/utils/supabase/server";
 import {
   HydrationBoundary,
@@ -40,7 +40,7 @@ export default async function PostDetail({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="min-h-full">
         <main className="mx-auto flex min-w-[400px] flex-col gap-4 px-2 py-12">
-          <ViewTextEditor postId={params.postId} />
+          <EditTextEditor postId={params.postId} />
         </main>
       </div>
     </HydrationBoundary>
