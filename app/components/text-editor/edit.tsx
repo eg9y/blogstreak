@@ -10,9 +10,9 @@ import { Toolbar } from "./toolbar";
 import { Button } from "@/app/components/button";
 import { BadgeButton } from "../badge";
 import { useEffect, useRef, useState } from "react";
-import { useGetPostQuery } from "@/utils/hooks/use-get-post";
+import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
-import { useEditPost } from "@/utils/hooks/use-edit-post";
+import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 const extensions = [

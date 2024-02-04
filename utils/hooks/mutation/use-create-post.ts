@@ -1,17 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "../supabase/client";
+import { createClient } from "../../supabase/client";
 
-export function useEditPost() {
+export function useCreatePost() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  async function mutationFn({
-    postId,
-    content,
-  }: {
-    postId: number;
-    content: string;
-  }) {
+  async function mutationFn(content: string, postIds: string[] = []) {
     const {
       data: { user },
       error,
@@ -22,15 +16,28 @@ export function useEditPost() {
       return;
     }
 
-    const res = await supabase
+    const { data, error: postInsertError } = await supabase
       .from("posts")
-      .update({
+      .insert({
         text: content,
         user_id: user?.id,
       })
-      .eq("id", postId);
+      .select()
+      .single();
 
-    console.log(res);
+    if (!data) {
+      return;
+    }
+
+    if (postInsertError) {
+      return;
+    }
+
+    // const tagRes = await supabase.from("post_topics").insert({
+    //   post_id: data.id,
+    // });
+
+    console.log(data);
   }
 
   return useMutation({

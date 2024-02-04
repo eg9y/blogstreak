@@ -4,161 +4,161 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export interface Database {
   public: {
     Tables: {
       post_topics: {
         Row: {
-          created_at: string;
-          id: number;
-          post_id: number | null;
-          topic_id: number | null;
-          user_id: string | null;
-        };
+          created_at: string
+          id: number
+          post_id: number | null
+          topic_id: number | null
+          user_id: string | null
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          post_id?: number | null;
-          topic_id?: number | null;
-          user_id?: string | null;
-        };
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          topic_id?: number | null
+          user_id?: string | null
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          post_id?: number | null;
-          topic_id?: number | null;
-          user_id?: string | null;
-        };
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          topic_id?: number | null
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "post_topics_post_id_fkey";
-            columns: ["post_id"];
-            isOneToOne: false;
-            referencedRelation: "posts";
-            referencedColumns: ["id"];
+            foreignKeyName: "post_topics_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "post_topics_topic_id_fkey";
-            columns: ["topic_id"];
-            isOneToOne: false;
-            referencedRelation: "topics";
-            referencedColumns: ["id"];
+            foreignKeyName: "post_topics_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "post_topics_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "post_topics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       posts: {
         Row: {
-          created_at: string;
-          id: number;
-          text: string | null;
-          user_id: string | null;
-        };
+          created_at: string
+          id: number
+          text: string | null
+          user_id: string | null
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          text?: string | null;
-          user_id?: string | null;
-        };
+          created_at?: string
+          id?: number
+          text?: string | null
+          user_id?: string | null
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          text?: string | null;
-          user_id?: string | null;
-        };
+          created_at?: string
+          id?: number
+          text?: string | null
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "posts_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       profiles: {
         Row: {
-          email: string | null;
-          id: number;
-          name: string | null;
-          user_id: string | null;
-        };
+          email: string | null
+          id: number
+          name: string | null
+          user_id: string | null
+        }
         Insert: {
-          email?: string | null;
-          id?: never;
-          name?: string | null;
-          user_id?: string | null;
-        };
+          email?: string | null
+          id?: never
+          name?: string | null
+          user_id?: string | null
+        }
         Update: {
-          email?: string | null;
-          id?: never;
-          name?: string | null;
-          user_id?: string | null;
-        };
+          email?: string | null
+          id?: never
+          name?: string | null
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "profiles_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       topics: {
         Row: {
-          color: string | null;
-          created_at: string;
-          id: number;
-          name: string | null;
-          user_id: string | null;
-        };
+          color: string
+          created_at: string
+          id: number
+          name: string
+          user_id: string | null
+        }
         Insert: {
-          color?: string | null;
-          created_at?: string;
-          id?: number;
-          name?: string | null;
-          user_id?: string | null;
-        };
+          color: string
+          created_at?: string
+          id?: number
+          name: string
+          user_id?: string | null
+        }
         Update: {
-          color?: string | null;
-          created_at?: string;
-          id?: number;
-          name?: string | null;
-          user_id?: string | null;
-        };
+          color?: string
+          created_at?: string
+          id?: number
+          name?: string
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "topics_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-    };
+            foreignKeyName: "topics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
+      [_ in never]: never
+    }
+  }
 }
 
 export type Tables<
@@ -168,23 +168,23 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
   : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-        Database["public"]["Views"])
-    ? (Database["public"]["Tables"] &
-        Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R;
-      }
-      ? R
-      : never
-    : never;
+      Database["public"]["Views"])
+  ? (Database["public"]["Tables"] &
+      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -192,20 +192,20 @@ export type TablesInsert<
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I;
-      }
-      ? I
-      : never
-    : never;
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -213,20 +213,20 @@ export type TablesUpdate<
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U;
-      }
-      ? U
-      : never
-    : never;
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -234,9 +234,9 @@ export type Enums<
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never = never
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-    ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-    : never;
+  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
+  : never

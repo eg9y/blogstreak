@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
-import { createClient } from "../supabase/client";
+import { createClient } from "../../supabase/client";
 
 export function useGetPostQuery(user: User | null, postId?: number) {
   const supabase = createClient();

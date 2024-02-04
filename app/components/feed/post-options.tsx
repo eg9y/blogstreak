@@ -15,9 +15,7 @@ import {
 } from "../dialog";
 import { Button } from "../button";
 import { Database } from "@/schema";
-import { useDeletePost } from "@/utils/hooks/use-delete-post";
-import Link from "next/link";
-import { toast } from "sonner";
+import { useDeletePost } from "@/utils/hooks/mutation/use-delete-post";
 
 export function PostOptions({
   post,

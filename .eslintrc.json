@@ -1,5 +1,29 @@
 {
   // also extend plugin:@shopify/esnext 
-  "extends": ["next/core-web-vitals", "plugin:@shopify/esnext",     "plugin:@shopify/prettier"
-]
+  "extends": [
+    "plugin:@shopify/esnext",
+    "plugin:@shopify/prettier",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "next/core-web-vitals"
+  ],
+  "plugins": [ "import" ],
+  "rules": {
+    "import/no-unresolved": 2,
+    "import/named": 2,
+    "import/namespace": 2,
+    "import/order": 2,
+    "no-warning-comments": "off",
+    "no-console": "off",
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+      }
+    }
+  }
 }

@@ -1,17 +1,23 @@
 "use client";
 
+import { PlusIcon } from "@radix-ui/react-icons";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { toast } from "sonner";
-import { Toolbar } from "./toolbar";
-import { Button } from "@/app/components/button";
-import { useSubmitPost } from "@/utils/hooks/use-submit-post";
-import { BadgeButton } from "../badge";
 import { useEffect, useRef, useState } from "react";
-import { PlusIcon } from "@radix-ui/react-icons";
+
+import { Button } from "@/app/components/button";
+import { useCreatePost } from "@/utils/hooks/mutation/use-create-post";
+
+import { BadgeButton } from "../badge";
+
+import { Toolbar } from "./toolbar";
+import { AddTagDialog } from "./dialog/add-tag-dialog";
+import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
+import { getUser } from "@/utils/getUser";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -19,14 +25,18 @@ const extensions = [
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+
+      // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
       HTMLAttributes: {
         class: "",
       },
     },
     orderedList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+
+      // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
       HTMLAttributes: {
         class: "",
       },
@@ -45,18 +55,23 @@ const editorOptions: Partial<EditorOptions> = {
 
 export const CreateTextEditor = () => {
   const [tags, setTags] = useState([] as string[]);
+  const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
+  const editorContainerRef = useRef(null);
 
   const editor = useEditor({ extensions, content: "", ...editorOptions });
-  const submitPostMutation = useSubmitPost();
+  const submitPostMutation = useCreatePost();
+
+  const { currentUser } = getUser();
+  const { data, isLoading, isFetching, isPending, isSuccess } =
+    useGetTopicsQuery(currentUser);
 
   useEffect(() => {
     // Step 3: Add an event listener to focus the editor
     const handleFocus = () => {
       if (editor && editor.isEditable) {
-        editor.commands.focus(); // Focus the editor
+        editor.commands.focus();
       }
     };
 
@@ -75,9 +90,9 @@ export const CreateTextEditor = () => {
         );
       }
     };
-  }, [editor]); // Dependency array to re-run effect if the editor instance changes
+  }, [editor]);
 
-  async function submitPost() {
+  function submitPost() {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
     submitPostMutation.mutate(content, {
@@ -108,67 +123,69 @@ export const CreateTextEditor = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-500 ">
-        <Toolbar editor={editor} />
-        <div
-          className="h-[65vh] cursor-text overflow-y-scroll"
-          ref={editorContainerRef} // Step 2: Attach the ref to the parent div
-          tabIndex={0} // Make the div focusable
-          onClick={() => {}}
-        >
-          <EditorContent editor={editor} />
-        </div>
-        <div className="flex justify-between">
-          <div className="flex gap-1">
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("workout") ? "red" : undefined}
-              onClick={() => {
-                tagClick("workout");
-              }}
-            >
-              Workout
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("full-time_job") ? "orange" : undefined}
-              onClick={() => {
-                tagClick("full-time_job");
-              }}
-            >
-              Full-time job
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("thoughts") ? "blue" : undefined}
-              onClick={() => {
-                tagClick("thoughts");
-              }}
-            >
-              Thoughts
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={"green"}
-              onClick={() => {
-                tagClick("thoughts");
-              }}
-            >
-              <PlusIcon />
-              New Tag
-            </BadgeButton>
-          </div>
-          <Button
-            color="orange"
-            className="w-40 cursor-pointer self-end"
-            onClick={submitPost}
-            disabled={loadingEdit}
+    <>
+      <div className="flex flex-col gap-2">
+        <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-500 ">
+          <Toolbar editor={editor} />
+          <div
+            className="h-[65vh] cursor-text overflow-y-scroll"
+            ref={editorContainerRef}
+            // Make the div focusable
+            tabIndex={0}
           >
-            Post
-          </Button>
+            <EditorContent editor={editor} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex gap-1">
+              {isLoading && "Loading topics"}
+              {isSuccess && data.data?.length === 0 && (
+                <p className="text-sm text-slate-600">No Tags</p>
+              )}
+              {isSuccess &&
+                data?.data?.map((topic) => {
+                  return (
+                    <BadgeButton
+                      className="cursor-pointer"
+                      color={
+                        tags.includes(topic.name)
+                          ? (topic.color as any)
+                          : undefined
+                      }
+                      onClick={() => {
+                        tagClick(topic.name);
+                      }}
+                    >
+                      {topic.name}
+                    </BadgeButton>
+                  );
+                })}
+              <BadgeButton
+                className="cursor-pointer"
+                color={"green"}
+                onClick={() => {
+                  setOpenAddTagDialog(true);
+                }}
+              >
+                <PlusIcon />
+                New Tag
+              </BadgeButton>
+            </div>
+            <Button
+              color="orange"
+              className="w-40 cursor-pointer self-end"
+              onClick={submitPost}
+              disabled={loadingEdit}
+            >
+              Post
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+
+      <AddTagDialog
+        openAddTagDialog={openAddTagDialog}
+        setOpenAddTagDialog={setOpenAddTagDialog}
+      />
+    </>
   );
 };

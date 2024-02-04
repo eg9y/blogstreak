@@ -1,9 +1,6 @@
 "use client";
 
-import { usePostsQuery } from "@/utils/hooks/use-posts-query";
-import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { useState, useEffect } from "react";
+import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { Post } from "./post";
 import { getUser } from "@/utils/getUser";
 

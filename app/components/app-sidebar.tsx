@@ -101,35 +101,13 @@ export default function AppSidebar({
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6  pb-4">
                   <div className="flex h-16 shrink-0 items-center">
                     <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
-                      TypingBits
+                      BlogStreak
                     </p>
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          <li>
-                            <Link
-                              href="/app/write"
-                              className={cn(
-                                pathname === "/app/write"
-                                  ? "bg-slate-700 text-white"
-                                  : "text-slate-200 hover:bg-slate-700 hover:text-white",
-                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                              )}
-                            >
-                              <Pencil1Icon
-                                className={cn(
-                                  pathname === "/app/write"
-                                    ? "text-white"
-                                    : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
-                                  "h-6 w-6 shrink-0",
-                                )}
-                                aria-hidden="true"
-                              />
-                              Write
-                            </Link>
-                          </li>
                           <li>
                             <Link
                               href="/app"
@@ -206,35 +184,13 @@ export default function AppSidebar({
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-r-slate-400 bg-transparent px-6 pb-4 dark:border-r-slate-600 dark:bg-transparent">
           <div className="flex h-16 shrink-0 items-center">
             <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
-              TypingBits
+              BlogStreak
             </p>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  <li>
-                    <Link
-                      href="/app/write"
-                      className={cn(
-                        pathname === "/app/write"
-                          ? "bg-slate-700 text-white"
-                          : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                        "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                      )}
-                    >
-                      <Pencil1Icon
-                        className={cn(
-                          pathname === "/app/write"
-                            ? "text-white"
-                            : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
-                          "h-6 w-6 shrink-0",
-                        )}
-                        aria-hidden="true"
-                      />
-                      Write
-                    </Link>
-                  </li>
                   <li>
                     <Link
                       href="/app"

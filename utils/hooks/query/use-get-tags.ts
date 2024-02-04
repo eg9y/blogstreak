@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { createClient } from "../supabase/client";
 import { User } from "@supabase/supabase-js";
 
-export function usePostsQuery(user: User | null) {
+import { createClient } from "../../supabase/client";
+
+export function useGetTopicsQuery(user: User | null) {
   const supabase = createClient();
 
-  const queryKey = ["posts", user?.id];
+  const queryKey = ["topics", user?.id];
 
   const queryFn = async () => {
-    return supabase
-      .from("posts")
+    return await supabase
+      .from("topics")
       .select("*")
       .eq("user_id", user!.id)
       .order("created_at", {
@@ -18,5 +19,10 @@ export function usePostsQuery(user: User | null) {
       .throwOnError();
   };
 
-  return useQuery({ queryKey, queryFn, enabled: !!user, staleTime: 60 * 1000 });
+  return useQuery({
+    queryKey,
+    queryFn,
+    enabled: Boolean(user),
+    staleTime: 60 * 1000,
+  });
 }

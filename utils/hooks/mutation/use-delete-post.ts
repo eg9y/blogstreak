@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "../supabase/client";
+import { createClient } from "../../supabase/client";
 import { toast } from "sonner";
 
 export function useDeletePost() {

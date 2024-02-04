@@ -7,7 +7,7 @@ import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { BadgeButton } from "../badge";
 import { useMemo, useRef, useState } from "react";
-import { useGetPostQuery } from "@/utils/hooks/use-get-post";
+import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { Button } from "../button";
 
