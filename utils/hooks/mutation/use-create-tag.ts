@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createClient } from "../../supabase/client";
 
-export function useSubmitPost() {
+export function useCreateTag() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
@@ -28,6 +28,7 @@ export function useSubmitPost() {
       .insert({
         name,
         color: hexColor,
+        user_id: user.id,
       })
       .select()
       .single();
@@ -47,7 +48,7 @@ export function useSubmitPost() {
     mutationFn,
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ["topics"],
       });
     },
   });

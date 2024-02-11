@@ -14,6 +14,8 @@ import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
+import { Database } from "@/schema";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -46,16 +48,31 @@ const editorOptions: Partial<EditorOptions> = {
 };
 
 export const EditTextEditor = ({ postId }: { postId: number }) => {
-  const [tags, setTags] = useState([] as string[]);
+  const [tags, setTags] = useState(
+    [] as Database["public"]["Tables"]["topics"]["Row"][],
+  );
+
+  const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
   const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
 
   const { currentUser } = getUser();
+  const { data, isLoading, isFetching, isPending, isSuccess } =
+    useGetTopicsQuery(currentUser);
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const editor = useEditor({ extensions, ...editorOptions });
   const editPostMutation = useEditPost();
 
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("data", data);
+      const associatedTags = data.filter((tag) => {
+        return tag.isSelected;
+      });
+      setTags(associatedTags);
+    }
+  }, [data, isSuccess]);
   useEffect(() => {
     if (postData?.data?.text && editor) {
       editor.commands.setContent(JSON.parse(postData.data.text));
@@ -95,6 +112,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
       {
         postId,
         content,
+        tags,
       },
       {
         onSuccess: () => {
@@ -113,15 +131,15 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
     );
   }
 
-  function tagClick(tagName: string) {
-    const tagsSet = new Set(tags);
-    if (tagsSet.has(tagName)) {
-      tagsSet.delete(tagName);
-    } else {
-      tagsSet.add(tagName);
-    }
+  function tagClick(tag: Database["public"]["Tables"]["topics"]["Row"]) {
+    const exist = tags.find((current) => current.id === tag.id);
 
-    setTags(Array.from(tagsSet));
+    if (exist) {
+      const newTags = [...tags].filter((current) => current.id !== tag.id);
+      setTags(newTags);
+    } else {
+      setTags([...tags, tag]);
+    }
   }
 
   return (
@@ -140,40 +158,37 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
           <div className="flex gap-1">
             <BadgeButton
               className="cursor-pointer"
-              color={tags.includes("workout") ? "red" : undefined}
+              color={"green"}
               onClick={() => {
-                tagClick("workout");
-              }}
-            >
-              Workout
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("full-time_job") ? "orange" : undefined}
-              onClick={() => {
-                tagClick("full-time_job");
-              }}
-            >
-              Full-time job
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("thoughts") ? "blue" : undefined}
-              onClick={() => {
-                tagClick("thoughts");
-              }}
-            >
-              Thoughts
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("thoughts") ? "blue" : undefined}
-              onClick={() => {
-                tagClick("thoughts");
+                setOpenAddTagDialog(true);
               }}
             >
               <PlusIcon />
+              New Tag
             </BadgeButton>
+            {isLoading && "Loading topics"}
+            {isSuccess && data?.length === 0 && (
+              <p className="text-sm text-slate-600">No Tags</p>
+            )}
+            {isSuccess &&
+              data?.map((topic) => {
+                return (
+                  <BadgeButton
+                    className="cursor-pointer"
+                    key={topic.name}
+                    color={
+                      tags.find((tag) => tag.name === topic.name)
+                        ? (topic.color as any)
+                        : undefined
+                    }
+                    onClick={() => {
+                      tagClick(topic);
+                    }}
+                  >
+                    {topic.name}
+                  </BadgeButton>
+                );
+              })}
           </div>
           <Button
             color="orange"

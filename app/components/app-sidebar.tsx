@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { getUser } from "@/utils/getUser";
+import { Button } from "./button";
 
 const tags = [
   { id: 1, name: "All", href: "#", initial: "A", current: true },
@@ -160,10 +161,10 @@ export default function AppSidebar({
                       <li className="mt-auto">
                         <a
                           href="#"
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-200 hover:bg-slate-700 hover:text-white"
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-800 hover:bg-slate-700 hover:text-white dark:text-slate-200"
                         >
                           <Cog6ToothIcon
-                            className="h-6 w-6 shrink-0 text-slate-200 group-hover:text-white"
+                            className="h-6 w-6 shrink-0 text-slate-800 group-hover:text-white dark:text-slate-200"
                             aria-hidden="true"
                           />
                           Settings
@@ -243,10 +244,10 @@ export default function AppSidebar({
               <li className="mt-auto">
                 <a
                   href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-200 hover:bg-slate-700 hover:text-white"
+                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-800 hover:bg-slate-700 hover:text-white dark:text-slate-200"
                 >
                   <Cog6ToothIcon
-                    className="h-6 w-6 shrink-0 text-slate-200 group-hover:text-white"
+                    className="h-6 w-6 shrink-0 text-slate-800 group-hover:text-white dark:text-slate-200"
                     aria-hidden="true"
                   />
                   Settings
@@ -364,9 +365,13 @@ export default function AppSidebar({
               </Menu>
             </div>
           </div>
+          <Button href="/app/write">
+            <Pencil1Icon />
+            Write
+          </Button>
         </div>
 
-        <main className="h-[93vh]">
+        <main className="">
           <div className="overflow-y-hidden px-4 sm:px-6 md:px-8">
             {children}
           </div>

@@ -5,7 +5,13 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  async function mutationFn(content: string, postIds: string[] = []) {
+  async function mutationFn({
+    content,
+    tagIds,
+  }: {
+    content: string;
+    tagIds: number[];
+  }) {
     const {
       data: { user },
       error,
@@ -33,9 +39,18 @@ export function useCreatePost() {
       return;
     }
 
-    // const tagRes = await supabase.from("post_topics").insert({
-    //   post_id: data.id,
-    // });
+    if (tagIds.length > 0) {
+      const { data: tagData, error: tagInsertError } = await supabase
+        .from("post_topics")
+        .insert(
+          tagIds.map((tag) => {
+            return {
+              post_id: data.id,
+              topic_id: tag,
+            };
+          }),
+        );
+    }
 
     console.log(data);
   }

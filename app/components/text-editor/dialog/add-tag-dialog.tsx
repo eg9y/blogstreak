@@ -11,9 +11,17 @@ import {
 } from "../../dialog";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { getUser } from "@/utils/getUser";
-import { Field, Label } from "../../fieldset";
+import { Field, FieldGroup, Fieldset, Label } from "../../fieldset";
 import { Input } from "../../input";
 import { Button } from "../../button";
+import { useCreateTag } from "@/utils/hooks/mutation/use-create-tag";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { cn } from "@/utils/cn";
+
+type InsertTagInputs = {
+  name: string;
+  color: string;
+};
 
 export function AddTagDialog({
   openAddTagDialog,
@@ -22,11 +30,60 @@ export function AddTagDialog({
   openAddTagDialog: boolean;
   setOpenAddTagDialog: Dispatch<boolean>;
 }) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<InsertTagInputs>({
+    defaultValues: {
+      name: "",
+      color: "",
+    },
+  });
+
   const [tagColor, setTagColor] = useState("white");
 
   const { currentUser } = getUser();
   const { data, isLoading, isFetching, isPending, isSuccess } =
     useGetTopicsQuery(currentUser);
+  const useCreateTagMutation = useCreateTag();
+
+  const onSubmit: SubmitHandler<InsertTagInputs> = (data) => {
+    useCreateTagMutation.mutate(
+      {
+        name: data.name,
+        hexColor: data.color,
+      },
+      {
+        onSuccess() {
+          setOpenAddTagDialog(false);
+        },
+      },
+    );
+  };
+
+  const presetColors = [
+    ["red", "#ef4444"], //red
+    ["orange", "#f97316"], // orange
+    ["amber", "#f59e0b"], // amber
+    ["yellow", "#fde047"], // yellow
+    ["lime", "#bef264"], // lime
+    ["green", "#22c55e"], // green
+    ["emerald", "#34d399"], // emerald
+    ["teal", "#2dd4bf"], // teal
+    ["cyan", "#67e8f9"], // cyan
+    ["sky", "#7dd3fc"], // sky
+    ["blue", "#3b82f6"], // blue
+    ["indigo", "#6366f1"], // indigo
+    ["violet", "#8b5cf6"], // violet
+    ["purple", "#a855f7"], // purple
+    ["fuchsia", "#d946ef"], // fuchsia
+    ["pink", "#ec4899"], // pink
+    ["rose", "#fb7185"], // rose
+    ["zinc", "#71717a"], // zinc
+  ];
 
   return (
     <Dialog
@@ -34,41 +91,97 @@ export function AddTagDialog({
       onClose={setOpenAddTagDialog}
       className="z-[52]"
     >
-      <DialogTitle>Add Tag</DialogTitle>
-      <DialogDescription>
-        Tags let&apos;s you keep track of any of your writings that are related
-        to each other.
-      </DialogDescription>
-      <DialogBody className="flex flex-col gap-4">
-        <Field>
-          <Label>Existing Tags</Label>
-          <div className="mt-[0.75rem] flex gap-1">
-            {isSuccess && data?.data?.length === 0 && (
+      <DialogTitle>Tags</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogBody className="mt-[0.75rem] flex flex-col gap-2">
+          <p className="text-sm dark:text-slate-50">Existing Tags </p>
+          <div className=" flex items-center gap-1">
+            {isSuccess && data?.length === 0 && (
               <p className="text-sm text-slate-700">
                 No Tags have been created
               </p>
             )}
             {isSuccess &&
-              data?.data?.map((topic) => {
-                return <Badge color={topic.color as any}>{topic.name}</Badge>;
+              data?.map((topic) => {
+                return (
+                  <Badge key={topic.name} color={topic.color as any}>
+                    {topic.name}
+                  </Badge>
+                );
               })}
           </div>
-        </Field>
-        <Field>
-          <Label>Tag</Label>
-          <Input name="tag" />
-          {tagColor}
-          <HexColorPicker color={tagColor} onChange={setTagColor} />
-        </Field>
-      </DialogBody>
-      <DialogActions>
-        <Button plain onClick={() => setOpenAddTagDialog(false)}>
-          Cancel
-        </Button>
-        <Button color="green" onClick={() => {}}>
-          Add
-        </Button>
-      </DialogActions>
+
+          <Fieldset className="flex flex-col gap-4">
+            <FieldGroup>
+              <Field>
+                <Label>Tag</Label>
+                <Controller
+                  control={control}
+                  name="name"
+                  rules={{
+                    required: "Please write a name",
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input onChange={onChange} value={value} />
+                  )}
+                />
+                {errors.name && (
+                  <p className="text-red-600 dark:text-red-500">
+                    {errors.name.message}
+                  </p>
+                )}
+              </Field>
+              <Field>
+                <Label>Color</Label>
+                <div className="mt-[0.5rem] w-[300px] rounded-lg bg-slate-900 dark:bg-slate-700 dark:bg-transparent dark:ring-1 dark:ring-slate-200">
+                  <Controller
+                    control={control}
+                    name="color"
+                    rules={{
+                      required: "Please select a color",
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                      <>
+                        <div className="flex flex-wrap p-[12px]">
+                          {presetColors.map(([colorName, hex]) => (
+                            <button
+                              key={colorName}
+                              type="button"
+                              className={cn(
+                                "m-[4px] h-[24px] w-[24px] cursor-pointer rounded-md p-0 outline-none",
+                                colorName === value && "ring-2 ring-slate-50",
+                              )}
+                              style={{ background: hex }}
+                              onClick={() => onChange(colorName)}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  />
+                </div>
+                {errors.color && (
+                  <p className="text-red-600 dark:text-red-500">
+                    {errors.color.message}
+                  </p>
+                )}
+              </Field>
+            </FieldGroup>
+          </Fieldset>
+        </DialogBody>
+        <DialogActions>
+          <Button plain onClick={() => setOpenAddTagDialog(false)}>
+            Cancel
+          </Button>
+          <Button
+            color="green"
+            type="submit"
+            disabled={useCreateTagMutation.isPending}
+          >
+            Add
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }

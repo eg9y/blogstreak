@@ -2,14 +2,36 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "../../supabase/client";
+import { Database } from "@/schema";
 
-export function useGetTopicsQuery(user: User | null) {
+export function useGetTopicsQuery(user: User | null, postId?: string) {
   const supabase = createClient();
 
   const queryKey = ["topics", user?.id];
 
   const queryFn = async () => {
-    return await supabase
+    let associatedTagsData: Database["public"]["Tables"]["post_topics"]["Row"][] =
+      [];
+
+    if (postId) {
+      const { data, error: associatedTagsError } = await supabase
+        .from("post_topics")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("post_id", postId)
+        .order("created_at", {
+          ascending: false,
+        })
+        .throwOnError();
+
+      if (associatedTagsError) {
+        return [];
+      }
+
+      associatedTagsData = data || [];
+    }
+
+    const { data: topicsData, error: topicsError } = await supabase
       .from("topics")
       .select("*")
       .eq("user_id", user!.id)
@@ -17,6 +39,21 @@ export function useGetTopicsQuery(user: User | null) {
         ascending: false,
       })
       .throwOnError();
+
+    if (topicsError) {
+      return [];
+    }
+
+    const response = topicsData?.map((topic) => {
+      return {
+        ...topic,
+        isSelected: !!associatedTagsData.find((associated) => {
+          return associated.id === topic.id;
+        }),
+      };
+    });
+
+    return response;
   };
 
   return useQuery({

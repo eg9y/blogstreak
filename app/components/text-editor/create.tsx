@@ -18,6 +18,7 @@ import { Toolbar } from "./toolbar";
 import { AddTagDialog } from "./dialog/add-tag-dialog";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { getUser } from "@/utils/getUser";
+import { Database } from "@/schema";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -54,7 +55,9 @@ const editorOptions: Partial<EditorOptions> = {
 };
 
 export const CreateTextEditor = () => {
-  const [tags, setTags] = useState([] as string[]);
+  const [tags, setTags] = useState(
+    [] as Database["public"]["Tables"]["topics"]["Row"][],
+  );
   const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
@@ -95,31 +98,37 @@ export const CreateTextEditor = () => {
   function submitPost() {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
-    submitPostMutation.mutate(content, {
-      onSuccess: () => {
-        toast.success("Your post has been created!", {
-          position: "top-center",
-        });
-        setLoadingEdit(false);
+    submitPostMutation.mutate(
+      {
+        content,
+        tagIds: tags.map((tag) => tag.id),
       },
-      onError: () => {
-        toast.error("Error creating your post", {
-          position: "top-center",
-        });
-        setLoadingEdit(false);
+      {
+        onSuccess: () => {
+          toast.success("Your post has been created!", {
+            position: "top-center",
+          });
+          setLoadingEdit(false);
+        },
+        onError: () => {
+          toast.error("Error creating your post", {
+            position: "top-center",
+          });
+          setLoadingEdit(false);
+        },
       },
-    });
+    );
   }
 
-  function tagClick(tagName: string) {
-    const tagsSet = new Set(tags);
-    if (tagsSet.has(tagName)) {
-      tagsSet.delete(tagName);
-    } else {
-      tagsSet.add(tagName);
-    }
+  function tagClick(tag: Database["public"]["Tables"]["topics"]["Row"]) {
+    const exist = tags.find((current) => current.id === tag.id);
 
-    setTags(Array.from(tagsSet));
+    if (exist) {
+      const newTags = [...tags].filter((current) => current.id !== tag.id);
+      setTags(newTags);
+    } else {
+      setTags([...tags, tag]);
+    }
   }
 
   return (
@@ -137,28 +146,6 @@ export const CreateTextEditor = () => {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex gap-1">
-              {isLoading && "Loading topics"}
-              {isSuccess && data.data?.length === 0 && (
-                <p className="text-sm text-slate-600">No Tags</p>
-              )}
-              {isSuccess &&
-                data?.data?.map((topic) => {
-                  return (
-                    <BadgeButton
-                      className="cursor-pointer"
-                      color={
-                        tags.includes(topic.name)
-                          ? (topic.color as any)
-                          : undefined
-                      }
-                      onClick={() => {
-                        tagClick(topic.name);
-                      }}
-                    >
-                      {topic.name}
-                    </BadgeButton>
-                  );
-                })}
               <BadgeButton
                 className="cursor-pointer"
                 color={"green"}
@@ -169,6 +156,29 @@ export const CreateTextEditor = () => {
                 <PlusIcon />
                 New Tag
               </BadgeButton>
+              {isLoading && "Loading topics"}
+              {isSuccess && data?.length === 0 && (
+                <p className="text-sm text-slate-600">No Tags</p>
+              )}
+              {isSuccess &&
+                data?.map((topic) => {
+                  return (
+                    <BadgeButton
+                      className="cursor-pointer"
+                      key={topic.name}
+                      color={
+                        tags.find((tag) => tag.name === topic.name)
+                          ? (topic.color as any)
+                          : undefined
+                      }
+                      onClick={() => {
+                        tagClick(topic);
+                      }}
+                    >
+                      {topic.name}
+                    </BadgeButton>
+                  );
+                })}
             </div>
             <Button
               color="orange"
