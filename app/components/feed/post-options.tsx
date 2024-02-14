@@ -20,7 +20,7 @@ import { useDeletePost } from "@/utils/hooks/mutation/use-delete-post";
 export function PostOptions({
   post,
 }: {
-  post: Database["public"]["Tables"]["posts"]["Row"];
+  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number];
 }) {
   let [isOpenDelete, setIsOpenDelete] = useState(false);
   const submitPostMutation = useDeletePost();
@@ -36,7 +36,9 @@ export function PostOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href={`/app/post/${post.id}/edit`}>Edit</DropdownItem>
+          <DropdownItem href={`/app/post/${post.post_id}/edit`}>
+            Edit
+          </DropdownItem>
           <DropdownSeparator />
           <DropdownItem
             onClick={() => {
@@ -62,9 +64,8 @@ export function PostOptions({
           <Button
             color="red"
             onClick={() => {
-              submitPostMutation.mutate(post.id, {
+              submitPostMutation.mutate(post.post_id, {
                 onSuccess() {
-                  console.log("nice!");
                   setIsOpenDelete(false);
                 },
               });

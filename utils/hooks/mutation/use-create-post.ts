@@ -47,6 +47,7 @@ export function useCreatePost() {
             return {
               post_id: data.id,
               topic_id: tag,
+              user_id: user.id,
             };
           }),
         );

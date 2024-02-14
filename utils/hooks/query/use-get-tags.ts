@@ -4,7 +4,7 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "../../supabase/client";
 import { Database } from "@/schema";
 
-export function useGetTopicsQuery(user: User | null, postId?: string) {
+export function useGetTopicsQuery(user: User | null, postId?: number) {
   const supabase = createClient();
 
   const queryKey = ["topics", user?.id];
@@ -48,7 +48,7 @@ export function useGetTopicsQuery(user: User | null, postId?: string) {
       return {
         ...topic,
         isSelected: !!associatedTagsData.find((associated) => {
-          return associated.id === topic.id;
+          return associated.topic_id === topic.id;
         }),
       };
     });

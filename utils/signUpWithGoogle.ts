@@ -19,9 +19,6 @@ export const signUpWithGoogle = async () => {
     },
   });
 
-  console.log("error", error);
-  console.log("data", data);
-
   if (error) {
     return redirect("/signup?message=Could not authenticate user via Google");
   }

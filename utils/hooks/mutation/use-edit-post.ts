@@ -39,7 +39,7 @@ export function useEditPost() {
       const resDelete = await supabase
         .from("post_topics")
         .delete()
-        .eq("id", postId)
+        .eq("post_id", postId)
         .eq("user_id", user.id);
       const resAdd = await supabase.from("post_topics").insert(
         tags.map((tag) => ({
@@ -53,10 +53,18 @@ export function useEditPost() {
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: ["posts"],
-      });
+    onSuccess: async () => {
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["posts"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["post"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["topics"],
+        }),
+      ]);
     },
   });
 }

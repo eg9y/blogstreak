@@ -8,7 +8,7 @@ import { ReactQueryProvider } from "./components/react-query-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MiniMicroblog",
+  title: "BlogStreak",
   description: "Personal microblogging platform",
 };
 

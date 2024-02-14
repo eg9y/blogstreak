@@ -5,11 +5,12 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { BadgeButton } from "../badge";
+import { Badge } from "../badge";
 import { useMemo, useRef, useState } from "react";
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { Button } from "../button";
+import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -33,22 +34,12 @@ const extensions = [
 ];
 
 export const ViewTextEditor = ({ postId }: { postId: number }) => {
-  const [tags, setTags] = useState([] as string[]);
   const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
 
   const { currentUser } = getUser();
   const { data: postData } = useGetPostQuery(currentUser, postId);
-
-  function tagClick(tagName: string) {
-    const tagsSet = new Set(tags);
-    if (tagsSet.has(tagName)) {
-      tagsSet.delete(tagName);
-    } else {
-      tagsSet.add(tagName);
-    }
-
-    setTags(Array.from(tagsSet));
-  }
+  const { data, isLoading, isFetching, isPending, isSuccess } =
+    useGetTopicsQuery(currentUser, postId);
 
   const output = useMemo(() => {
     if (postData?.data?.text) {
@@ -62,39 +53,28 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
       <div className=" w-full p-2  dark:bg-slate-800 ">
         <div className="h-[65vh] overflow-y-scroll">
           <div
-            className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
+            className="prose prose-sm grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
             dangerouslySetInnerHTML={{ __html: output }}
           />
         </div>
         <div className="flex justify-between">
           <div className="flex gap-1">
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("workout") ? "red" : undefined}
-              onClick={() => {
-                tagClick("workout");
-              }}
-            >
-              Workout
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("full-time_job") ? "orange" : undefined}
-              onClick={() => {
-                tagClick("full-time_job");
-              }}
-            >
-              Full-time job
-            </BadgeButton>
-            <BadgeButton
-              className="cursor-pointer"
-              color={tags.includes("thoughts") ? "blue" : undefined}
-              onClick={() => {
-                tagClick("thoughts");
-              }}
-            >
-              Thoughts
-            </BadgeButton>
+            {isLoading && "Loading topics"}
+            {isSuccess && data?.length === 0 && (
+              <p className="text-sm text-slate-600">No Tags</p>
+            )}
+            {isSuccess &&
+              data?.map((topic) => {
+                return (
+                  <Badge
+                    className=""
+                    key={topic.name}
+                    color={topic.isSelected ? (topic.color as any) : undefined}
+                  >
+                    {topic.name}
+                  </Badge>
+                );
+              })}
           </div>
           <Button
             color="orange"

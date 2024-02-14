@@ -15,18 +15,13 @@ import {
 } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
-
-const tags = [
-  { id: 1, name: "All", href: "#", initial: "A", current: true },
-  { id: 2, name: "Workout", href: "#", initial: "W", current: false },
-  { id: 3, name: "Thoughts", href: "#", initial: "T", current: false },
-  { id: 4, name: "Full-time Job", href: "#", initial: "F", current: false },
-];
+import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
+import { getHexColor } from "@/utils/presetColors";
 
 export default function AppSidebar({
   children,
@@ -34,6 +29,7 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const searchQuery = useSearchParams();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { currentUser } = getUser();
@@ -43,6 +39,9 @@ export default function AppSidebar({
   const userNavigation = [
     { name: "Sign out", onClick: () => supabase.auth.signOut() },
   ];
+
+  const { data, isLoading, isFetching, isPending, isSuccess } =
+    useGetTopicsQuery(currentUser);
 
   return (
     <div className="mx-auto w-[1000px]">
@@ -137,23 +136,53 @@ export default function AppSidebar({
                         <div className="text-xs font-semibold leading-6 text-slate-200">
                           Your tags
                         </div>
+                        {isLoading && (
+                          <div>
+                            <p>Loading tags...</p>
+                          </div>
+                        )}
                         <ul role="list" className="-mx-2 mt-2 space-y-1">
-                          {tags.map((tag) => (
-                            <li key={tag.name}>
-                              <a
-                                href={tag.href}
+                          <li>
+                            <Link
+                              href={`/app`}
+                              className={cn(
+                                searchQuery.get("tags") === null
+                                  ? "bg-slate-700 text-white"
+                                  : "text-slate-200 hover:bg-slate-700 hover:text-white",
+                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                              )}
+                            >
+                              <div
                                 className={cn(
-                                  tag.current
+                                  "h-4 w-4 rounded-md bg-slate-50 ring-1 ring-slate-700",
+                                )}
+                              />
+                              <span className="truncate">All Posts</span>
+                            </Link>
+                          </li>
+                          {data?.map((tag) => (
+                            <li key={tag.name}>
+                              <Link
+                                href={`?tags=${tag.name}`}
+                                className={cn(
+                                  searchQuery.get("tags") === tag.name
                                     ? "bg-slate-700 text-white"
                                     : "text-slate-200 hover:bg-slate-700 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                                 )}
                               >
-                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-slate-400 bg-slate-500 text-[0.625rem] font-medium text-white">
-                                  {tag.initial}
-                                </span>
+                                <div
+                                  className={cn(
+                                    "h-4 w-4 rounded-md ring-1 ring-slate-700",
+                                  )}
+                                  style={{
+                                    backgroundColor: getHexColor(tag.color)
+                                      ? getHexColor(tag.color)![1]
+                                      : "white",
+                                  }}
+                                />
                                 <span className="truncate">{tag.name}</span>
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -221,22 +250,47 @@ export default function AppSidebar({
                   Your Posts
                 </div>
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {tags.map((tag) => (
-                    <li key={tag.name}>
-                      <a
-                        href={tag.href}
+                  <li>
+                    <Link
+                      href={`/app`}
+                      className={cn(
+                        searchQuery.get("tags") === null
+                          ? "bg-slate-700 text-white"
+                          : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
+                        "group flex items-center gap-x-2 rounded-md p-2 text-sm font-semibold leading-6",
+                      )}
+                    >
+                      <div
                         className={cn(
-                          tag.current
+                          "h-4 w-4 rounded-md bg-slate-50 ring-1 ring-slate-700",
+                        )}
+                      />
+                      <span className="truncate">All Posts</span>
+                    </Link>
+                  </li>
+                  {data?.map((tag) => (
+                    <li key={tag.name}>
+                      <Link
+                        href={`?tags=${tag.name}`}
+                        className={cn(
+                          searchQuery.get("tags") === tag.name
                             ? "bg-slate-700 text-white"
                             : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                          "group flex items-center gap-x-2 rounded-md p-2 text-sm font-semibold leading-6",
                         )}
                       >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-slate-400 bg-slate-500 text-[0.625rem] font-medium text-white">
-                          {tag.initial}
-                        </span>
+                        <div
+                          className={cn(
+                            "h-4 w-4 rounded-md ring-1 ring-slate-700",
+                          )}
+                          style={{
+                            backgroundColor: getHexColor(tag.color)
+                              ? getHexColor(tag.color)![1]
+                              : "white",
+                          }}
+                        />
                         <span className="truncate">{tag.name}</span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -372,9 +426,7 @@ export default function AppSidebar({
         </div>
 
         <main className="">
-          <div className="overflow-y-hidden px-4 sm:px-6 md:px-8">
-            {children}
-          </div>
+          <div className="overflow-y-hidden px-2">{children}</div>
         </main>
       </div>
     </div>

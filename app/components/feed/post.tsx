@@ -9,11 +9,11 @@ import { PostOptions } from "./post-options";
 import { Database } from "@/schema";
 import Link from "next/link";
 
-export function Post({
-  post,
-}: {
-  post: Database["public"]["Tables"]["posts"]["Row"];
-}) {
+interface PostProps {
+  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number];
+}
+
+export function Post({ post }: PostProps) {
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({}),
@@ -36,15 +36,15 @@ export function Post({
   ];
 
   const output = useMemo(() => {
-    return generateHTML(JSON.parse(post.text!), extensions);
-  }, [post.text]);
+    return generateHTML(JSON.parse(post.post_text!), extensions);
+  }, [post.post_text]);
 
   return (
-    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-100 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
-      <div className="flex gap-1">
+    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-50 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
+      <div className="flex justify-between gap-1">
         <Link
-          href={`/app/post/${post.id}`}
-          className="prose prose-sm m-1 grow dark:prose-invert focus:outline-none"
+          href={`/app/post/${post.post_id}`}
+          className="prose prose-sm grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
           dangerouslySetInnerHTML={{ __html: output }}
         />
         <PostOptions post={post} />
@@ -52,7 +52,7 @@ export function Post({
       <div className="flex w-full justify-between">
         <div className="">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            {new Date(post.created_at).toLocaleDateString("en-US", {
+            {new Date(post.post_created_at).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",
@@ -60,7 +60,16 @@ export function Post({
           </p>
         </div>
         <div className="">
-          <Badge color="red">Workout</Badge>
+          {post.post_topics &&
+            (
+              post.post_topics as { color: string; id: number; name: string }[]
+            ).map((post_topic) => {
+              return (
+                <Badge color={post_topic.color as any} key={post_topic.name}>
+                  {post_topic.name}
+                </Badge>
+              );
+            })}
         </div>
       </div>
     </div>

@@ -3,11 +3,17 @@
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { Post } from "./post";
 import { getUser } from "@/utils/getUser";
+import { useSearchParams } from "next/navigation";
 
 export function Posts() {
   const { currentUser } = getUser();
 
-  const { data, isLoading, isFetching, isPending } = usePostsQuery(currentUser);
+  const searchParams = useSearchParams();
+
+  const { data, isLoading, isFetching, isPending } = usePostsQuery(
+    currentUser,
+    searchParams,
+  );
 
   if (isLoading || isFetching || isPending) {
     return (
@@ -23,13 +29,11 @@ export function Posts() {
     );
   }
 
-  const { data: posts, error } = data;
-
   return (
-    <div className="flex flex-col gap-2">
-      {posts
-        ?.filter((post) => post.text)
-        .map((post) => <Post post={post} key={post.id}></Post>)}
+    <div className="flex flex-col gap-4">
+      {data
+        ?.filter((post) => post.post_text)
+        .map((post) => <Post post={post} key={post.post_id.toString()}></Post>)}
     </div>
   );
 }

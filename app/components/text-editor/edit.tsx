@@ -59,20 +59,20 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   const { currentUser } = getUser();
   const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser);
+    useGetTopicsQuery(currentUser, postId);
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const editor = useEditor({ extensions, ...editorOptions });
   const editPostMutation = useEditPost();
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("data", data);
       const associatedTags = data.filter((tag) => {
         return tag.isSelected;
       });
       setTags(associatedTags);
     }
   }, [data, isSuccess]);
+
   useEffect(() => {
     if (postData?.data?.text && editor) {
       editor.commands.setContent(JSON.parse(postData.data.text));
@@ -174,7 +174,6 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
               data?.map((topic) => {
                 return (
                   <BadgeButton
-                    className="cursor-pointer"
                     key={topic.name}
                     color={
                       tags.find((tag) => tag.name === topic.name)
@@ -196,7 +195,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
             onClick={editPost}
             disabled={loadingEdit}
           >
-            Edit
+            Submit Edit
           </Button>
         </div>
       </div>
