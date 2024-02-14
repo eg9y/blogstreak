@@ -50,7 +50,7 @@ export function Post({ post }: PostProps) {
         <PostOptions post={post} />
       </div>
       <div className="flex w-full justify-between">
-        <div className="">
+        <div className="flex items-end">
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {new Date(post.post_created_at).toLocaleDateString("en-US", {
               month: "short",
