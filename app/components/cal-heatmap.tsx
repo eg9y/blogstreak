@@ -72,22 +72,41 @@ export function Cal() {
         0,
       );
 
-      const minStreak = 0; // Example minimum streak length
-      const maxStreak = 3;
+      console.log("data", data);
+
+      const finalData: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"] =
+        data.reduce(
+          (acc, current) => {
+            const lastTime =
+              acc.length > 0
+                ? new Date(acc[acc.length - 1].post_created_at)
+                : new Date();
+            lastTime.setHours(0, 0, 0, 0);
+            const currentTime = new Date(current.post_created_at);
+            currentTime.setHours(0, 0, 0, 0);
+            if (acc.length === 0) {
+              return [current];
+            } else if (lastTime.getTime() !== currentTime.getTime()) {
+              return [...acc, current];
+            }
+
+            return acc;
+          },
+          [] as Database["public"]["Functions"]["get_posts_by_topics"]["Returns"],
+        );
+
+      console.log("finalData", finalData);
 
       cal.paint(
         {
           itemSelector: "#stuff",
           theme: "dark",
           data: {
-            source: data,
+            source: finalData,
             x: (
               data: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number],
             ) => new Date(data.post_created_at).toISOString(),
             y: "streaks",
-            groupY: (data: Record<string, number>[]) => {
-              return data.reduce((a) => a + 1, 0);
-            },
           },
           date: {
             start: startOfMonth,
@@ -105,10 +124,8 @@ export function Cal() {
           scale: {
             color: {
               // Define your range from light green to dark green
-
-              // type: "linear",
-              range: ["#bbf7d0", "#065f46"],
-              domain: [minStreak, maxStreak], // Use the actual min and max streak lengths
+              // range: ["#f0fdf4", "#052e16"],
+              domain: [1, 40], // Use the actual min and max streak lengths
             },
           },
         },
