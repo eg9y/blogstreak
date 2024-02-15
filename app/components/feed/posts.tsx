@@ -33,6 +33,11 @@ export function Posts() {
     <div className="flex flex-col gap-4">
       {data
         ?.filter((post) => post.post_text)
+        .sort(
+          (a, b) =>
+            new Date(b.post_created_at).getTime() -
+            new Date(a.post_created_at).getTime(),
+        )
         .map((post) => <Post post={post} key={post.post_id.toString()}></Post>)}
     </div>
   );

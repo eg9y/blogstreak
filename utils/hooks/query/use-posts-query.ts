@@ -89,7 +89,7 @@ export function usePostsQuery(
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean(user), // Query enabled only if user is not null
-    staleTime: 60 * 1000, // Data is considered fresh for 60 seconds
+    enabled: user && searchParams ? true : false, // Query enabled only if user is not null
+    staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
   });
 }

@@ -1,37 +1,23 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  Cog6ToothIcon,
-  HomeIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
-import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { getHexColor } from "@/utils/presetColors";
 
 export default function AppSidebar({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const searchQuery = useSearchParams();
-
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const { currentUser } = getUser();
 
   const supabase = createClient();
@@ -40,289 +26,10 @@ export default function AppSidebar({
     { name: "Sign out", onClick: () => supabase.auth.signOut() },
   ];
 
-  const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser);
-
   return (
     <div className="mx-auto w-[1000px]">
-      <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-40 md:hidden"
-          onClose={setSidebarOpen}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-slate-900/80" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 flex">
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-in-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in-out duration-300"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                    <button
-                      type="button"
-                      className="-m-2.5 p-2.5"
-                      onClick={() => setSidebarOpen(false)}
-                    >
-                      <span className="sr-only">Close sidebar</span>
-                      <XMarkIcon
-                        className="h-6 w-6 text-white"
-                        aria-hidden="true"
-                      />
-                    </button>
-                  </div>
-                </Transition.Child>
-                {/* Sidebar component, swap this element with another sidebar if you like */}
-                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-700 px-6  pb-4">
-                  <div className="flex h-16 shrink-0 items-center">
-                    <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
-                      BlogStreak
-                    </p>
-                  </div>
-                  <nav className="flex flex-1 flex-col">
-                    <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                      <li>
-                        <ul role="list" className="-mx-2 space-y-1">
-                          <li>
-                            <Link
-                              href="/app"
-                              className={cn(
-                                pathname === "/app"
-                                  ? "bg-slate-700 text-white"
-                                  : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
-                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                              )}
-                            >
-                              <HomeIcon
-                                className={cn(
-                                  pathname === "/app"
-                                    ? "text-white"
-                                    : "text-slate-200 group-hover:text-white",
-                                  "h-6 w-6 shrink-0",
-                                )}
-                                aria-hidden="true"
-                              />
-                              Home
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <div className="text-xs font-semibold leading-6 text-slate-200">
-                          Your tags
-                        </div>
-                        {isLoading && (
-                          <div>
-                            <p>Loading tags...</p>
-                          </div>
-                        )}
-                        <ul role="list" className="-mx-2 mt-2 space-y-1">
-                          <li>
-                            <Link
-                              href={`/app`}
-                              className={cn(
-                                searchQuery.get("tags") === null
-                                  ? "bg-slate-700 text-white"
-                                  : "text-slate-200 hover:bg-slate-700 hover:text-white",
-                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                              )}
-                            >
-                              <div
-                                className={cn(
-                                  "h-4 w-4 rounded-md bg-slate-50 ring-1 ring-slate-700",
-                                )}
-                              />
-                              <span className="truncate">All Posts</span>
-                            </Link>
-                          </li>
-                          {data?.map((tag) => (
-                            <li key={tag.name}>
-                              <Link
-                                href={`?tags=${tag.name}`}
-                                className={cn(
-                                  searchQuery.get("tags") === tag.name
-                                    ? "bg-slate-700 text-white"
-                                    : "text-slate-200 hover:bg-slate-700 hover:text-white",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "h-4 w-4 rounded-md ring-1 ring-slate-700",
-                                  )}
-                                  style={{
-                                    backgroundColor: getHexColor(tag.color)
-                                      ? getHexColor(tag.color)![1]
-                                      : "white",
-                                  }}
-                                />
-                                <span className="truncate">{tag.name}</span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                      <li className="mt-auto">
-                        <a
-                          href="#"
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-800 hover:bg-slate-700 hover:text-white dark:text-slate-200"
-                        >
-                          <Cog6ToothIcon
-                            className="h-6 w-6 shrink-0 text-slate-800 group-hover:text-white dark:text-slate-200"
-                            aria-hidden="true"
-                          />
-                          Settings
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition.Root>
-
-      {/* Static sidebar for desktop */}
-      <div className="hidden md:fixed md:inset-y-0  md:flex md:w-72 md:flex-col">
-        {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-r-slate-400 bg-transparent px-6 pb-4 dark:border-r-slate-600 dark:bg-transparent">
-          <div className="flex h-16 shrink-0 items-center">
-            <p className="text-xl font-bold tracking-tight text-slate-700 dark:text-slate-300">
-              BlogStreak
-            </p>
-          </div>
-          <nav className="flex flex-1 flex-col">
-            <ul role="list" className="flex flex-1 flex-col gap-y-7">
-              <li>
-                <ul role="list" className="-mx-2 space-y-1">
-                  <li>
-                    <Link
-                      href="/app"
-                      className={cn(
-                        pathname === "/app"
-                          ? "bg-slate-700 text-white"
-                          : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                        "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                      )}
-                    >
-                      <HomeIcon
-                        className={cn(
-                          pathname === "/app"
-                            ? "text-white"
-                            : "text-slate-500 group-hover:text-slate-600 dark:text-slate-200 dark:group-hover:text-white",
-                          "h-6 w-6 shrink-0",
-                        )}
-                        aria-hidden="true"
-                      />
-                      Home
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <div className="text-xs font-semibold leading-6 text-slate-500 dark:text-slate-200">
-                  Your Posts
-                </div>
-                <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  <li>
-                    <Link
-                      href={`/app`}
-                      className={cn(
-                        searchQuery.get("tags") === null
-                          ? "bg-slate-700 text-white"
-                          : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                        "group flex items-center gap-x-2 rounded-md p-2 text-sm font-semibold leading-6",
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "h-4 w-4 rounded-md bg-slate-50 ring-1 ring-slate-700",
-                        )}
-                      />
-                      <span className="truncate">All Posts</span>
-                    </Link>
-                  </li>
-                  {data?.map((tag) => (
-                    <li key={tag.name}>
-                      <Link
-                        href={`?tags=${tag.name}`}
-                        className={cn(
-                          searchQuery.get("tags") === tag.name
-                            ? "bg-slate-700 text-white"
-                            : "hover:bg-slate:100 text-slate-500 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white",
-                          "group flex items-center gap-x-2 rounded-md p-2 text-sm font-semibold leading-6",
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            "h-4 w-4 rounded-md ring-1 ring-slate-700",
-                          )}
-                          style={{
-                            backgroundColor: getHexColor(tag.color)
-                              ? getHexColor(tag.color)![1]
-                              : "white",
-                          }}
-                        />
-                        <span className="truncate">{tag.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li className="mt-auto">
-                <a
-                  href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-800 hover:bg-slate-700 hover:text-white dark:text-slate-200"
-                >
-                  <Cog6ToothIcon
-                    className="h-6 w-6 shrink-0 text-slate-800 group-hover:text-white dark:text-slate-200"
-                    aria-hidden="true"
-                  />
-                  Settings
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-
-      <div className="flex flex-col md:pl-72">
+      <div className="flex flex-col">
         <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-8 dark:border-slate-600 dark:bg-slate-800">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-slate-700 md:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-
           {/* Separator */}
           <div
             className="h-6 w-px bg-slate-900/10 md:hidden"
