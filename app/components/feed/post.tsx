@@ -59,7 +59,7 @@ export function Post({ post }: PostProps) {
             })}
           </p>
         </div>
-        <div className="">
+        <div className="flex flex-wrap gap-1">
           {post.post_topics &&
             (
               post.post_topics as { color: string; id: number; name: string }[]

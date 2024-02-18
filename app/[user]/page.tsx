@@ -10,10 +10,22 @@ export default async function Home() {
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
-            <h1 className="text-3xl font-bold dark:text-slate-300">Activity</h1>
+            <h1 className="text-3xl font-bold dark:text-slate-300">
+              30 Day Activity
+            </h1>
           </div>
-          <div className="">
+          <div className="flex items-center gap-2">
+            <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2">
+              <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                Writing Streaks
+              </p>
+            </div>
             <Cal />
+            <div className="flex h-[24.8333px] flex-shrink-0 items-start bg-slate-100 px-2">
+              <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                Current Streak
+              </p>
+            </div>
           </div>
         </div>
 

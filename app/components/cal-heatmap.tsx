@@ -41,7 +41,7 @@ let dayRowTemplate = (dateHelper: any, { domain }: any) => ({
 });
 
 export function Cal() {
-  const heatmapRef = useRef(null);
+  const heatmapRef = useRef<null | Record<string, any>>(null);
 
   const { currentUser } = getUser();
 
@@ -72,35 +72,36 @@ export function Cal() {
         0,
       );
 
-      console.log("data", data);
+      const finalData: (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+        streaks: number | null;
+      })[] = data.reduce(
+        (acc, current) => {
+          const lastTime =
+            acc.length > 0
+              ? new Date(acc[acc.length - 1].post_created_at)
+              : new Date();
+          lastTime.setHours(0, 0, 0, 0);
+          const currentTime = new Date(current.post_created_at);
+          currentTime.setHours(0, 0, 0, 0);
+          if (acc.length === 0) {
+            return [current];
+          } else if (lastTime.getTime() !== currentTime.getTime()) {
+            return [...acc, current];
+          }
 
-      const finalData: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"] =
-        data.reduce(
-          (acc, current) => {
-            const lastTime =
-              acc.length > 0
-                ? new Date(acc[acc.length - 1].post_created_at)
-                : new Date();
-            lastTime.setHours(0, 0, 0, 0);
-            const currentTime = new Date(current.post_created_at);
-            currentTime.setHours(0, 0, 0, 0);
-            if (acc.length === 0) {
-              return [current];
-            } else if (lastTime.getTime() !== currentTime.getTime()) {
-              return [...acc, current];
-            }
-
-            return acc;
-          },
-          [] as Database["public"]["Functions"]["get_posts_by_topics"]["Returns"],
-        );
+          return acc;
+        },
+        [] as (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+          streaks: number | null;
+        })[],
+      );
 
       console.log("finalData", finalData);
 
       cal.paint(
         {
           itemSelector: "#stuff",
-          theme: "dark",
+          theme: "light",
           data: {
             source: finalData,
             x: (
@@ -114,18 +115,29 @@ export function Cal() {
             max: endOfMonth,
           },
           range: 1,
-          domain: { type: "month", gutter: 5, label: { textAlign: "start" } },
+          domain: {
+            type: "month",
+            gutter: 5,
+            label: { textAlign: "middle", position: "left", text: "" },
+          },
           subDomain: {
             type: "day_row",
-            width: 14,
-            height: 14,
-            gutter: 4,
+            width: 22.8333,
+            height: 24.8333,
+            gutter: 2,
           },
           scale: {
             color: {
               // Define your range from light green to dark green
-              // range: ["#f0fdf4", "#052e16"],
-              domain: [1, 40], // Use the actual min and max streak lengths
+              range: [
+                "#ccffcc", // Lightest green for a streak of 1
+                "#99ff99", // Noticeably darker for a streak of 2
+                "#66ff66", // Even more noticeable for a streak of 3
+                "#33cc33", // Significantly darker for a streak of 4
+                "#009900", // Darkest green for the longest expected streak
+              ],
+              domain: [1, 5], // Adjust the domain end value to match the longest streak you're accommodating
+              type: "linear",
             },
           },
         },
@@ -133,6 +145,40 @@ export function Cal() {
       );
 
       heatmapRef.current = cal;
+
+      const foo = window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (e.matches) {
+            cal.paint({
+              theme: "dark",
+            });
+          } else {
+            cal.paint({
+              theme: "light",
+            });
+          }
+        });
+
+      // Setup dark/light mode for the first time
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        console.log("shiet nig");
+        cal.paint({
+          theme: "dark",
+        });
+      } else {
+        console.log("tester");
+        cal.paint({
+          theme: "light",
+        });
+      }
+
+      // Remove listener
+      return () => {
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .removeEventListener("change", () => {});
+      };
     }
   }, [isSuccess, data]); // Ensure 'data' is included if it affects rendering
 

@@ -20,7 +20,6 @@ export function Options() {
       <li>
         <Button
           href={`/app`}
-          //   color={searchQuery.get("tags") === null ? "orange" : undefined}
           className={cn(
             "group flex items-center gap-x-1 rounded-md p-2 text-sm font-semibold leading-6",
           )}

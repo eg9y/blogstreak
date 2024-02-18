@@ -12,6 +12,7 @@ import { createClient } from "@/utils/supabase/client";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
+import Link from "next/link";
 
 export default function AppSidebar({
   children,
@@ -37,6 +38,12 @@ export default function AppSidebar({
           />
 
           <div className="flex flex-1 gap-x-4 self-stretch md:gap-x-6">
+            <Link
+              href="/app"
+              className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
+            >
+              <p>BlogStreak</p>
+            </Link>
             <form
               className="relative flex flex-1 dark:bg-slate-600"
               action="#"
