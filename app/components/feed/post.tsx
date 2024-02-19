@@ -10,7 +10,9 @@ import { Database } from "@/schema";
 import Link from "next/link";
 
 interface PostProps {
-  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number];
+  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+    streaks: number | null;
+  };
 }
 
 export function Post({ post }: PostProps) {
@@ -41,24 +43,7 @@ export function Post({ post }: PostProps) {
 
   return (
     <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-50 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
-      <div className="flex justify-between gap-1">
-        <Link
-          href={`/app/post/${post.post_id}`}
-          className="prose prose-sm grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
-          dangerouslySetInnerHTML={{ __html: output }}
-        />
-        <PostOptions post={post} />
-      </div>
-      <div className="flex w-full justify-between">
-        <div className="flex items-end">
-          <p className="text-xs text-slate-400 dark:text-slate-500">
-            {new Date(post.post_created_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
+      <div className="flex justify-between">
         <div className="flex flex-wrap gap-1">
           {post.post_topics &&
             (
@@ -70,6 +55,29 @@ export function Post({ post }: PostProps) {
                 </Badge>
               );
             })}
+          <Badge color={"red"}>
+            <div className="flex items-center gap-1">
+              <p>🔥</p>
+              <p>{post.streaks}</p>
+            </div>
+          </Badge>
+        </div>
+        <PostOptions post={post} />
+      </div>
+      <Link
+        href={`/app/post/${post.post_id}`}
+        className="prose prose-sm grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
+        dangerouslySetInnerHTML={{ __html: output }}
+      />
+      <div className="flex w-full justify-between">
+        <div className="flex items-end">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {new Date(post.post_created_at).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
         </div>
       </div>
     </div>

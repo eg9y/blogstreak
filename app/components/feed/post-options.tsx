@@ -22,7 +22,9 @@ import { useDeletePost } from "@/utils/hooks/mutation/use-delete-post";
 export function PostOptions({
   post,
 }: {
-  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number];
+  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+    streaks: number | null;
+  };
 }) {
   let [isOpenDelete, setIsOpenDelete] = useState(false);
   const submitPostMutation = useDeletePost();
