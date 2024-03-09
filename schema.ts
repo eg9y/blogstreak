@@ -59,18 +59,21 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          is_public: boolean
           text: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
+          is_public?: boolean
           text?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
+          is_public?: boolean
           text?: string | null
           user_id?: string | null
         }
@@ -156,6 +159,7 @@ export type Database = {
           user_id_param?: string
           last_post_id_param?: number
           total_posts_param?: number
+          page_param?: number
         }
         Returns: {
           post_id: number

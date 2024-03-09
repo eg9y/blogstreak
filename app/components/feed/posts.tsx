@@ -31,7 +31,7 @@ export function Posts() {
 
   return (
     <div className="flex flex-col gap-4">
-      {data
+      {data.data
         ?.filter((post) => post.post_text)
         .sort(
           (a, b) =>

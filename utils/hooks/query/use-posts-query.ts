@@ -22,18 +22,33 @@ export function usePostsQuery(
   const lastPostId = parseInt(searchParams.get("lastPostId") || "0", 10);
 
   const queryFn = async () => {
-    if (!user) return []; // Early return if user is null
+    if (!user) return { data: [], count: 0 }; // Early return if user is null
 
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
       topic_names_arr: tagNames,
       user_id_param: user?.id,
       last_post_id_param: lastPostId ? lastPostId : undefined,
       total_posts_param: limit,
+      page_param: page,
     });
+
+    const { count, error: totalPostsError } = await supabase
+      .from("posts")
+      .select("*", {
+        count: "exact",
+        head: true,
+      });
+
+    console.log("totalPosts", count);
 
     if (error) {
       console.error("Error fetching posts:", error.message);
       throw new Error("Error fetching posts");
+    }
+
+    if (totalPostsError) {
+      console.error("Error fetching total posts:", totalPostsError.message);
+      throw new Error("Error fetching total posts");
     }
 
     // Ensure data is sorted by post_created_at in ascending order
@@ -42,21 +57,6 @@ export function usePostsQuery(
         new Date(a.post_created_at).getTime() -
         new Date(b.post_created_at).getTime(),
     );
-
-    // Helper function to check if two dates are consecutive days
-    const areConsecutiveDays = (date1: Date, date2: Date) => {
-      const difference = date2.getDate() - date1.getDate();
-      const sameMonth = date2.getMonth() === date1.getMonth();
-      const sameYear = date2.getFullYear() === date1.getFullYear();
-      return difference === 1 && sameMonth && sameYear;
-    };
-
-    const areSameDays = (date1: Date, date2: Date) => {
-      const difference = date2.getDate() - date1.getDate();
-      const sameMonth = date2.getMonth() === date1.getMonth();
-      const sameYear = date2.getFullYear() === date1.getFullYear();
-      return difference === 0 && sameMonth && sameYear;
-    };
 
     // Calculate streaks
     let currentStreak = 0;
@@ -83,7 +83,7 @@ export function usePostsQuery(
       };
     });
 
-    return dataWithStreaks;
+    return { data: dataWithStreaks, count };
   };
 
   return useQuery({
@@ -93,3 +93,18 @@ export function usePostsQuery(
     staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
   });
 }
+
+// Helper function to check if two dates are consecutive days
+const areConsecutiveDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 1 && sameMonth && sameYear;
+};
+
+const areSameDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 0 && sameMonth && sameYear;
+};

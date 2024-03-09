@@ -3,8 +3,10 @@ import { create } from "zustand";
 
 interface BearState {
   posts: Database["public"]["Tables"]["posts"]["Row"][];
+  page: number;
 }
 
-const useBearStore = create<BearState>()((set) => ({
+export const useBearStore = create<BearState>()((set) => ({
   posts: [],
+  page: 1,
 }));

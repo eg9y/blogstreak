@@ -55,7 +55,7 @@ export function Cal() {
   useEffect(() => {
     if (
       isSuccess &&
-      data.length &&
+      data.data.length &&
       !heatmapRef.current &&
       typeof window !== "undefined"
     ) {
@@ -74,7 +74,7 @@ export function Cal() {
 
       const finalData: (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
         streaks: number | null;
-      })[] = data.reduce(
+      })[] = data.data.reduce(
         (acc, current) => {
           const lastTime =
             acc.length > 0
@@ -122,7 +122,7 @@ export function Cal() {
           },
           subDomain: {
             type: "day_row",
-            width: 22.8333,
+            width: 18.8333,
             height: 24.8333,
             gutter: 2,
           },
