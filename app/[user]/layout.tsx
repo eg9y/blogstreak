@@ -13,7 +13,7 @@ export default async function Layout({
 
   const { data, error } = await supabase.auth.getSession();
   if (!data.session || error) {
-    redirect("/login");
+    redirect("/");
   }
 
   return (

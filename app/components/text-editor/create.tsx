@@ -48,7 +48,8 @@ const extensions = [
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
-      class: "prose dark:prose-invert prose-sm m-5 focus:outline-none",
+      class:
+        "prose dark:prose-invert prose-sm m-5 focus:outline-none max-w-full",
     },
   },
   editable: true,

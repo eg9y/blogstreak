@@ -75,6 +75,7 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
                   </Badge>
                 );
               })}
+            <div>test</div>
           </div>
           <Button
             color="orange"

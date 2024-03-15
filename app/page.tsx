@@ -1,10 +1,8 @@
-import Link from "next/link";
-import { cookies } from "next/headers";
-
 import { Button } from "@/app/components/button";
-import { createClient } from "@/utils/supabase/server";
 
 import { LandingNavbar } from "./components/landing-navbar";
+import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
+import { Fieldset } from "@headlessui/react";
 
 export default async function Home() {
   return (
@@ -24,9 +22,15 @@ export default async function Home() {
             </li>
           </ul>
         </div>
-        <Button color="orange" href="/signup" className="w-40">
-          Create my blog
-        </Button>
+        <div className="flex-shrink-0">
+          <form className="" action={signUpWithGoogle}>
+            <Fieldset className="flex w-full flex-col gap-2 ">
+              <Button color="red" type="submit" className="grow cursor-pointer">
+                Sign In with Google
+              </Button>
+            </Fieldset>
+          </form>
+        </div>
       </main>
     </>
   );
