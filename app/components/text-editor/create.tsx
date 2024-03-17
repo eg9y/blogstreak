@@ -22,6 +22,7 @@ import { Database } from "@/schema";
 import { Switch } from "../switch";
 import { Label } from "@headlessui/react";
 import { Field as HeadlessField } from "@headlessui/react";
+import { Scrollbar } from "react-scrollbars-custom";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -143,12 +144,18 @@ export const CreateTextEditor = () => {
         <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-700 ">
           <Toolbar editor={editor} />
           <div
-            className="h-[65vh] cursor-text overflow-y-scroll"
+            className="h-full cursor-text"
             ref={editorContainerRef}
             // Make the div focusable
             tabIndex={0}
           >
-            <EditorContent editor={editor} />
+            <Scrollbar
+              style={{
+                height: "65vh",
+              }}
+            >
+              <EditorContent editor={editor} />
+            </Scrollbar>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex gap-4">

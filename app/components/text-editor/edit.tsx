@@ -16,6 +16,7 @@ import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { Database } from "@/schema";
+import Scrollbar from "react-scrollbars-custom";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -147,12 +148,18 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
       <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-700 ">
         <Toolbar editor={editor} />
         <div
-          className="h-[65vh] cursor-text overflow-y-scroll"
-          ref={editorContainerRef} // Step 2: Attach the ref to the parent div
-          tabIndex={0} // Make the div focusable
-          onClick={() => {}}
+          className="h-full cursor-text"
+          ref={editorContainerRef}
+          // Make the div focusable
+          tabIndex={0}
         >
-          <EditorContent editor={editor} />
+          <Scrollbar
+            style={{
+              height: "65vh",
+            }}
+          >
+            <EditorContent editor={editor} />
+          </Scrollbar>
         </div>
         <div className="flex justify-between">
           <div className="flex gap-1">
