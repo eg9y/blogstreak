@@ -19,10 +19,8 @@ import { AddTagDialog } from "./dialog/add-tag-dialog";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { getUser } from "@/utils/getUser";
 import { Database } from "@/schema";
-import { Switch } from "../switch";
-import { Label } from "@headlessui/react";
-import { Field as HeadlessField } from "@headlessui/react";
 import { Scrollbar } from "react-scrollbars-custom";
+import { IsPublicSwitch } from "./is-public-switch";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -73,8 +71,7 @@ export const CreateTextEditor = () => {
   const submitPostMutation = useCreatePost();
 
   const { currentUser } = getUser();
-  const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser);
+  const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser);
 
   useEffect(() => {
     // Step 3: Add an event listener to focus the editor
@@ -194,15 +191,7 @@ export const CreateTextEditor = () => {
                     );
                   })}
               </div>
-              <HeadlessField className="flex items-center gap-1">
-                <Switch
-                  name="public"
-                  color="sky"
-                  checked={isPublic}
-                  onChange={setIsPublic}
-                />
-                <Label className="text-sm dark:text-slate-200">Public</Label>
-              </HeadlessField>
+              <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
             </div>
             <Button
               color="orange"

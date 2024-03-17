@@ -17,6 +17,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { Database } from "@/schema";
 import Scrollbar from "react-scrollbars-custom";
+import { IsPublicSwitch } from "./is-public-switch";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -55,6 +56,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+  let [isPublic, setIsPublic] = useState(true);
 
   const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
 
@@ -162,7 +164,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
           </Scrollbar>
         </div>
         <div className="flex justify-between">
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
             <BadgeButton
               className="cursor-pointer"
               color={"green"}
@@ -195,6 +197,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
                   </BadgeButton>
                 );
               })}
+            <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
           </div>
           <Button
             color="orange"

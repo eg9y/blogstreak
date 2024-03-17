@@ -6,7 +6,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Badge } from "../badge";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { Button } from "../button";
