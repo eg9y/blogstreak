@@ -19,6 +19,9 @@ import { AddTagDialog } from "./dialog/add-tag-dialog";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { getUser } from "@/utils/getUser";
 import { Database } from "@/schema";
+import { Switch } from "../switch";
+import { Label } from "@headlessui/react";
+import { Field as HeadlessField } from "@headlessui/react";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -61,6 +64,7 @@ export const CreateTextEditor = () => {
   );
   const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+  let [isPublic, setIsPublic] = useState(true);
 
   const editorContainerRef = useRef(null);
 
@@ -103,6 +107,7 @@ export const CreateTextEditor = () => {
       {
         content,
         tagIds: tags.map((tag) => tag.id),
+        isPublic,
       },
       {
         onSuccess: () => {
@@ -135,7 +140,7 @@ export const CreateTextEditor = () => {
   return (
     <>
       <div className="flex flex-col gap-2">
-        <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-500 ">
+        <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-slate-800 dark:ring-slate-700 ">
           <Toolbar editor={editor} />
           <div
             className="h-[65vh] cursor-text overflow-y-scroll"
@@ -146,40 +151,51 @@ export const CreateTextEditor = () => {
             <EditorContent editor={editor} />
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex gap-1">
-              <BadgeButton
-                className="cursor-pointer"
-                color={"green"}
-                onClick={() => {
-                  setOpenAddTagDialog(true);
-                }}
-              >
-                <PlusIcon />
-                New Tag
-              </BadgeButton>
-              {isLoading && "Loading topics"}
-              {isSuccess && data?.length === 0 && (
-                <p className="text-sm text-slate-600">No Tags</p>
-              )}
-              {isSuccess &&
-                data?.map((topic) => {
-                  return (
-                    <BadgeButton
-                      className="cursor-pointer"
-                      key={topic.name}
-                      color={
-                        tags.find((tag) => tag.name === topic.name)
-                          ? (topic.color as any)
-                          : undefined
-                      }
-                      onClick={() => {
-                        tagClick(topic);
-                      }}
-                    >
-                      {topic.name}
-                    </BadgeButton>
-                  );
-                })}
+            <div className="flex gap-4">
+              <div className="flex gap-1">
+                <BadgeButton
+                  className="cursor-pointer"
+                  color={"green"}
+                  onClick={() => {
+                    setOpenAddTagDialog(true);
+                  }}
+                >
+                  <PlusIcon />
+                  New Tag
+                </BadgeButton>
+                {isLoading && "Loading topics"}
+                {isSuccess && data?.length === 0 && (
+                  <p className="text-sm text-slate-600">No Tags</p>
+                )}
+                {isSuccess &&
+                  data?.map((topic) => {
+                    return (
+                      <BadgeButton
+                        className="cursor-pointer"
+                        key={topic.name}
+                        color={
+                          tags.find((tag) => tag.name === topic.name)
+                            ? (topic.color as any)
+                            : undefined
+                        }
+                        onClick={() => {
+                          tagClick(topic);
+                        }}
+                      >
+                        {topic.name}
+                      </BadgeButton>
+                    );
+                  })}
+              </div>
+              <HeadlessField className="flex items-center gap-1">
+                <Switch
+                  name="public"
+                  color="sky"
+                  checked={isPublic}
+                  onChange={setIsPublic}
+                />
+                <Label className="text-sm dark:text-slate-200">Public</Label>
+              </HeadlessField>
             </div>
             <Button
               color="orange"

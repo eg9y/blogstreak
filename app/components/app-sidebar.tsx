@@ -39,7 +39,7 @@ export default function AppSidebar({
 
           <div className="flex flex-1 gap-x-4 self-stretch md:gap-x-6">
             <Link
-              href="/app"
+              href="/me"
               className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
             >
               <p>BlogStreak</p>
@@ -133,7 +133,7 @@ export default function AppSidebar({
               </Menu>
             </div>
           </div>
-          <Button href="/app/write">
+          <Button href="/me/write">
             <Pencil1Icon />
             Write
           </Button>

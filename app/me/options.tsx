@@ -19,7 +19,7 @@ export function Options() {
     <ul role="list" className="flex gap-1">
       <li>
         <Button
-          href={`/app`}
+          href={`/me`}
           className={cn(
             "group flex items-center gap-x-1 rounded-md p-2 text-sm font-semibold leading-6",
           )}

@@ -40,7 +40,7 @@ export function PostOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href={`/app/post/${post.post_id}/edit`}>
+          <DropdownItem href={`/me/post/${post.post_id}/edit`}>
             Edit
           </DropdownItem>
           <DropdownSeparator />

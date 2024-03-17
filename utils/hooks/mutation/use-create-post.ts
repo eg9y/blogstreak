@@ -8,9 +8,11 @@ export function useCreatePost() {
   async function mutationFn({
     content,
     tagIds,
+    isPublic,
   }: {
     content: string;
     tagIds: number[];
+    isPublic: boolean;
   }) {
     const {
       data: { user },
@@ -27,6 +29,7 @@ export function useCreatePost() {
       .insert({
         text: content,
         user_id: user?.id,
+        is_public: isPublic,
       })
       .select()
       .single();

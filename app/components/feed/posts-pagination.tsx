@@ -21,7 +21,7 @@ export function PostsPagination() {
     : 0;
 
   return (
-    <Pagination>
+    <Pagination className="flex items-baseline">
       <PaginationPrevious
         href={
           data?.count && startItemIndex > 1
@@ -30,7 +30,7 @@ export function PostsPagination() {
         }
       />
       {!isLoading && data ? (
-        <div>
+        <div className="text-sm dark:text-slate-200">
           {/* Check if data exists and has a count to handle initial null case */}
           {data.count ? (
             <p>

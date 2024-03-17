@@ -65,7 +65,7 @@ export function Post({ post }: PostProps) {
         <PostOptions post={post} />
       </div>
       <Link
-        href={`/app/post/${post.post_id}`}
+        href={`/me/post/${post.post_id}`}
         className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
         dangerouslySetInnerHTML={{ __html: output }}
       />
