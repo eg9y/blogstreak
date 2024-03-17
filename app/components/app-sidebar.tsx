@@ -1,8 +1,8 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon } from "@heroicons/react/24/outline";
+import { BellIcon } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
@@ -13,6 +13,7 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AppSidebar({
   children,
@@ -20,11 +21,18 @@ export default function AppSidebar({
   children: React.ReactNode;
 }) {
   const { currentUser } = getUser();
+  const router = useRouter();
 
   const supabase = createClient();
 
   const userNavigation = [
-    { name: "Sign out", onClick: () => supabase.auth.signOut() },
+    {
+      name: "Sign out",
+      onClick: async () => {
+        await supabase.auth.signOut();
+        router.refresh();
+      },
+    },
   ];
 
   return (
