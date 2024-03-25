@@ -6,16 +6,18 @@ import { createClient } from "../../supabase/client";
 export function useGetPostQuery(user: User | null, postId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["post", user?.id, postId];
+  const queryKey = ["post", undefined, postId];
 
   const queryFn = async () => {
-    return supabase
-      .from("posts")
-      .select("*")
-      .eq("user_id", user!.id)
-      .eq("id", postId!)
-      .single()
-      .throwOnError();
+    return (
+      supabase
+        .from("posts")
+        .select("*")
+        // .eq("user_id", user!.id)
+        .eq("id", postId!)
+        .single()
+        .throwOnError()
+    );
   };
 
   return useQuery({

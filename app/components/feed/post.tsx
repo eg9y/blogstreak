@@ -14,9 +14,10 @@ interface PostProps {
     streaks: number | null;
   };
   isMine: boolean;
+  username: string;
 }
 
-export function Post({ post, isMine }: PostProps) {
+export function Post({ post, isMine, username }: PostProps) {
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({}),
@@ -66,7 +67,7 @@ export function Post({ post, isMine }: PostProps) {
         {isMine && <PostOptions post={post} />}
       </div>
       <Link
-        href={`/me/post/${post.post_id}`}
+        href={`/${isMine ? "me" : username}/post/${post.post_id}`}
         className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
         dangerouslySetInnerHTML={{ __html: output }}
       />

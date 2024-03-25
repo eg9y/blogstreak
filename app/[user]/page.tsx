@@ -4,6 +4,7 @@ import { Posts } from "@/app/components/feed/posts";
 import { Cal } from "../components/cal-heatmap";
 import { PostsPagination } from "../components/feed/posts-pagination";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const pathName = usePathname();
@@ -15,7 +16,9 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <div className="">
               <h1 className="text-3xl font-bold dark:text-slate-300">
-                {pathName.slice(1)}'s Blog
+                <Link href={`/${pathName.slice(1)}`}>
+                  {decodeURIComponent(pathName.slice(1))}'s Blog
+                </Link>
               </h1>
             </div>
             <div className="flex justify-between">

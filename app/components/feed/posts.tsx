@@ -45,6 +45,7 @@ export function Posts() {
           <Post
             post={post}
             isMine={username === "me"}
+            username={username}
             key={post.post_id.toString()}
           ></Post>
         ))}
