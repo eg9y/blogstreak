@@ -12,6 +12,7 @@ import { getUser } from "@/utils/getUser";
 import { Button } from "../button";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import Scrollbar from "react-scrollbars-custom";
+import { IsPublicSwitch } from "./is-public-switch";
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -62,14 +63,14 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
             }}
           >
             <div
-              className="prose prose-sm grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
+              className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
               dangerouslySetInnerHTML={{ __html: output }}
             />
           </Scrollbar>
         </div>
 
         <div className="flex justify-between">
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
             {isLoading && "Loading topics"}
             {isSuccess && data?.length === 0 && (
               <p className="text-sm text-slate-600">No Tags</p>
@@ -86,6 +87,12 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
                   </Badge>
                 );
               })}
+            <div className="pointer-events-none">
+              <IsPublicSwitch
+                isPublic={postData?.data?.is_public!!}
+                setIsPublic={() => {}}
+              />
+            </div>
           </div>
           <Button
             color="orange"

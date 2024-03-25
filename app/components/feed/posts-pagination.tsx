@@ -2,17 +2,22 @@
 
 import { getUser } from "@/utils/getUser";
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Pagination, PaginationNext, PaginationPrevious } from "../pagination";
 
 export function PostsPagination() {
   const { currentUser } = getUser();
   const searchParams = useSearchParams();
+  const username = usePathname().slice(1);
 
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const itemsPerPage = 10; // Assuming this is defined and matches your pagination logic.
 
-  const { data, isLoading } = usePostsQuery(currentUser, searchParams);
+  const { data, isLoading } = usePostsQuery(
+    currentUser,
+    searchParams,
+    username,
+  );
 
   // Calculate the starting and ending indices for the currently displayed items.
   const startItemIndex = (currentPage - 1) * itemsPerPage + 1;

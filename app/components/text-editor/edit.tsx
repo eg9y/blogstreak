@@ -43,7 +43,8 @@ const extensions = [
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
-      class: "prose dark:prose-invert prose-sm m-5 focus:outline-none",
+      class:
+        "prose dark:prose-invert max-w-full prose-sm m-5 focus:outline-none",
     },
   },
   editable: false,
@@ -78,6 +79,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   useEffect(() => {
     if (postData?.data?.text && editor) {
+      setIsPublic(postData.data.is_public);
       editor.commands.setContent(JSON.parse(postData.data.text));
       editor.setEditable(true);
     }
@@ -179,25 +181,28 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
             {isSuccess && data?.length === 0 && (
               <p className="text-sm text-slate-600">No Tags</p>
             )}
-            {isSuccess &&
-              data?.map((topic) => {
-                return (
-                  <BadgeButton
-                    key={topic.name}
-                    color={
-                      tags.find((tag) => tag.name === topic.name)
-                        ? (topic.color as any)
-                        : undefined
-                    }
-                    onClick={() => {
-                      tagClick(topic);
-                    }}
-                  >
-                    {topic.name}
-                  </BadgeButton>
-                );
-              })}
-            <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
+            {isSuccess && (
+              <>
+                {data?.map((topic) => {
+                  return (
+                    <BadgeButton
+                      key={topic.name}
+                      color={
+                        tags.find((tag) => tag.name === topic.name)
+                          ? (topic.color as any)
+                          : undefined
+                      }
+                      onClick={() => {
+                        tagClick(topic);
+                      }}
+                    >
+                      {topic.name}
+                    </BadgeButton>
+                  );
+                })}
+                <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
+              </>
+            )}
           </div>
           <Button
             color="orange"

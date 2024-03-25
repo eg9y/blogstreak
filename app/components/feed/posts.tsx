@@ -3,16 +3,22 @@
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { Post } from "./post";
 import { getUser } from "@/utils/getUser";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export function Posts() {
   const { currentUser } = getUser();
 
   const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const username = pathName.slice(1);
+
+  console.log("pathName", pathName);
+  console.log("username ish", username);
 
   const { data, isLoading, isFetching, isPending } = usePostsQuery(
     currentUser,
     searchParams,
+    username,
   );
 
   if (isLoading || isFetching || isPending) {
@@ -38,7 +44,13 @@ export function Posts() {
             new Date(b.post_created_at).getTime() -
             new Date(a.post_created_at).getTime(),
         )
-        .map((post) => <Post post={post} key={post.post_id.toString()}></Post>)}
+        .map((post) => (
+          <Post
+            post={post}
+            isMine={username === "me"}
+            key={post.post_id.toString()}
+          ></Post>
+        ))}
     </div>
   );
 }

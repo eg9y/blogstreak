@@ -14,7 +14,7 @@ export default function Home() {
         <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
-              <h1 className="text-3xl font-bold dark:text-slate-300">
+              <h1 className="text-xl font-bold dark:text-slate-300">
                 30 Day Activity
               </h1>
             </div>
@@ -35,7 +35,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <h1 className="text-3xl font-bold dark:text-slate-300">Posts</h1>
+              <h1 className="text-xl font-bold dark:text-slate-300">Posts</h1>
               <div className="flex items-center justify-between gap-2">
                 <Options />
                 <Button href="/me/write" className="max-w-20">

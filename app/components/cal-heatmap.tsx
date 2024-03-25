@@ -6,7 +6,7 @@ import "cal-heatmap/cal-heatmap.css";
 import { useEffect, useRef } from "react";
 import { getUser } from "@/utils/getUser";
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Database } from "@/schema";
 
 let dayRowTemplate = (dateHelper: any, { domain }: any) => ({
@@ -46,10 +46,12 @@ export function Cal() {
   const { currentUser } = getUser();
 
   const searchParams = useSearchParams();
+  const username = usePathname().slice(1);
 
   const { data, isLoading, isFetching, isPending, isSuccess } = usePostsQuery(
     currentUser,
     searchParams,
+    username,
   );
 
   useEffect(() => {

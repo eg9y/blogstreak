@@ -13,9 +13,10 @@ interface PostProps {
   post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
     streaks: number | null;
   };
+  isMine: boolean;
 }
 
-export function Post({ post }: PostProps) {
+export function Post({ post, isMine }: PostProps) {
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({}),
@@ -62,7 +63,7 @@ export function Post({ post }: PostProps) {
             </div>
           </Badge>
         </div>
-        <PostOptions post={post} />
+        {isMine && <PostOptions post={post} />}
       </div>
       <Link
         href={`/me/post/${post.post_id}`}

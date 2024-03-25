@@ -6,6 +6,7 @@ import { ReadonlyURLSearchParams } from "next/navigation";
 export function usePostsQuery(
   user: User | null,
   searchParams: ReadonlyURLSearchParams,
+  username: string,
 ) {
   const supabase = createClient();
 
@@ -24,12 +25,16 @@ export function usePostsQuery(
   const queryFn = async () => {
     if (!user) return { data: [], count: 0 }; // Early return if user is null
 
+    console.log("foo username", username);
+    console.log("username test", decodeURIComponent(username));
+
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
       topic_names_arr: tagNames,
       user_id_param: user?.id,
       last_post_id_param: lastPostId ? lastPostId : undefined,
       total_posts_param: limit,
       page_param: page,
+      username_param: decodeURIComponent(username),
     });
 
     const { count, error: totalPostsError } = await supabase
@@ -38,8 +43,6 @@ export function usePostsQuery(
         count: "exact",
         head: true,
       });
-
-    console.log("totalPosts", count);
 
     if (error) {
       console.error("Error fetching posts:", error.message);
