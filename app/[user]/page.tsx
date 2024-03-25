@@ -2,10 +2,8 @@
 import Scrollbar from "react-scrollbars-custom";
 import { Posts } from "@/app/components/feed/posts";
 import { Cal } from "../components/cal-heatmap";
-import { Button } from "../components/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
 import { PostsPagination } from "../components/feed/posts-pagination";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Home() {
   const pathName = usePathname();

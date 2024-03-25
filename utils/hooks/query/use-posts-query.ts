@@ -25,9 +25,6 @@ export function usePostsQuery(
   const queryFn = async () => {
     if (!user) return { data: [], count: 0 }; // Early return if user is null
 
-    console.log("foo username", username);
-    console.log("username test", decodeURIComponent(username));
-
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
       topic_names_arr: tagNames,
       user_id_param: user?.id,

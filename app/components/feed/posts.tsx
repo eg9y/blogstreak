@@ -12,9 +12,6 @@ export function Posts() {
   const pathName = usePathname();
   const username = pathName.slice(1);
 
-  console.log("pathName", pathName);
-  console.log("username ish", username);
-
   const { data, isLoading, isFetching, isPending } = usePostsQuery(
     currentUser,
     searchParams,

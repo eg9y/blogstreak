@@ -98,8 +98,6 @@ export function Cal() {
         })[],
       );
 
-      console.log("finalData", finalData);
-
       cal.paint(
         {
           itemSelector: "#stuff",
@@ -164,12 +162,10 @@ export function Cal() {
 
       // Setup dark/light mode for the first time
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        console.log("shiet nig");
         cal.paint({
           theme: "dark",
         });
       } else {
-        console.log("tester");
         cal.paint({
           theme: "light",
         });
