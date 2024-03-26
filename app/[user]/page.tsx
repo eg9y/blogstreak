@@ -21,24 +21,7 @@ export default function Home() {
                 </Link>
               </h1>
             </div>
-            <div className="flex justify-between">
-              <h1 className="text-xl font-bold dark:text-slate-300">
-                30 Day Activity
-              </h1>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
-                <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
-                  Writing Streaks
-                </p>
-              </div>
-              <Cal />
-              <div className="flex h-[24.8333px] flex-shrink-0 items-start bg-slate-100 px-2 dark:bg-slate-600">
-                <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
-                  Current Streak
-                </p>
-              </div>
-            </div>
+            <Cal />
           </div>
 
           <div className="flex flex-col gap-4">

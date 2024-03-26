@@ -3,7 +3,7 @@
 import CalHeatmap from "cal-heatmap";
 import Tooltip from "cal-heatmap/plugins/Tooltip";
 import "cal-heatmap/cal-heatmap.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getUser } from "@/utils/getUser";
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -41,14 +41,14 @@ let dayRowTemplate = (dateHelper: any, { domain }: any) => ({
 });
 
 export function Cal() {
-  const heatmapRef = useRef<null | Record<string, any>>(null);
+  const heatmapRef = useRef(null);
+  const containerRef = useRef(null); // New ref for the parent container
+  const [daySize, setDaySize] = useState({ width: 28.5, height: 28.5 });
 
   const { currentUser } = getUser();
-
   const searchParams = useSearchParams();
   const username = usePathname().slice(1);
-
-  const { data, isLoading, isFetching, isPending, isSuccess } = usePostsQuery(
+  const { data, isSuccess } = usePostsQuery(
     currentUser,
     searchParams,
     username,
@@ -122,8 +122,8 @@ export function Cal() {
           },
           subDomain: {
             type: "day_row",
-            width: 18.8333,
-            height: 24.8333,
+            width: daySize.width,
+            height: daySize.height,
             gutter: 2,
           },
           scale: {
@@ -178,7 +178,28 @@ export function Cal() {
           .removeEventListener("change", () => {});
       };
     }
-  }, [isSuccess, data]); // Ensure 'data' is included if it affects rendering
+  }, [isSuccess, data, daySize.width, daySize.height]);
 
-  return <div id="stuff"></div>;
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <h1 className="text-xl font-bold dark:text-slate-300">
+          March Activity
+        </h1>
+        <div className="flex items-center justify-end gap-2">
+          <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
+            <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+              Top Streaks: <span>4</span>
+            </p>
+          </div>
+          <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
+            <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+              Current Streaks: <span>1</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="stuff"></div>
+    </div>
+  );
 }
