@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import {
@@ -14,16 +14,35 @@ import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 
 export default function AppSidebar({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = getUser();
+  const [username, setUsername] = useState("");
   const router = useRouter();
 
   const supabase = createClient();
+
+  useEffect(() => {
+    (async () => {
+      if (currentUser) {
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_id", currentUser.id)
+          .single();
+
+        if (profile?.name) {
+          setUsername(profile.name);
+        }
+      }
+    })();
+  }, [currentUser]);
 
   const userNavigation = [
     {
@@ -33,10 +52,20 @@ export default function AppSidebar({
         router.refresh();
       },
     },
+    {
+      name: "Change Username",
+      onClick: async () => {
+        setIsOpenChangeUsername(true);
+      },
+    },
   ];
 
   return (
     <div className="mx-auto w-[1000px]">
+      <ChangeUsernameDialog
+        isOpen={isOpenChangeUsername}
+        setIsOpen={setIsOpenChangeUsername}
+      />
       <div className="flex flex-col">
         <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-8 dark:border-slate-600 dark:bg-slate-800">
           {/* Separator */}
@@ -103,7 +132,7 @@ export default function AppSidebar({
                       className="ml-4 text-sm font-semibold leading-6 text-slate-900 dark:text-slate-300"
                       aria-hidden="true"
                     >
-                      {currentUser?.email}
+                      {username || currentUser?.email}
                     </span>
                     <ChevronDownIcon
                       className="ml-2 h-5 w-5 text-slate-400 dark:text-slate-300"
@@ -120,7 +149,7 @@ export default function AppSidebar({
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-slate-900/5 focus:outline-none">
+                  <Menu.Items className="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-slate-900/5 focus:outline-none">
                     {userNavigation.map((item) => (
                       <Menu.Item key={item.name}>
                         {({ active }) => (

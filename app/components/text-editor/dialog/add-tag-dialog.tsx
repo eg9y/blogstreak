@@ -32,9 +32,7 @@ export function AddTagDialog({
   setOpenAddTagDialog: Dispatch<boolean>;
 }) {
   const {
-    register,
     handleSubmit,
-    watch,
     control,
     formState: { errors },
   } = useForm<InsertTagInputs>({
@@ -44,11 +42,8 @@ export function AddTagDialog({
     },
   });
 
-  const [tagColor, setTagColor] = useState("white");
-
   const { currentUser } = getUser();
-  const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser);
+  const { data, isSuccess } = useGetTopicsQuery(currentUser);
   const useCreateTagMutation = useCreateTag();
 
   const onSubmit: SubmitHandler<InsertTagInputs> = (data) => {
