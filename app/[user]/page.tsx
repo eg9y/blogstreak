@@ -21,7 +21,6 @@ export default function Home() {
                 </Link>
               </h1>
             </div>
-            <Cal />
           </div>
 
           <div className="flex flex-col gap-4">

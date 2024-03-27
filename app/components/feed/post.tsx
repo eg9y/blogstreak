@@ -57,12 +57,6 @@ export function Post({ post, isMine, username }: PostProps) {
                 </Badge>
               );
             })}
-          <Badge color={"red"}>
-            <div className="flex items-center gap-1">
-              <p>🔥</p>
-              <p>{post.streaks}</p>
-            </div>
-          </Badge>
         </div>
         {isMine && <PostOptions post={post} />}
       </div>
@@ -72,14 +66,21 @@ export function Post({ post, isMine, username }: PostProps) {
         dangerouslySetInnerHTML={{ __html: output }}
       />
       <div className="flex w-full justify-between">
-        <div className="flex items-end">
+        <div className="flex w-full items-end justify-between">
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {new Date(post.post_created_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
+              weekday: "long",
               year: "numeric",
+              month: "long",
+              day: "numeric",
             })}
           </p>
+          <Badge color={"red"}>
+            <div className="flex items-center gap-1">
+              <p>🔥</p>
+              <p>{post.streaks}</p>
+            </div>
+          </Badge>
         </div>
       </div>
     </div>

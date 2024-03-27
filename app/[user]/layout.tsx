@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import AppSidebar from "../components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import ViewSidebar from "../components/view-sidebar";
 
 export default async function Layout({
   children,
@@ -18,7 +18,7 @@ export default async function Layout({
 
   return (
     <>
-      <AppSidebar>{children}</AppSidebar>
+      <ViewSidebar>{children}</ViewSidebar>
     </>
   );
 }
