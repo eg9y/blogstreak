@@ -22,6 +22,8 @@ export function Cal() {
       streaks: number | null;
     })[]
   >([]);
+  const [topStreaks, setTopStreaks] = useState(0);
+  const [currentStreaks, setCurrentStreaks] = useState(0);
 
   function getAllDatesInMonth(year: number, month: number) {
     const date = new Date(Date.UTC(year, month, 1));
@@ -43,8 +45,41 @@ export function Cal() {
     return dates;
   }
 
+  function calculateStreaks(
+    data: (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+      streaks: number | null;
+    })[],
+  ) {
+    let currentStreak = 0;
+    let topStreak = 0;
+    let tempStreak = 0;
+    const today = new Date();
+
+    for (let i = 0; i < data.length; i++) {
+      // Check if it's a day with a post
+      if (data[i].post_id !== -1) {
+        tempStreak++;
+
+        // Update top streak if current temp streak is longer
+        if (tempStreak > topStreak) {
+          topStreak = tempStreak;
+        }
+
+        // If the current day has a post, reset current streak
+        if (isSameDay(new Date(data[i].post_created_at), today)) {
+          currentStreak = tempStreak;
+        }
+      } else {
+        // Reset temp streak if it's a day without a post
+        tempStreak = 0;
+      }
+    }
+
+    return { topStreak, currentStreak };
+  }
+
   useEffect(() => {
-    if (data) {
+    if (data && isSuccess) {
       const timestamps = data.data.map((d) =>
         new Date(d.post_created_at).getTime(),
       );
@@ -87,6 +122,11 @@ export function Cal() {
           new Date(b.post_created_at).getTime(),
       );
 
+      const { topStreak, currentStreak } = calculateStreaks(finalData);
+      console.log({ topStreak, currentStreak });
+      setTopStreaks(topStreak);
+      setCurrentStreaks(currentStreak);
+
       setFinalData(filledData);
     }
   }, [isSuccess, data]);
@@ -108,12 +148,12 @@ export function Cal() {
         <div className="flex items-center justify-end gap-2">
           <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
             <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
-              Top Streaks: <span>4</span>
+              Top Streaks: <span>{topStreaks}</span>
             </p>
           </div>
           <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
             <p className="text-xs font-semibold text-slate-800 dark:text-slate-100">
-              Current Streaks: <span>1</span>
+              Current Streaks: <span>{currentStreaks}</span>
             </p>
           </div>
         </div>
