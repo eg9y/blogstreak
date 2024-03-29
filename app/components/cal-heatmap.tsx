@@ -1,50 +1,14 @@
 "use client";
 
-import CalHeatmap from "cal-heatmap";
-import Tooltip from "cal-heatmap/plugins/Tooltip";
 import "cal-heatmap/cal-heatmap.css";
-import { useEffect, useRef, useState } from "react";
 import { getUser } from "@/utils/getUser";
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Database } from "@/schema";
-
-let dayRowTemplate = (dateHelper: any, { domain }: any) => ({
-  name: "day_row",
-  allowedDomainType: ["month"],
-  rowsCount() {
-    return 1;
-  },
-  columnsCount(d: any) {
-    return domain.dynamicDimension
-      ? dateHelper.date(d).endOf("month").date()
-      : 31;
-  },
-  mapping: (startDate: Date, endDate: Date, defaultValues: any) => {
-    return dateHelper
-      .intervals("day", startDate, dateHelper.date(endDate))
-      .map((d: any, index: number) => ({
-        t: d,
-        x: index,
-        y: 0,
-        ...defaultValues,
-      }));
-  },
-
-  format: {
-    date: "Do",
-    legend: "Do",
-  },
-  extractUnit(d: any) {
-    return dateHelper.date(d).startOf("day").valueOf();
-  },
-});
+import { useEffect, useState } from "react";
+import { cn } from "@/utils/cn";
 
 export function Cal() {
-  const heatmapRef = useRef(null);
-  const containerRef = useRef(null); // New ref for the parent container
-  const [daySize, setDaySize] = useState({ width: 28.5, height: 28.5 });
-
   const { currentUser } = getUser();
   const searchParams = useSearchParams();
   const username = usePathname().slice(1);
@@ -53,132 +17,87 @@ export function Cal() {
     searchParams,
     username,
   );
+  const [finalData, setFinalData] = useState<
+    (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+      streaks: number | null;
+    })[]
+  >([]);
+
+  function getAllDatesInMonth(year: number, month: number) {
+    const date = new Date(Date.UTC(year, month, 1));
+    const dates = [];
+
+    while (date.getUTCMonth() === month) {
+      dates.push(
+        new Date(
+          Date.UTC(
+            date.getUTCFullYear(),
+            date.getUTCMonth(),
+            date.getUTCDate(),
+          ),
+        ),
+      );
+      date.setUTCDate(date.getUTCDate() + 1);
+    }
+
+    return dates;
+  }
 
   useEffect(() => {
-    if (
-      isSuccess &&
-      data.data.length &&
-      !heatmapRef.current &&
-      typeof window !== "undefined"
-    ) {
-      const cal = new CalHeatmap();
+    if (data) {
+      const timestamps = data.data.map((d) =>
+        new Date(d.post_created_at).getTime(),
+      );
+      const minTimestamp = Math.min(...timestamps);
+      const maxTimestamp = Math.max(...timestamps);
 
-      cal.addTemplates(dayRowTemplate);
+      const minDate = new Date(minTimestamp);
 
-      const startOfMonth = new Date();
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      const endOfMonth = new Date(
-        startOfMonth.getFullYear(),
-        startOfMonth.getMonth() + 1,
-        0,
+      const allDates = getAllDatesInMonth(
+        minDate.getFullYear(),
+        minDate.getMonth(),
       );
 
-      const finalData: (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
-        streaks: number | null;
-      })[] = data.data.reduce(
-        (acc, current) => {
-          const lastTime =
-            acc.length > 0
-              ? new Date(acc[acc.length - 1].post_created_at)
-              : new Date();
-          lastTime.setHours(0, 0, 0, 0);
-          const currentTime = new Date(current.post_created_at);
-          currentTime.setHours(0, 0, 0, 0);
-          if (acc.length === 0) {
-            return [current];
-          } else if (lastTime.getTime() !== currentTime.getTime()) {
-            return [...acc, current];
-          }
+      const filledData = allDates.map((date) => {
+        const dateString = date.toISOString().split("T")[0];
+        const existingPost = data.data.find((d) =>
+          new Date(d.post_created_at).toISOString().startsWith(dateString),
+        );
+        if (existingPost) {
+          return {
+            ...existingPost,
+            streaks: existingPost.streaks || null, // Ensure streaks is number | null
+          };
+        }
 
-          return acc;
-        },
-        [] as (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
-          streaks: number | null;
-        })[],
+        // Adjusted to include all necessary fields with default or placeholder values
+        return {
+          post_created_at: dateString,
+          post_id: -1, // Placeholder value since null is not accepted; consider a negative value to indicate a non-existing post
+          post_text: "", // Empty string or suitable placeholder
+          post_user_id: "", // Empty string or suitable placeholder
+          post_topics: null, // Assuming this can be null; adjust as necessary
+          streaks: null,
+        };
+      });
+
+      filledData.sort(
+        (a, b) =>
+          new Date(a.post_created_at).getTime() -
+          new Date(b.post_created_at).getTime(),
       );
 
-      cal.paint(
-        {
-          itemSelector: "#stuff",
-          theme: "light",
-          data: {
-            source: finalData,
-            x: (
-              data: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number],
-            ) => new Date(data.post_created_at).toISOString(),
-            y: "streaks",
-          },
-          date: {
-            start: startOfMonth,
-            min: startOfMonth,
-            max: endOfMonth,
-          },
-          range: 1,
-          domain: {
-            type: "month",
-            gutter: 5,
-            label: { textAlign: "middle", position: "left", text: "" },
-          },
-          subDomain: {
-            type: "day_row",
-            width: daySize.width,
-            height: daySize.height,
-            gutter: 2,
-          },
-          scale: {
-            color: {
-              // Define your range from light green to dark green
-              range: [
-                "#ccffcc", // Lightest green for a streak of 1
-                "#99ff99", // Noticeably darker for a streak of 2
-                "#66ff66", // Even more noticeable for a streak of 3
-                "#33cc33", // Significantly darker for a streak of 4
-                "#009900", // Darkest green for the longest expected streak
-              ],
-              domain: [1, 5], // Adjust the domain end value to match the longest streak you're accommodating
-              type: "linear",
-            },
-          },
-        },
-        [[Tooltip]],
-      );
-
-      heatmapRef.current = cal;
-
-      const foo = window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (e) => {
-          if (e.matches) {
-            cal.paint({
-              theme: "dark",
-            });
-          } else {
-            cal.paint({
-              theme: "light",
-            });
-          }
-        });
-
-      // Setup dark/light mode for the first time
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        cal.paint({
-          theme: "dark",
-        });
-      } else {
-        cal.paint({
-          theme: "light",
-        });
-      }
-
-      // Remove listener
-      return () => {
-        window
-          .matchMedia("(prefers-color-scheme: dark)")
-          .removeEventListener("change", () => {});
-      };
+      setFinalData(filledData);
     }
-  }, [isSuccess, data, daySize.width, daySize.height]);
+  }, [isSuccess, data]);
+
+  function isSameDay(d1: Date, d2: Date) {
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -199,7 +118,39 @@ export function Cal() {
           </div>
         </div>
       </div>
-      <div id="stuff"></div>
+      <div className="flex gap-1">
+        {finalData.map((day) => {
+          const dayNumber = new Date(day.post_created_at).getDate();
+
+          return (
+            <div
+              key={`${day.post_id}-${day.post_created_at}`}
+              className={cn("relative inline-block grow")}
+            >
+              <div className="mt-[100%]"></div>
+              <div
+                className={cn(
+                  "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-sm",
+                  day.post_id === -1 && "bg-slate-100",
+                  isSameDay(new Date(day.post_created_at), new Date()) &&
+                    "ring-2 ring-green-500",
+                  day.streaks !== null && "hover:ring-2 hover:ring-slate-500",
+                  day.streaks === 1 && "bg-amber-200",
+                  day.streaks === 2 && "bg-amber-300",
+                  day.streaks === 3 && "bg-amber-400",
+                  day.streaks === 4 && "bg-amber-500",
+                  day.streaks !== null && day.streaks >= 5 && "bg-amber-600",
+                )}
+              >
+                {/* Displaying the day number */}
+                <span className="text-xs font-medium text-slate-600">
+                  {dayNumber}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
