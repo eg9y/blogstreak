@@ -1,6 +1,5 @@
 "use client";
 
-import "cal-heatmap/cal-heatmap.css";
 import { getUser } from "@/utils/getUser";
 import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
 import { usePathname, useSearchParams } from "next/navigation";
