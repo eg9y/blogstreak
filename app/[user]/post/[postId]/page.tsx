@@ -36,13 +36,6 @@ export default async function PostDetail({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
         <div className="flex flex-col gap-4">
-          <div className="">
-            <h1 className="text-3xl font-bold dark:text-slate-300">
-              <Link href={`/${params.user}`}>
-                {decodeURIComponent(params.user)}'s Blog
-              </Link>
-            </h1>
-          </div>
           <div className="min-h-full">
             <main className="mx-auto flex min-w-[400px] flex-col gap-4 px-2 py-12">
               <ViewTextEditor postId={params.postId} />

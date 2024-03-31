@@ -3,6 +3,7 @@ import AppSidebar from "../components/app-sidebar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { ForceChangeUsernameDialog } from "../components/nav/force-change-username-dialog";
+import ViewSidebar from "../components/view-sidebar";
 
 export default async function Layout({
   children,
@@ -30,7 +31,9 @@ export default async function Layout({
   return (
     <>
       {!userProfile?.name && <ForceChangeUsernameDialog />}
-      <AppSidebar>{children}</AppSidebar>
+      <AppSidebar>
+        <ViewSidebar>{children}</ViewSidebar>
+      </AppSidebar>
     </>
   );
 }

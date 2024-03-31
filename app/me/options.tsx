@@ -21,7 +21,7 @@ export function Options() {
         <Button
           href={`/me`}
           className={cn(
-            "group flex items-center gap-x-1 rounded-md p-2 text-sm font-semibold leading-6",
+            "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
           )}
           plain
         >
@@ -40,7 +40,7 @@ export function Options() {
           <Button
             href={`?tags=${tag.name}`}
             className={cn(
-              "group flex items-center gap-x-1 rounded-md p-2 text-sm font-semibold leading-6",
+              "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
             )}
             plain
           >
@@ -63,7 +63,7 @@ export function Options() {
               : `/me`
           }
           className={cn(
-            "group flex items-center gap-x-1 rounded-md p-2 text-sm font-semibold leading-6",
+            "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
           )}
           plain
         >

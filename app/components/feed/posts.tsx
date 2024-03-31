@@ -10,7 +10,7 @@ export function Posts() {
 
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const username = pathName.slice(1);
+  const username = pathName.split("/")[1];
 
   const { data, isLoading, isFetching, isPending } = usePostsQuery(
     currentUser,

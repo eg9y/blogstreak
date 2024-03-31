@@ -9,7 +9,7 @@ export function PostsPagination() {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
-  const username = pathName.slice(1);
+  const username = pathName.split("/")[1];
   const itemsPerPage = 10;
 
   const currentPage = parseInt(searchParams.get("page") || "1", 10);

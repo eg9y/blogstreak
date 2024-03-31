@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 export function Cal() {
   const { currentUser } = getUser();
   const searchParams = useSearchParams();
-  const username = usePathname().slice(1);
+  const username = usePathname().split("/")[1];
   const { data, isSuccess } = usePostsQuery(
     currentUser,
     searchParams,
@@ -137,7 +137,7 @@ export function Cal() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between">
-        <h1 className="text-xl font-bold dark:text-slate-300">
+        <h1 className="text-sm font-bold dark:text-slate-300">
           March Activity
         </h1>
         <div className="flex items-center justify-end gap-2">

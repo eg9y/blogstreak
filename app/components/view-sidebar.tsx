@@ -10,9 +10,10 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/utils/getUser";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
-import { Button } from "./button";
+import { Button, ButtonProps } from "./button";
+import { cn } from "@/utils/cn";
 
 export default function ViewSidebar({
   children,
@@ -22,7 +23,8 @@ export default function ViewSidebar({
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = getUser();
   const [username, setUsername] = useState("");
-  const router = useRouter();
+  const [isMe, setIsMe] = useState(false);
+  const pathName = usePathname();
 
   const supabase = createClient();
 
@@ -36,27 +38,13 @@ export default function ViewSidebar({
           .single();
 
         if (profile?.name) {
+          const isMe = pathName.split("/")[1] === "me";
+          setIsMe(isMe);
           setUsername(profile.name);
         }
       }
     })();
   }, [currentUser]);
-
-  const userNavigation = [
-    {
-      name: "Sign out",
-      onClick: async () => {
-        await supabase.auth.signOut();
-        router.refresh();
-      },
-    },
-    {
-      name: "Change Username",
-      onClick: async () => {
-        setIsOpenChangeUsername(true);
-      },
-    },
-  ];
 
   return (
     <div className="mx-auto w-[1000px]">
@@ -65,22 +53,52 @@ export default function ViewSidebar({
         setIsOpen={setIsOpenChangeUsername}
       />
       <div className="flex flex-col">
-        <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-8 dark:border-slate-600 dark:bg-slate-800">
+        <div className="flex h-[3vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-8 dark:border-slate-600 dark:bg-slate-800">
           {/* Separator */}
           <div
             className="h-6 w-px bg-slate-900/10 md:hidden"
             aria-hidden="true"
           />
 
-          <div className="flex flex-1 gap-x-4 self-stretch md:gap-x-6">
-            <Link
-              href="/me"
-              className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
-            >
-              <p>BlogStreak</p>
-            </Link>
-            <Button plain>Blog</Button>
-            <Button plain>Microblog</Button>
+          <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
+            <div className="flex grow  justify-start gap-x-8">
+              <Link
+                href={`/${isMe ? "me" : username}`}
+                className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
+              >
+                <p>{username}</p>
+              </Link>
+              <Link
+                href={`/${isMe ? "me" : username}/blog`}
+                className="flex items-end"
+              >
+                <button
+                  className={cn(
+                    pathName.split("/")[2] === "blog"
+                      ? "border-b-slate-400"
+                      : "border-b-transparent",
+                    "border-b-2 pb-1 text-sm font-medium dark:text-slate-100",
+                  )}
+                >
+                  Blog
+                </button>
+              </Link>
+              <Link
+                href={`/${isMe ? "me" : username}/microblog`}
+                className="flex items-end"
+              >
+                <button
+                  className={cn(
+                    pathName.split("/")[2] === "microblog"
+                      ? "border-b-slate-400"
+                      : "border-b-transparent",
+                    "border-b-2 pb-1 text-sm font-medium dark:text-slate-100",
+                  )}
+                >
+                  Microblog
+                </button>
+              </Link>
+            </div>
             <form
               className="relative flex flex-1 dark:bg-slate-600"
               action="#"
