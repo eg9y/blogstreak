@@ -118,6 +118,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
         postId,
         content,
         tags,
+        isPublic,
       },
       {
         onSuccess: () => {

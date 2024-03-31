@@ -13,14 +13,18 @@ export function usePostsQuery(
   const queryKey = [
     "posts",
     user?.id,
-    searchParams.get("tags"),
-    searchParams.get("page"),
+    {
+      tags: searchParams.get("tags"),
+      page: searchParams.get("page"),
+      onlyPublic: searchParams.get("only_public"),
+    },
   ];
-  const tagNames = searchParams.get("tags")?.split(",") || undefined; // Null if no tags
+  const tagNames = searchParams.get("tags")?.split(",") || undefined;
   const page = parseInt(searchParams.get("page") || "1", 10);
-  const limit = 10; // Number of posts per page
+  const onlyPublic = searchParams.get("only_public") || undefined;
+  const limit = 15; // Number of posts per page
   // Assuming you keep track of the last post ID for keyset pagination
-  const lastPostId = parseInt(searchParams.get("lastPostId") || "0", 10);
+  const lastPostId = parseInt(searchParams.get("lastPostId") || "0", 15);
 
   const queryFn = async () => {
     if (!user) return { data: [], count: 0 }; // Early return if user is null
@@ -31,6 +35,7 @@ export function usePostsQuery(
       last_post_id_param: lastPostId ? lastPostId : undefined,
       total_posts_param: limit,
       page_param: page,
+      only_public_param: onlyPublic as boolean | undefined,
       username_param: decodeURIComponent(username),
     });
 

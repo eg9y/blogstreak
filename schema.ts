@@ -153,40 +153,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_posts_by_topics:
-        | {
-            Args: {
-              topic_names_arr?: string[]
-              last_post_id_param?: number
-              total_posts_param?: number
-              page_param?: number
-              username_param?: string
-            }
-            Returns: {
-              post_id: number
-              post_created_at: string
-              post_text: string
-              post_user_id: string
-              post_topics: Json
-            }[]
-          }
-        | {
-            Args: {
-              topic_names_arr?: string[]
-              user_id_param?: string
-              last_post_id_param?: number
-              total_posts_param?: number
-              page_param?: number
-              username_param?: string
-            }
-            Returns: {
-              post_id: number
-              post_created_at: string
-              post_text: string
-              post_user_id: string
-              post_topics: Json
-            }[]
-          }
+      get_posts_by_topics: {
+        Args: {
+          topic_names_arr?: string[]
+          user_id_param?: string
+          last_post_id_param?: number
+          total_posts_param?: number
+          page_param?: number
+          username_param?: string
+          only_public_param?: boolean
+        }
+        Returns: {
+          post_id: number
+          post_created_at: string
+          post_text: string
+          post_user_id: string
+          post_topics: Json
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

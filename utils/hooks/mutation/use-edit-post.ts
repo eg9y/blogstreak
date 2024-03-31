@@ -10,10 +10,12 @@ export function useEditPost() {
     postId,
     content,
     tags,
+    isPublic,
   }: {
     postId: number;
     content: string;
     tags: Database["public"]["Tables"]["topics"]["Row"][];
+    isPublic: boolean;
   }) {
     const {
       data: { user },
@@ -30,6 +32,7 @@ export function useEditPost() {
       .update({
         text: content,
         user_id: user?.id,
+        is_public: isPublic,
       })
       .eq("id", postId);
 

@@ -12,7 +12,7 @@ export default function Home() {
     <div className="tw-flex tw-flex-col tw-gap-4">
       <Scrollbar style={{ width: "100%", height: "87vh" }}>
         <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
-          <div className="flex justify-center">
+          <div className="flex justify-evenly">
             <p className="text-3xl font-bold underline dark:text-slate-300">
               My Blog
             </p>

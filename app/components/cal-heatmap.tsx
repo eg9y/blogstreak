@@ -54,22 +54,19 @@ export function Cal() {
     let tempStreak = 0;
     const today = new Date();
 
+    console.log("data: ", data);
     for (let i = 0; i < data.length; i++) {
-      // Check if it's a day with a post
       if (data[i].post_id !== -1) {
         tempStreak++;
 
-        // Update top streak if current temp streak is longer
         if (tempStreak > topStreak) {
           topStreak = tempStreak;
         }
 
-        // If the current day has a post, reset current streak
         if (isSameDay(new Date(data[i].post_created_at), today)) {
           currentStreak = tempStreak;
         }
       } else {
-        // Reset temp streak if it's a day without a post
         tempStreak = 0;
       }
     }
@@ -78,12 +75,11 @@ export function Cal() {
   }
 
   useEffect(() => {
-    if (data && isSuccess) {
+    if (data && isSuccess && finalData.length === 0) {
       const timestamps = data.data.map((d) =>
         new Date(d.post_created_at).getTime(),
       );
       const minTimestamp = Math.min(...timestamps);
-      const maxTimestamp = Math.max(...timestamps);
 
       const minDate = new Date(minTimestamp);
 
@@ -121,7 +117,7 @@ export function Cal() {
           new Date(b.post_created_at).getTime(),
       );
 
-      const { topStreak, currentStreak } = calculateStreaks(finalData);
+      const { topStreak, currentStreak } = calculateStreaks(filledData);
       console.log({ topStreak, currentStreak });
       setTopStreaks(topStreak);
       setCurrentStreaks(currentStreak);
