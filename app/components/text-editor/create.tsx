@@ -1,11 +1,7 @@
 "use client";
 
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
@@ -21,31 +17,7 @@ import { getUser } from "@/utils/getUser";
 import { Database } from "@/schema";
 import { Scrollbar } from "react-scrollbars-custom";
 import { IsPublicSwitch } from "./is-public-switch";
-
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({}),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-
-      // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      keepAttributes: false,
-      HTMLAttributes: {
-        class: "",
-      },
-    },
-    orderedList: {
-      keepMarks: true,
-
-      // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      keepAttributes: false,
-      HTMLAttributes: {
-        class: "",
-      },
-    },
-  }),
-];
+import { extensions } from "@/utils/textEditor";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {

@@ -1,18 +1,12 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { BellIcon } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/utils/getUser";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
-import { Button, ButtonProps } from "./button";
 import { cn } from "@/utils/cn";
 
 export default function ViewSidebar({
@@ -47,13 +41,13 @@ export default function ViewSidebar({
   }, [currentUser]);
 
   return (
-    <div className="mx-auto w-[1000px]">
+    <div className="mx-auto h-full">
       <ChangeUsernameDialog
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
       <div className="flex flex-col">
-        <div className="flex h-[3vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-8 dark:border-slate-600 dark:bg-slate-800">
+        <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-6 dark:border-slate-600 dark:bg-slate-800">
           {/* Separator */}
           <div
             className="h-6 w-px bg-slate-900/10 md:hidden"
@@ -61,38 +55,48 @@ export default function ViewSidebar({
           />
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
-            <div className="flex grow  justify-start gap-x-8">
+            <div className="flex grow items-baseline  justify-start gap-x-8">
               <Link
                 href={`/${isMe ? "me" : username}`}
-                className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
+                className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
               >
-                <p>{username}</p>
+                <button
+                  className={cn(
+                    pathName.split("/")[pathName.split("/").length - 1] ===
+                      (isMe ? "me" : username)
+                      ? "border-b-slate-400"
+                      : "border-b-transparent",
+                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
+                  )}
+                >
+                  Home
+                </button>
               </Link>
-              <Link
+              {/* <Link
                 href={`/${isMe ? "me" : username}/blog`}
-                className="flex items-end"
+                className="flex h-full items-end"
               >
                 <button
                   className={cn(
                     pathName.split("/")[2] === "blog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-sm font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
                   )}
                 >
                   Blog
                 </button>
-              </Link>
+              </Link> */}
               <Link
                 href={`/${isMe ? "me" : username}/microblog`}
-                className="flex items-end"
+                className="flex h-full items-end"
               >
                 <button
                   className={cn(
                     pathName.split("/")[2] === "microblog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-sm font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
                   )}
                 >
                   Microblog
@@ -124,9 +128,7 @@ export default function ViewSidebar({
           </div>
         </div>
 
-        <main className="">
-          <div className="overflow-y-hidden px-2">{children}</div>
-        </main>
+        <div className=" overflow-y-hidden px-2">{children}</div>
       </div>
     </div>
   );

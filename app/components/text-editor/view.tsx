@@ -1,43 +1,17 @@
 "use client";
 
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
 import { generateHTML } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { Badge } from "../badge";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { Button } from "../button";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import Scrollbar from "react-scrollbars-custom";
 import { IsPublicSwitch } from "./is-public-switch";
-
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({}),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      HTMLAttributes: {
-        class: "",
-      },
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      HTMLAttributes: {
-        class: "",
-      },
-    },
-  }),
-];
+import { extensions } from "@/utils/textEditor";
 
 export const ViewTextEditor = ({ postId }: { postId: number }) => {
-  const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
-
   const { currentUser } = getUser();
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const { data, isLoading, isFetching, isPending, isSuccess } =

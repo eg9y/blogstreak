@@ -3,10 +3,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
 import { Pencil1Icon } from "@radix-ui/react-icons";
@@ -23,8 +20,8 @@ export default function AppSidebar({
 }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = getUser();
-  const [username, setUsername] = useState("");
   const router = useRouter();
+  const [username, setUsername] = useState("");
 
   const supabase = createClient();
 
@@ -66,8 +63,8 @@ export default function AppSidebar({
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
-      <div className="flex flex-col">
-        <div className="flex h-[4vh] max-h-[52px] shrink-0 items-center gap-x-4  bg-transparent px-4 sm:gap-x-6 sm:px-6 md:px-8  dark:bg-slate-800">
+      <div className="flex flex-col ">
+        <div className="flex h-[7vh]   max-h-[52px] shrink-0 items-center gap-x-4  bg-transparent px-4 sm:gap-x-6 sm:px-6 md:px-8  dark:bg-slate-800">
           {/* Separator */}
           <div
             className="h-6 w-px bg-slate-900/10 md:hidden"
@@ -156,7 +153,7 @@ export default function AppSidebar({
         </div>
 
         <main className="">
-          <div className="overflow-y-hidden px-2">{children}</div>
+          <div className="w-[1000px] overflow-y-hidden px-2">{children}</div>
         </main>
       </div>
     </div>
