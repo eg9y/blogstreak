@@ -6,7 +6,7 @@ import { User } from "@supabase/supabase-js";
 export function useGetUsernameQuery(user: User | null) {
   const supabase = createClient();
 
-  const queryKey = ["post", user?.id];
+  const queryKey = ["username", user?.id];
 
   const queryFn = async () => {
     if (user) {
