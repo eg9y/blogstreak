@@ -17,6 +17,8 @@ export function middleware(request: NextRequest) {
   const mainDomain = "blogstreak.com";
   const alreadyRewritten = request.headers.get("x-rewritten");
 
+  console.log("alreadyRewritten", alreadyRewritten);
+
   // Skip rewriting if the request has already been rewritten
   if (alreadyRewritten === "true") {
     return NextResponse.next();
@@ -35,6 +37,7 @@ export function middleware(request: NextRequest) {
     // Create a modified response with the custom header
     const response = NextResponse.rewrite(url);
     response.headers.set("x-rewritten", "true");
+    console.log("here!", url);
     return response;
   }
 
