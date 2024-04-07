@@ -12,15 +12,13 @@ export function middleware(request: NextRequest) {
   if (PUBLIC_FILE.test(url.pathname) || url.pathname.includes("_next")) return;
 
   const host = request.headers.get("host");
+
   const subdomain = getValidSubdomain(host);
   if (subdomain) {
     // Subdomain available, rewriting
-    console.log(
-      `>>> Rewriting: ${url.pathname} to /${subdomain}${url.pathname}`,
-    );
     url.pathname = `/${subdomain}${url.pathname}`;
   }
-  return NextResponse.next();
+  return NextResponse.redirect(url);
 }
 
 export const config = {
