@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
     // Subdomain available, rewriting
     url.pathname = `/${subdomain}${url.pathname}`;
   }
-  return NextResponse.redirect(url);
+  return NextResponse.rewrite(url);
 }
 
 export const config = {
