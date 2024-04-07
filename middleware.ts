@@ -5,9 +5,10 @@ const PUBLIC_FILE = /\.(.*)$/;
 const NEXT_DATA_PATH = /^\/\_next\//;
 
 export function middleware(request: NextRequest) {
+  // Bypass for public files and Next.js-specific paths
   if (
-    PUBLIC_FILE.test(request.nextUrl.pathname) ||
-    NEXT_DATA_PATH.test(request.nextUrl.pathname)
+    /\.(.*)$/.test(request.nextUrl.pathname) ||
+    request.nextUrl.pathname.startsWith("/_next/")
   ) {
     return NextResponse.next();
   }
@@ -15,21 +16,26 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const host = request.headers.get("host") ?? "";
   const mainDomain = "blogstreak.com";
+  const alreadyRewritten = request.headers.get("X-Rewritten"); // Custom header to indicate a rewrite
 
-  const isMainDomainOrWWW = host === mainDomain || host.startsWith(`www.`);
+  console.log("alreadyRewritten?", alreadyRewritten);
+
+  // Check if we're on the main domain or its www subdomain
+  const isMainDomainOrWWW = host === mainDomain || host.startsWith("www.");
   const subdomain = host.split(".")[0];
 
-  if (!isMainDomainOrWWW && subdomain !== "www") {
+  if (!isMainDomainOrWWW && subdomain !== "www" && !alreadyRewritten) {
     // Rewrite both the domain and the path
-    url.hostname = mainDomain;
-    url.pathname = `/${subdomain}${url.pathname}`;
-
-    // Create a modified response with the custom cookie
+    url.pathname = `/${subdomain}${url.pathname !== "/" ? url.pathname : ""}`;
+    console.log("new url:", url);
     const response = NextResponse.rewrite(url);
-    console.log("here!", url);
+
+    // Add a custom header to indicate that the request has been rewritten
+    response.headers.set("X-Rewritten", "true");
     return response;
   }
 
+  // Continue without modification for main domain access or if conditions for rewriting are not met
   return NextResponse.next();
 }
 
