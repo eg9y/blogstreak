@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const PUBLIC_FILE = /\.(.*)$/;
-const NEXT_DATA_PATH = /^\/_next\//;
+const NEXT_DATA_PATH = /^\/\_next\//;
 
 export function middleware(request: NextRequest) {
   if (
@@ -15,28 +15,17 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const host = request.headers.get("host") ?? "";
   const mainDomain = "blogstreak.com";
-  const alreadyRewritten = request.headers.get("x-rewritten");
-
-  console.log("alreadyRewritten", alreadyRewritten);
-
-  // Skip rewriting if the request has already been rewritten
-  if (alreadyRewritten === "true") {
-    return NextResponse.next();
-  }
 
   const isMainDomainOrWWW = host === mainDomain || host.startsWith(`www.`);
   const subdomain = host.split(".")[0];
 
-  if (
-    !isMainDomainOrWWW &&
-    subdomain !== "www" &&
-    !url.pathname.startsWith(`/${subdomain}`)
-  ) {
+  if (!isMainDomainOrWWW && subdomain !== "www") {
+    // Rewrite both the domain and the path
+    url.hostname = mainDomain;
     url.pathname = `/${subdomain}${url.pathname}`;
 
-    // Create a modified response with the custom header
+    // Create a modified response with the custom cookie
     const response = NextResponse.rewrite(url);
-    response.headers.set("x-rewritten", "true");
     console.log("here!", url);
     return response;
   }
