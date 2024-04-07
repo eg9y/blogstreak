@@ -3,7 +3,6 @@
 import { cn } from "@/utils/cn";
 import { getUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { getHexColor } from "@/utils/presetColors";
 import { useSearchParams } from "next/navigation";
 import { Button } from "../components/button";
 import { Checkbox } from "../components/checkbox";

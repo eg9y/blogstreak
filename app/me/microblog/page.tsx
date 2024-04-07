@@ -5,7 +5,6 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { Button } from "@/app/components/button";
 import { Options } from "../options";
 import { Cal } from "@/app/components/cal-heatmap";
-import { PostsPagination } from "@/app/components/feed/posts-pagination";
 
 export default function Home() {
   return (
@@ -34,7 +33,6 @@ export default function Home() {
           </div>
         </main>
       </Scrollbar>
-      <PostsPagination />
     </div>
   );
 }

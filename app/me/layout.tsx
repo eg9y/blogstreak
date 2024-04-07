@@ -25,7 +25,7 @@ export default async function Layout({
     .single();
 
   if (!userProfile?.name) {
-    console.log("shiet no username");
+    console.log("uh oh no username");
   }
 
   return (

@@ -2,7 +2,6 @@
 import Scrollbar from "react-scrollbars-custom";
 import { Posts } from "@/app/components/feed/posts";
 import { Cal } from "../../components/cal-heatmap";
-import { PostsPagination } from "../../components/feed/posts-pagination";
 
 export default function Home() {
   return (
@@ -20,7 +19,6 @@ export default function Home() {
           </div>
         </main>
       </Scrollbar>
-      <PostsPagination />
     </div>
   );
 }

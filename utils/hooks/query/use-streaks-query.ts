@@ -3,40 +3,37 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "../../supabase/client";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
-export function usePostsQuery(
+export function useStreaksQuery(
   user: User | null,
   searchParams: ReadonlyURLSearchParams,
   username: string,
 ) {
-  const supabase = createClient();
+  const month = parseInt(
+    searchParams.get("month") || (new Date().getMonth() + 1).toString(),
+  );
 
+  const year = parseInt(
+    searchParams.get("year") || new Date().getFullYear().toString(),
+  );
+
+  const supabase = createClient();
   const queryKey = [
-    "posts",
+    "streaks",
     user?.id,
     {
-      tags: searchParams.get("tags"),
-      page: searchParams.get("page"),
-      onlyPublic: searchParams.get("only_public"),
+      month,
+      year,
     },
   ];
-  const tagNames = searchParams.get("tags")?.split(",") || undefined;
-  const page = parseInt(searchParams.get("page") || "1", 10);
-  const onlyPublic = searchParams.get("only_public") || undefined;
-  const limit = 15; // Number of posts per page
-  // Assuming you keep track of the last post ID for keyset pagination
-  const lastPostId = parseInt(searchParams.get("lastPostId") || "0", 15);
 
   const queryFn = async () => {
     if (!user) return { data: [], count: 0 }; // Early return if user is null
 
-    const { data, error } = await supabase.rpc("get_posts_by_topics", {
-      topic_names_arr: tagNames,
+    const { data, error } = await supabase.rpc("get_posts_dates", {
       user_id_param: user?.id,
-      last_post_id_param: lastPostId ? lastPostId : undefined,
-      total_posts_param: limit,
-      page_param: page,
-      only_public_param: onlyPublic as boolean | undefined,
       username_param: decodeURIComponent(username),
+      month_param: month,
+      year_param: year,
     });
 
     const { count, error: totalPostsError } = await supabase
@@ -56,11 +53,10 @@ export function usePostsQuery(
       throw new Error("Error fetching total posts");
     }
 
-    // Ensure data is sorted by post_created_at in ascending order
+    // Ensure data is sorted by post_date in ascending order
     const sortedData = data.sort(
       (a, b) =>
-        new Date(a.post_created_at).getTime() -
-        new Date(b.post_created_at).getTime(),
+        new Date(a.post_date).getTime() - new Date(b.post_date).getTime(),
     );
 
     // Calculate streaks
@@ -68,7 +64,7 @@ export function usePostsQuery(
     let previousDate: Date | null = null;
 
     const dataWithStreaks = sortedData.map((post) => {
-      const postDate = new Date(post.post_created_at);
+      const postDate = new Date(post.post_date);
 
       if (!previousDate) {
         currentStreak = 1; // Start with a streak of 1 for the first post

@@ -1,28 +1,46 @@
 "use client";
 
 import { getUser } from "@/utils/getUser";
-import { usePostsQuery } from "@/utils/hooks/query/use-posts-query";
+import { useStreaksQuery } from "@/utils/hooks/query/use-streaks-query";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Database } from "@/schema";
 import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
+import { Button } from "./button";
+import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
 export function Cal() {
   const { currentUser } = getUser();
   const searchParams = useSearchParams();
   const username = usePathname().split("/")[1];
-  const { data, isSuccess } = usePostsQuery(
+  const { data, isSuccess } = useStreaksQuery(
     currentUser,
     searchParams,
     username,
   );
   const [finalData, setFinalData] = useState<
-    (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+    (Database["public"]["Functions"]["get_posts_dates"]["Returns"][number] & {
       streaks: number | null;
     })[]
   >([]);
   const [topStreaks, setTopStreaks] = useState(0);
   const [currentStreaks, setCurrentStreaks] = useState(0);
+
+  const currentYear = parseInt(
+    searchParams.get("year") || new Date().getFullYear().toString(),
+  );
+  const currentMonth =
+    parseInt(
+      searchParams.get("month") || (new Date().getMonth() + 1).toString(),
+    ) - 1;
+
+  const previousDate = new Date(currentYear, currentMonth - 1);
+  const previousMonth = previousDate.getMonth() + 1;
+  const previousYear = previousDate.getFullYear();
+
+  const nextDate = new Date(currentYear, currentMonth + 1);
+  const nextMonth = nextDate.getMonth() + 1;
+  const nextYear = nextDate.getFullYear();
 
   function getAllDatesInMonth(year: number, month: number) {
     const date = new Date(Date.UTC(year, month, 1));
@@ -45,7 +63,7 @@ export function Cal() {
   }
 
   function calculateStreaks(
-    data: (Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
+    data: (Database["public"]["Functions"]["get_posts_dates"]["Returns"][number] & {
       streaks: number | null;
     })[],
   ) {
@@ -54,7 +72,6 @@ export function Cal() {
     let tempStreak = 0;
     const today = new Date();
 
-    console.log("data: ", data);
     for (let i = 0; i < data.length; i++) {
       if (data[i].post_id !== -1) {
         tempStreak++;
@@ -63,7 +80,7 @@ export function Cal() {
           topStreak = tempStreak;
         }
 
-        if (isSameDay(new Date(data[i].post_created_at), today)) {
+        if (isSameDay(new Date(data[i].post_date), today)) {
           currentStreak = tempStreak;
         }
       } else {
@@ -76,9 +93,7 @@ export function Cal() {
 
   useEffect(() => {
     if (data && isSuccess && finalData.length === 0) {
-      const timestamps = data.data.map((d) =>
-        new Date(d.post_created_at).getTime(),
-      );
+      const timestamps = data.data.map((d) => new Date(d.post_date).getTime());
       const minTimestamp = Math.min(...timestamps);
 
       const minDate = new Date(minTimestamp);
@@ -91,7 +106,7 @@ export function Cal() {
       const filledData = allDates.map((date) => {
         const dateString = date.toISOString().split("T")[0];
         const existingPost = data.data.find((d) =>
-          new Date(d.post_created_at).toISOString().startsWith(dateString),
+          new Date(d.post_date).toISOString().startsWith(dateString),
         );
         if (existingPost) {
           return {
@@ -102,7 +117,7 @@ export function Cal() {
 
         // Adjusted to include all necessary fields with default or placeholder values
         return {
-          post_created_at: dateString,
+          post_date: dateString,
           post_id: -1, // Placeholder value since null is not accepted; consider a negative value to indicate a non-existing post
           post_text: "", // Empty string or suitable placeholder
           post_user_id: "", // Empty string or suitable placeholder
@@ -113,12 +128,10 @@ export function Cal() {
 
       filledData.sort(
         (a, b) =>
-          new Date(a.post_created_at).getTime() -
-          new Date(b.post_created_at).getTime(),
+          new Date(a.post_date).getTime() - new Date(b.post_date).getTime(),
       );
 
       const { topStreak, currentStreak } = calculateStreaks(filledData);
-      console.log({ topStreak, currentStreak });
       setTopStreaks(topStreak);
       setCurrentStreaks(currentStreak);
 
@@ -138,7 +151,11 @@ export function Cal() {
     <div className="flex flex-col gap-2">
       <div className="flex justify-between">
         <h1 className="text-sm font-bold dark:text-slate-300">
-          March Activity
+          {new Date(currentYear, currentMonth).toLocaleDateString("en-US", {
+            month: "long",
+            year: "numeric",
+          })}{" "}
+          Activity
         </h1>
         <div className="flex items-center justify-end gap-2">
           <div className="flex h-[24.8333px] flex-shrink-0 items-center bg-slate-100 px-2 dark:bg-slate-600">
@@ -154,12 +171,23 @@ export function Cal() {
         </div>
       </div>
       <div className="flex gap-1">
+        <div>
+          <Button
+            href={`?year=${previousYear}&month=${previousMonth}`}
+            className={cn(
+              "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
+            )}
+            plain
+          >
+            <ArrowLeftIcon />
+          </Button>
+        </div>
         {finalData.map((day) => {
-          const dayNumber = new Date(day.post_created_at).getDate();
+          const dayNumber = new Date(day.post_date).getDate();
 
           return (
             <div
-              key={`${day.post_id}-${day.post_created_at}`}
+              key={`${day.post_id}-${day.post_date}`}
               className={cn("relative inline-block grow")}
             >
               <div className="mt-[100%]"></div>
@@ -167,7 +195,7 @@ export function Cal() {
                 className={cn(
                   "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-sm",
                   day.post_id === -1 && "bg-slate-100",
-                  isSameDay(new Date(day.post_created_at), new Date()) &&
+                  isSameDay(new Date(day.post_date), new Date()) &&
                     "ring-2 ring-green-500",
                   day.streaks !== null && "hover:ring-2 hover:ring-slate-500",
                   day.streaks === 1 && "bg-amber-200",
@@ -185,6 +213,17 @@ export function Cal() {
             </div>
           );
         })}
+        <div>
+          <Button
+            href={`?year=${nextYear}&month=${nextMonth}`}
+            className={cn(
+              "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
+            )}
+            plain
+          >
+            <ArrowRightIcon />
+          </Button>
+        </div>
       </div>
     </div>
   );

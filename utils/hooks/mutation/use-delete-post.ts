@@ -7,8 +7,7 @@ export function useDeletePost() {
   const supabase = createClient();
 
   async function mutationFn(postId: number) {
-    const res = await supabase.from("posts").delete().eq("id", postId);
-    console.log(res);
+    await supabase.from("posts").delete().eq("id", postId);
   }
 
   return useMutation({

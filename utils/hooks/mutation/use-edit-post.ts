@@ -36,8 +36,6 @@ export function useEditPost() {
       })
       .eq("id", postId);
 
-    console.log(res);
-
     if (tags.length > 0) {
       const resDelete = await supabase
         .from("post_topics")
