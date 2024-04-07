@@ -13,6 +13,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (request.nextUrl.hostname === "localhost") {
+    return NextResponse.next();
+  }
+
   const url = request.nextUrl.clone();
   const host = request.headers.get("host") ?? "";
   const mainDomain = "blogstreak.com";
