@@ -37,7 +37,7 @@ export default function ViewSidebar({
           setUsername(profile.name);
         }
       } else {
-        setUsername(pathName.slice(1));
+        setUsername(pathName.split("/")[1]);
       }
     })();
   }, [currentUser, pathName]);
@@ -58,6 +58,11 @@ export default function ViewSidebar({
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
             <div className="flex grow items-baseline  justify-start gap-x-8">
+              {!isMe && (
+                <div>
+                  <p className="font-bold dark:text-slate-100">{username}</p>
+                </div>
+              )}
               <Link
                 href={`/${isMe ? "me" : username}`}
                 className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"

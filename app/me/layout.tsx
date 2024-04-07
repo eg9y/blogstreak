@@ -29,11 +29,11 @@ export default async function Layout({
   }
 
   return (
-    <>
+    <div className="mx-auto lg:w-[1000px]">
       {!userProfile?.name && <ForceChangeUsernameDialog />}
       <AppSidebar>
         <ViewSidebar>{children}</ViewSidebar>
       </AppSidebar>
-    </>
+    </div>
   );
 }

@@ -206,7 +206,7 @@ export function Cal() {
                 )}
               >
                 {/* Displaying the day number */}
-                <span className="text-xs font-medium text-slate-600">
+                <span className="invisible text-xs font-medium text-slate-600 sm:visible">
                   {dayNumber}
                 </span>
               </div>

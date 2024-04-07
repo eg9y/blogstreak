@@ -58,7 +58,7 @@ export default function AppSidebar({
   ];
 
   return (
-    <div className="mx-auto w-[1000px]">
+    <>
       <ChangeUsernameDialog
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
@@ -156,6 +156,6 @@ export default function AppSidebar({
           <div className="w-[1000px] overflow-y-hidden px-2">{children}</div>
         </main>
       </div>
-    </div>
+    </>
   );
 }

@@ -6,8 +6,8 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="mx-auto lg:w-[1000px]">
       <ViewSidebar>{children}</ViewSidebar>
-    </>
+    </div>
   );
 }
