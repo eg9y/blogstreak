@@ -2,41 +2,40 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const PUBLIC_FILE = /\.(.*)$/; // Files
+const NEXT_DATA_PATH = /^\/_next\//; // Next.js specific paths
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  // Clone the URL
-  const url = request.nextUrl.clone();
-
-  // Skip public files
-  if (PUBLIC_FILE.test(url.pathname) || url.pathname.includes("_next")) return;
-
-  const host = request.headers.get("host");
-
-  const subdomain = getValidSubdomain(host);
-  if (subdomain) {
-    // Subdomain available, rewriting
-    url.pathname = `/${subdomain}${url.pathname}`;
+  // Skip public files and Next.js specific paths
+  if (
+    PUBLIC_FILE.test(request.nextUrl.pathname) ||
+    NEXT_DATA_PATH.test(request.nextUrl.pathname)
+  ) {
+    return;
   }
-  return NextResponse.rewrite(url);
+
+  const url = request.nextUrl.clone();
+  const host = request.headers.get("host") ?? "";
+
+  // Assuming 'blogstreak.com' is your main domain and excluding any www subdomain
+  const mainDomain = "blogstreak.com";
+  const isMainDomainOrWWW = host === mainDomain || host === `www.${mainDomain}`;
+
+  // Extract subdomain if not accessing the main domain or www
+  if (!isMainDomainOrWWW && host.endsWith(mainDomain)) {
+    const subdomain = host.split(".")[0]; // Assuming subdomain is always the first part
+
+    // Avoid rewriting if the subdomain is 'www' or empty
+    if (subdomain && subdomain !== "www") {
+      // Rewrite the path to include the subdomain
+      url.pathname = `/${subdomain}${url.pathname}`;
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  // For the main domain or www, proceed without rewriting
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: ["/:path*"],
-};
-
-export const getValidSubdomain = (host?: string | null) => {
-  let subdomain: string | null = null;
-  if (!host && typeof window !== "undefined") {
-    // On client side, get the host from window
-    host = window.location.host;
-  }
-  if (host && host.includes(".")) {
-    const candidate = host.split(".")[0];
-    if (candidate && !candidate.includes("localhost")) {
-      // Valid candidate
-      subdomain = candidate;
-    }
-  }
-  return subdomain;
 };
