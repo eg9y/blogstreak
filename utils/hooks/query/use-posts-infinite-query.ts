@@ -24,7 +24,7 @@ export function usePostsInfiniteQuery(
     {
       tags: searchParams.get("tags"),
       page: searchParams.get("page"),
-      onlyPublic: searchParams.get("only_public"),
+      onlyPublic: username === "me" ? searchParams.get("only_public") : true,
     },
   ];
   const tagNames = searchParams.get("tags")?.split(",") || undefined;
@@ -32,8 +32,6 @@ export function usePostsInfiniteQuery(
   const limit = 15; // Number of posts per page
 
   const queryFn = async ({ pageParam = -1 }) => {
-    if (!user) return { data: [], count: 0 }; // Early return if user is null
-
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
       earliest_post_id_param: pageParam, // Assuming this is correctly set to null or the appropriate ID
       month_param: month,
@@ -93,7 +91,7 @@ export function usePostsInfiniteQuery(
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: user && searchParams ? true : false, // Query enabled only if user is not null
+    enabled: (username === "me" ? user : true) && searchParams ? true : false, // Query enabled only if user is not null
     staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
   });
 }

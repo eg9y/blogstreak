@@ -36,9 +36,11 @@ export default function ViewSidebar({
           setIsMe(isMe);
           setUsername(profile.name);
         }
+      } else {
+        setUsername(pathName.slice(1));
       }
     })();
-  }, [currentUser]);
+  }, [currentUser, pathName]);
 
   return (
     <div className="mx-auto h-full">

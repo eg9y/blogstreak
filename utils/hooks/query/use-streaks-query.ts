@@ -27,8 +27,6 @@ export function useStreaksQuery(
   ];
 
   const queryFn = async () => {
-    if (!user) return { data: [], count: 0 }; // Early return if user is null
-
     const { data, error } = await supabase.rpc("get_posts_dates", {
       user_id_param: user?.id,
       username_param: decodeURIComponent(username),
@@ -90,7 +88,7 @@ export function useStreaksQuery(
   return useQuery({
     queryKey,
     queryFn,
-    enabled: user && searchParams ? true : false, // Query enabled only if user is not null
+    enabled: (username === "me" ? user : true) && searchParams ? true : false, // Query enabled only if user is not null
     staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
   });
 }

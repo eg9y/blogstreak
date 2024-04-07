@@ -177,10 +177,10 @@ export type Database = {
       }
       get_posts_dates: {
         Args: {
-          user_id_param: string
           username_param: string
           month_param: number
           year_param: number
+          user_id_param?: string
         }
         Returns: {
           post_id: number
