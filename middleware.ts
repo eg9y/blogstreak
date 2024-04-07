@@ -16,23 +16,18 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const host = request.headers.get("host") ?? "";
   const mainDomain = "blogstreak.com";
-  const alreadyRewritten = request.cookies.get("X-Rewritten"); // Custom header to indicate a rewrite
-
-  console.log("cookie", alreadyRewritten);
 
   // Check if we're on the main domain or its www subdomain
   const isMainDomainOrWWW = host === mainDomain || host.startsWith("www.");
   const subdomain = host.split(".")[0];
 
-  if (!isMainDomainOrWWW && subdomain !== "www" && !alreadyRewritten) {
+  if (!isMainDomainOrWWW && subdomain !== "www") {
     // Rewrite both the domain and the path
     url.pathname = `/${subdomain}${url.pathname !== "/" ? url.pathname : ""}`;
     url.hostname = "blogstreak.com";
 
     const response = NextResponse.rewrite(url);
 
-    // Add a custom header to indicate that the request has been rewritten
-    response.cookies.set("X-Rewritten", "true");
     return response;
   }
 
