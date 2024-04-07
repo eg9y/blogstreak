@@ -23,9 +23,14 @@ export function middleware(request: NextRequest) {
   // Extract subdomain if not accessing the main domain or www
   if (!isMainDomainOrWWW && host.endsWith(mainDomain)) {
     const subdomain = host.split(".")[0]; // Assuming subdomain is always the first part
+    console.log("subdomain", subdomain);
 
     // Avoid rewriting if the subdomain is 'www' or empty
     if (subdomain && subdomain !== "www") {
+      console.log(
+        "`/${subdomain}${url.pathname}`",
+        `/${subdomain}${url.pathname}`,
+      );
       // Rewrite the path to include the subdomain
       url.pathname = `/${subdomain}${url.pathname}`;
       return NextResponse.rewrite(url);
