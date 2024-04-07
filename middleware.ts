@@ -27,8 +27,12 @@ export function middleware(request: NextRequest) {
   if (!isMainDomainOrWWW && subdomain !== "www" && !alreadyRewritten) {
     // Rewrite both the domain and the path
     url.pathname = `/${subdomain}${url.pathname !== "/" ? url.pathname : ""}`;
+    url.hostname = "blogstreak.com";
+
     console.log("new url:", url);
-    const response = NextResponse.rewrite(url);
+    const response = NextResponse.rewrite(url, {
+      headers: [["X-Rewritten", "true"]],
+    });
 
     // Add a custom header to indicate that the request has been rewritten
     response.headers.set("X-Rewritten", "true");
