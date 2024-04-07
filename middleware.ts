@@ -25,6 +25,7 @@ export function middleware(request: NextRequest) {
   const subdomain = host.split(".")[0];
 
   // Proceed only if on a subdomain other than 'www', and if the pathname does not already start with the subdomain
+  console.log("url.pathname", url.pathname);
   if (
     !isMainDomainOrWWW &&
     subdomain !== "www" &&
