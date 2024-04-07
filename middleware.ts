@@ -1,43 +1,42 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PUBLIC_FILE = /\.(.*)$/; // Files
-const NEXT_DATA_PATH = /^\/_next\//; // Next.js specific paths
+// Regular expressions for public files and Next.js paths
+const PUBLIC_FILE = /\.(.*)$/;
+const NEXT_DATA_PATH = /^\/_next\//;
 
 export function middleware(request: NextRequest) {
-  // Skip public files and Next.js specific paths
+  // Bypass for public files and Next.js-specific paths
   if (
     PUBLIC_FILE.test(request.nextUrl.pathname) ||
     NEXT_DATA_PATH.test(request.nextUrl.pathname)
   ) {
-    return;
+    return NextResponse.next();
   }
 
   const url = request.nextUrl.clone();
   const host = request.headers.get("host") ?? "";
-
-  // Assuming 'blogstreak.com' is your main domain and excluding any www subdomain
   const mainDomain = "blogstreak.com";
+
+  // Check if we're on the main domain or its www subdomain
   const isMainDomainOrWWW = host === mainDomain || host === `www.${mainDomain}`;
 
-  // Extract subdomain if not accessing the main domain or www
-  if (!isMainDomainOrWWW && host.endsWith(mainDomain)) {
-    const subdomain = host.split(".")[0]; // Assuming subdomain is always the first part
-    console.log("subdomain", subdomain);
+  // Extract subdomain
+  const subdomain = host.split(".")[0];
 
-    // Avoid rewriting if the subdomain is 'www' or empty
-    if (subdomain && subdomain !== "www") {
-      console.log(
-        "`/${subdomain}${url.pathname}`",
-        `/${subdomain}${url.pathname}`,
-      );
-      // Rewrite the path to include the subdomain
-      url.pathname = `/${subdomain}${url.pathname}`;
-      return NextResponse.rewrite(url);
-    }
+  // Proceed only if on a subdomain other than 'www', and if the pathname does not already start with the subdomain
+  if (
+    !isMainDomainOrWWW &&
+    subdomain !== "www" &&
+    !url.pathname.startsWith(`/${subdomain}`)
+  ) {
+    // Rewrite the URL's pathname to include the subdomain
+    url.pathname = `/${subdomain}${url.pathname}`;
+    console.log("Rewriting to:", url.pathname);
+    return NextResponse.rewrite(url);
   }
 
-  // For the main domain or www, proceed without rewriting
+  // Continue without modification for main domain access or if conditions for rewriting are not met
   return NextResponse.next();
 }
 
