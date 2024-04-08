@@ -9,11 +9,6 @@ export default function Home() {
       <Scrollbar style={{ width: "100%", height: "80vh" }}>
         <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <h1 className="self-center text-xl font-bold dark:text-slate-300">
-                Microblog
-              </h1>
-            </div>
             <Cal />
             <Posts />
           </div>
