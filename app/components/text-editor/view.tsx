@@ -10,12 +10,14 @@ import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import Scrollbar from "react-scrollbars-custom";
 import { IsPublicSwitch } from "./is-public-switch";
 import { extensions } from "@/utils/textEditor";
+import { usePathname } from "next/navigation";
 
 export const ViewTextEditor = ({ postId }: { postId: number }) => {
   const { currentUser } = getUser();
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const { data, isLoading, isFetching, isPending, isSuccess } =
     useGetTopicsQuery(currentUser, postId);
+  const pathname = usePathname();
 
   const output = useMemo(() => {
     if (postData?.data?.text) {
@@ -68,13 +70,15 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
               />
             </div>
           </div>
-          <Button
-            color="orange"
-            className="w-40 cursor-pointer self-end"
-            href={`/me/post/${postId}/edit`}
-          >
-            Edit
-          </Button>
+          {pathname.split("/")[1] === "me" && (
+            <Button
+              color="orange"
+              className="w-40 cursor-pointer self-end"
+              href={`/me/post/${postId}/edit`}
+            >
+              Edit
+            </Button>
+          )}
         </div>
       </div>
     </div>

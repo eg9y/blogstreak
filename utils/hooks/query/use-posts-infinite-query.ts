@@ -31,7 +31,7 @@ export function usePostsInfiniteQuery(
   ];
   const tagNames = searchParams.get("tags")?.split(",") || undefined;
   const isPrivateJournals =
-    username === "me" ? searchParams.get("private") === "true" : true;
+    username === "me" ? searchParams.get("private") === "true" : false;
   const limit = 15; // Number of posts per page
 
   const queryFn = async ({ pageParam = -1 }) => {
