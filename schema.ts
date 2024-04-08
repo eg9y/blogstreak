@@ -173,6 +173,7 @@ export type Database = {
           post_text: string
           post_user_id: string
           post_topics: Json
+          is_public: boolean
         }[]
       }
       get_posts_dates: {

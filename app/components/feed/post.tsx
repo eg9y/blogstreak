@@ -8,6 +8,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { PostOptions } from "./post-options";
 import { Database } from "@/schema";
 import Link from "next/link";
+import { LockClosedIcon } from "@radix-ui/react-icons";
 
 interface PostProps {
   post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
@@ -45,7 +46,7 @@ export function Post({ post, isMine, username }: PostProps) {
 
   return (
     <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-50 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
-      <div className="flex justify-between">
+      <div className="flex h-5 justify-between">
         <div className="flex flex-wrap gap-1">
           {post.post_topics &&
             (
@@ -75,12 +76,20 @@ export function Post({ post, isMine, username }: PostProps) {
               day: "numeric",
             })}
           </p>
-          <Badge color={"red"}>
-            <div className="flex items-center gap-1">
-              <p>🔥</p>
-              <p>{post.streaks}</p>
-            </div>
-          </Badge>
+
+          <div className="flex gap-1">
+            {!post.is_public && (
+              <Badge color="zinc">
+                <LockClosedIcon />
+              </Badge>
+            )}
+            <Badge color={"red"}>
+              <div className="flex items-center gap-1">
+                <p>🔥</p>
+                <p>{post.streaks}</p>
+              </div>
+            </Badge>
+          </div>
         </div>
       </div>
     </div>

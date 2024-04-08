@@ -52,10 +52,6 @@ export default function ViewSidebar({
       <div className="flex flex-col">
         <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-6 dark:border-slate-600 dark:bg-slate-800">
           {/* Separator */}
-          <div
-            className="h-6 w-px bg-slate-900/10 md:hidden"
-            aria-hidden="true"
-          />
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
             <div className="flex grow items-baseline  justify-start gap-x-8">

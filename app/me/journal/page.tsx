@@ -18,7 +18,10 @@ export default function Home() {
               <h1 className="text-sm font-bold dark:text-slate-300">Posts</h1>
               <div className="flex items-center justify-between gap-2">
                 <Options />
-                <Button href="/me/write" className="hidden max-w-20 sm:block">
+                <Button
+                  href="/me/write"
+                  className="hidden max-w-20 sm:inline-flex"
+                >
                   <Pencil1Icon />
                   Write
                 </Button>
