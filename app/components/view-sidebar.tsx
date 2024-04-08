@@ -95,18 +95,18 @@ export default function ViewSidebar({
                 </button>
               </Link> */}
               <Link
-                href={`/${isMe ? "me" : username}/microblog`}
+                href={`/${isMe ? "me" : username}/journal`}
                 className="flex h-full items-end"
               >
                 <button
                   className={cn(
-                    pathName.split("/")[2] === "microblog"
+                    pathName.split("/")[2] === "journal"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
                   )}
                 >
-                  Microblog
+                  Journal
                 </button>
               </Link>
             </div>
