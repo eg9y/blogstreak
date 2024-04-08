@@ -54,28 +54,6 @@ export function Options() {
           </Button>
         </li>
       ))}
-      <li>
-        <Button
-          href={
-            searchQuery.get("only_public") === null
-              ? `?only_public=${true}`
-              : `/me`
-          }
-          className={cn(
-            "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
-          )}
-          plain
-        >
-          <Checkbox
-            aria-label="only public"
-            name="only_public"
-            className={"pointer-events-none"}
-            checked={searchQuery.get("only_public") !== null}
-            color="white"
-          />
-          <span className="truncate">Only Public</span>
-        </Button>
-      </li>
     </ul>
   );
 }

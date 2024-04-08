@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/utils/getUser";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 import { cn } from "@/utils/cn";
 
@@ -19,6 +19,7 @@ export default function ViewSidebar({
   const [username, setUsername] = useState("");
   const [isMe, setIsMe] = useState(false);
   const pathName = usePathname();
+  const searchParams = useSearchParams();
 
   const supabase = createClient();
 
@@ -100,7 +101,8 @@ export default function ViewSidebar({
               >
                 <button
                   className={cn(
-                    pathName.split("/")[2] === "journal"
+                    pathName.split("/")[2] === "journal" &&
+                      !searchParams.get("private")
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
@@ -110,10 +112,14 @@ export default function ViewSidebar({
                 </button>
               </Link>
               {isMe && (
-                <Link href={`/me/journal`} className="flex h-full items-end">
+                <Link
+                  href={`/me/journal?private=true`}
+                  className="flex h-full items-end"
+                >
                   <button
                     className={cn(
-                      pathName.split("/")[2] === "private-journal"
+                      pathName.split("/")[2] === "journal" &&
+                        searchParams.get("private")
                         ? "border-b-slate-400"
                         : "border-b-transparent",
                       "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",

@@ -163,7 +163,7 @@ export type Database = {
           earliest_post_id_param?: number
           total_posts_param?: number
           username_param?: string
-          only_public_param?: boolean
+          is_private_param?: boolean
           month_param?: number
           year_param?: number
         }

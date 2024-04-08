@@ -147,6 +147,13 @@ export function Cal() {
     );
   }
 
+  function createUpdatedSearchQuery(year: number, month: number) {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("year", year.toString());
+    newSearchParams.set("month", month.toString());
+    return `?${newSearchParams.toString()}`;
+  }
+
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex flex-col items-start justify-between sm:flex-row sm:items-start">
@@ -170,10 +177,10 @@ export function Cal() {
           </div>
         </div>
       </div>
-      <div className="flex gap-1">
+      <div className="flex sm:gap-1">
         <div>
           <Button
-            href={`?year=${previousYear}&month=${previousMonth}`}
+            href={createUpdatedSearchQuery(previousYear, previousMonth)}
             className={cn(
               "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
             )}
@@ -193,7 +200,7 @@ export function Cal() {
               <div className="mt-[100%]"></div>
               <div
                 className={cn(
-                  "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-sm",
+                  "absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center sm:rounded-sm",
                   day.post_id === -1 && "bg-slate-100",
                   isSameDay(new Date(day.post_date), new Date()) &&
                     "ring-2 ring-green-500",
@@ -215,7 +222,7 @@ export function Cal() {
         })}
         <div>
           <Button
-            href={`?year=${nextYear}&month=${nextMonth}`}
+            href={createUpdatedSearchQuery(nextYear, nextMonth)}
             className={cn(
               "group flex items-center gap-x-1 rounded-md !pb-1 !pt-1 text-sm font-semibold leading-6",
             )}

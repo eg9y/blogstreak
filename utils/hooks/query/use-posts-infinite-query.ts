@@ -18,24 +18,27 @@ export function usePostsInfiniteQuery(
 
   const supabase = createClient();
 
+  console.log('searchParams.get("private")', searchParams.get("private"));
+
   const queryKey = [
     "infinite-posts",
     user?.id,
     {
       tags: searchParams.get("tags"),
       page: searchParams.get("page"),
-      onlyPublic: username === "me" ? searchParams.get("only_public") : true,
+      private: username === "me" ? searchParams.get("private") : "true",
     },
   ];
   const tagNames = searchParams.get("tags")?.split(",") || undefined;
-  const onlyPublic = searchParams.get("only_public") || undefined;
+  const isPrivateJournals =
+    username === "me" ? searchParams.get("private") === "true" : true;
   const limit = 15; // Number of posts per page
 
   const queryFn = async ({ pageParam = -1 }) => {
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
       earliest_post_id_param: pageParam, // Assuming this is correctly set to null or the appropriate ID
       month_param: month,
-      only_public_param: onlyPublic ? onlyPublic === "true" : undefined, // Make sure to convert to boolean if needed
+      is_private_param: isPrivateJournals, // Updated to use is_private_param
       topic_names_arr: tagNames,
       total_posts_param: limit,
       user_id_param: user?.id,
