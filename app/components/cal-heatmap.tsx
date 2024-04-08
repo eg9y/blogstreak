@@ -148,8 +148,8 @@ export function Cal() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between">
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex flex-col items-start justify-between sm:flex-row sm:items-start">
         <h1 className="text-sm font-bold dark:text-slate-300">
           {new Date(currentYear, currentMonth).toLocaleDateString("en-US", {
             month: "long",

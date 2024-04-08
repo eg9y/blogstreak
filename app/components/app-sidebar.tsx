@@ -153,7 +153,7 @@ export default function AppSidebar({
         </div>
 
         <main className="">
-          <div className="w-[1000px] overflow-y-hidden px-2">{children}</div>
+          <div className=" overflow-y-hidden px-2">{children}</div>
         </main>
       </div>
     </>

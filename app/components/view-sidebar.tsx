@@ -73,7 +73,7 @@ export default function ViewSidebar({
                       (isMe ? "me" : username)
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
                   )}
                 >
                   Home
@@ -88,7 +88,7 @@ export default function ViewSidebar({
                     pathName.split("/")[2] === "blog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-sm sm:text-lg font-medium dark:text-slate-100",
                   )}
                 >
                   Blog
@@ -103,12 +103,26 @@ export default function ViewSidebar({
                     pathName.split("/")[2] === "journal"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-lg font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
                   )}
                 >
                   Journal
                 </button>
               </Link>
+              {isMe && (
+                <Link href={`/me/journal`} className="flex h-full items-end">
+                  <button
+                    className={cn(
+                      pathName.split("/")[2] === "private-journal"
+                        ? "border-b-slate-400"
+                        : "border-b-transparent",
+                      "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
+                    )}
+                  >
+                    Private Journal
+                  </button>
+                </Link>
+              )}
             </div>
             <form
               className="relative flex flex-1 dark:bg-slate-600"

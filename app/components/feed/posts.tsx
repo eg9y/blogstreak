@@ -24,7 +24,7 @@ export function Posts() {
   } = usePostsInfiniteQuery(currentUser, searchParams, username);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       {data?.pages?.map((page) =>
         page.data
           ?.filter((post) => post.post_text)

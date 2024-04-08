@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div className="tw-flex tw-flex-col tw-gap-4">
       <Scrollbar style={{ width: "100%", height: "80vh" }}>
-        <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
+        <main className="mx-auto flex flex-col gap-4 p-4 sm:min-w-[400px]">
           <div className="flex flex-col gap-4">
             {isSuccess && !bioData?.data?.bio && (
               <div>

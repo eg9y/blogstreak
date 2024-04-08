@@ -15,7 +15,7 @@ export function Options() {
     useGetTopicsQuery(currentUser);
 
   return (
-    <ul role="list" className="flex gap-1">
+    <ul role="list" className="flex w-full flex-wrap  gap-1 ">
       <li>
         <Button
           href={`/me`}

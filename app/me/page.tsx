@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div className="tw-flex tw-flex-col tw-gap-2">
       <Scrollbar style={{ width: "100%", height: "80vh" }}>
-        <main className="mx-auto flex min-w-[400px] flex-col gap-4 p-4">
+        <main className="mx-auto flex flex-col gap-4 p-4 sm:min-w-[400px]">
           <div
             className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
             dangerouslySetInnerHTML={{ __html: output }}
