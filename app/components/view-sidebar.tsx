@@ -76,7 +76,7 @@ export default function ViewSidebar({
                   Home
                 </button>
               </Link>
-              {/* <Link
+              <Link
                 href={`/${isMe ? "me" : username}/blog`}
                 className="flex h-full items-end"
               >
@@ -85,12 +85,12 @@ export default function ViewSidebar({
                     pathName.split("/")[2] === "blog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
-                    "border-b-2 pb-1 text-sm sm:text-lg font-medium dark:text-slate-100",
+                    "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
                   )}
                 >
                   Blog
                 </button>
-              </Link> */}
+              </Link>
               <Link
                 href={`/${isMe ? "me" : username}/journal`}
                 className="flex h-full items-end"
@@ -125,6 +125,21 @@ export default function ViewSidebar({
                   </button>
                 </Link>
               )}
+              {/* <Link
+                href={`/${isMe ? "me" : username}/blog`}
+                className="flex h-full items-end"
+              >
+                <button
+                  className={cn(
+                    pathName.split("/")[2] === "blog"
+                      ? "border-b-slate-400"
+                      : "border-b-transparent",
+                    "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
+                  )}
+                >
+                  Chat with GPT
+                </button>
+              </Link> */}
             </div>
             <form
               className="relative flex flex-1 dark:bg-slate-600"

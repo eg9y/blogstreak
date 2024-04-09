@@ -18,13 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body
-        className={cn(
-          inter.className,
-          "dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-800",
-        )}
-      >
+    <html
+      lang="en"
+      className="bg-zinc-200 dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-800"
+    >
+      <body className={cn(inter.className, "")}>
         <ReactQueryProvider>
           {children}
           <Toaster />

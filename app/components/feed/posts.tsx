@@ -8,7 +8,6 @@ import { Button } from "../button";
 
 export function Posts() {
   const { currentUser } = getUser();
-
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const username = pathName.split("/")[1];

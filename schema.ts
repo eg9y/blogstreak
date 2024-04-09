@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blogs: {
+        Row: {
+          created_at: string
+          id: number
+          is_published: boolean
+          text: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_published?: boolean
+          text: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_published?: boolean
+          text?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_blogs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       post_topics: {
         Row: {
           created_at: string
@@ -93,27 +128,27 @@ export type Database = {
           email: string | null
           id: number
           name: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           bio?: string | null
           email?: string | null
           id?: never
           name?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           bio?: string | null
           email?: string | null
           id?: never
           name?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "profiles_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
@@ -156,6 +191,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_blogs: {
+        Args: {
+          user_id_param: string
+          is_published_param?: boolean
+          earliest_blog_id_param?: number
+        }
+        Returns: {
+          created_at: string
+          id: number
+          is_published: boolean
+          text: string
+          title: string
+        }[]
+      }
       get_posts_by_topics: {
         Args: {
           topic_names_arr?: string[]

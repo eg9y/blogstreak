@@ -6,7 +6,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import { getUser } from "@/utils/getUser";
 import { Button } from "./button";
 import Link from "next/link";
@@ -68,12 +68,17 @@ export default function AppSidebar({
           {/* Separator */}
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
-            <Link
-              href="/me"
-              className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
-            >
-              <p className="text-sm">BlogStreak</p>
-            </Link>
+            <div className="flex items-center gap-1">
+              <Button plain className="block sm:hidden">
+                <HamburgerMenuIcon />
+              </Button>
+              <Link
+                href="/me"
+                className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
+              >
+                <p className="text-sm">BlogStreak</p>
+              </Link>
+            </div>
 
             <div className="flex items-center gap-x-4 md:gap-x-6">
               <button
@@ -142,10 +147,16 @@ export default function AppSidebar({
               </Menu>
             </div>
           </div>
-          <Button href="/me/write">
-            <Pencil1Icon />
-            Write
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button href="/me/write">
+              <Pencil1Icon />
+              Write Journal
+            </Button>
+            <Button href="/me/blog/write">
+              <Pencil1Icon />
+              Write Blog
+            </Button>
+          </div>
         </div>
 
         <main className="">

@@ -18,8 +18,6 @@ export function usePostsInfiniteQuery(
 
   const supabase = createClient();
 
-  console.log('searchParams.get("private")', searchParams.get("private"));
-
   const queryKey = [
     "infinite-posts",
     user?.id,
