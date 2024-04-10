@@ -1,7 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
-import { createClient } from "../../supabase/client";
 import { ReadonlyURLSearchParams } from "next/navigation";
+
+import { createClient } from "../../supabase/client";
 
 export function useGetBlogs(
   user: User | null,
@@ -26,11 +27,11 @@ export function useGetBlogs(
       : undefined;
 
   const queryFn = async ({ pageParam = -1 }) => {
-    if (!user) return { data: [], nextPage: null }; // Early return if user is null
+    if (!user) return { data: [], nextPage: null };
 
     const { data, error } = await supabase.rpc("get_blogs", {
-      earliest_blog_id_param: pageParam, // Assuming this is correctly set to null or the appropriate ID
-      is_published_param: isPublishedBlogs, // Updated to use is_private_param
+      earliest_blog_id_param: pageParam,
+      is_published_param: isPublishedBlogs,
       user_id_param: user?.id,
     });
 
@@ -41,13 +42,14 @@ export function useGetBlogs(
 
     // Ensure data is sorted by post_created_at in ascending order
     const sortedData = data.sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      (currentBlog, nextBlog) =>
+        new Date(nextBlog.created_at).getTime() -
+        new Date(currentBlog.created_at).getTime(),
     );
 
     return {
       data: sortedData,
-      nextPage: data.length ? data[0].id : null, // Use the ID of the last post as the cursor for the next query
+      nextPage: data.length ? data[0].id : null,
     };
   };
 
@@ -56,7 +58,7 @@ export function useGetBlogs(
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: (username === "me" ? user : true) && searchParams ? true : false, // Query enabled only if user is not null
-    staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
+    enabled: Boolean((username === "me" ? user : true) && searchParams),
+    staleTime: 60 * 60 * 1000,
   });
 }

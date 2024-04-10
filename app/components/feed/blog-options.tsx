@@ -23,11 +23,9 @@ import {
 import { Button } from "../button";
 
 export function BlogOptions({
-  post,
+  blog,
 }: {
-  post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
-    streaks: number | null;
-  };
+  blog: Database["public"]["Functions"]["get_blogs"]["Returns"][number];
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const submitPostMutation = useDeletePost();
@@ -44,9 +42,7 @@ export function BlogOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href={`/me/post/${post.post_id}/edit`}>
-            Edit
-          </DropdownItem>
+          <DropdownItem href={`/me/post/${blog.id}/edit`}>Edit</DropdownItem>
           <DropdownSeparator />
           <DropdownItem
             onClick={() => {
@@ -72,11 +68,11 @@ export function BlogOptions({
           <Button
             color="red"
             onClick={() => {
-              submitPostMutation.mutate(post.post_id, {
+              submitPostMutation.mutate(blog.id, {
                 onSuccess() {
                   setIsOpenDelete(false);
                   return queryClient.invalidateQueries({
-                    queryKey: ["blogs"],
+                    queryKey: ["posts"],
                   });
                 },
               });
