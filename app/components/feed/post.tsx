@@ -1,14 +1,14 @@
 import { generateHTML } from "@tiptap/html";
-import { Badge } from "../badge";
 import { useMemo } from "react";
-import Color from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
-import StarterKit from "@tiptap/starter-kit";
-import { PostOptions } from "./post-options";
-import { Database } from "@/schema";
 import Link from "next/link";
 import { LockClosedIcon } from "@radix-ui/react-icons";
+
+import { Database } from "@/schema";
+import { extensions } from "@/utils/textEditor";
+
+import { Badge } from "../badge";
+
+import { PostOptions } from "./post-options";
 
 interface PostProps {
   post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {
@@ -19,27 +19,6 @@ interface PostProps {
 }
 
 export function Post({ post, isMine, username }: PostProps) {
-  const extensions = [
-    Color.configure({ types: [TextStyle.name, ListItem.name] }),
-    TextStyle.configure({}),
-    StarterKit.configure({
-      bulletList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        HTMLAttributes: {
-          class: "",
-        },
-      },
-      orderedList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        HTMLAttributes: {
-          class: "",
-        },
-      },
-    }),
-  ];
-
   const output = useMemo(() => {
     return generateHTML(JSON.parse(post.post_text!), extensions);
   }, [post.post_text]);

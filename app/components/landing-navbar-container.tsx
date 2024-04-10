@@ -3,7 +3,9 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import Image from "next/image";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 const navigation = [
   { name: "Home", href: "#", current: true },
@@ -13,7 +15,7 @@ const navigation = [
 export const LandingNavbarContainer = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -35,7 +37,7 @@ export const LandingNavbarContainer = ({
                   </Disclosure.Button>
                 </div>
                 <Link href="/" className="flex flex-shrink-0 items-center">
-                  <img
+                  <Image
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=500"
                     alt="Your Company"

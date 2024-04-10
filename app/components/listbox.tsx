@@ -11,7 +11,7 @@ import {
   type ListboxProps as HeadlessListboxProps,
 } from "@headlessui/react";
 import clsx from "clsx";
-import { Fragment } from "react";
+import { ComponentPropsWithoutRef, Fragment, ReactNode } from "react";
 
 export function Listbox<T>({
   className,
@@ -22,10 +22,10 @@ export function Listbox<T>({
   ...props
 }: {
   className?: string;
-  placeholder?: React.ReactNode;
+  placeholder?: ReactNode;
   autoFocus?: boolean;
   "aria-label"?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 } & Omit<HeadlessListboxProps<typeof Fragment, T>, "multiple">) {
   return (
     <HeadlessListbox {...props} multiple={false}>
@@ -156,7 +156,7 @@ export function ListboxOption<T>({
   children,
   className,
   ...props
-}: { children?: React.ReactNode } & HeadlessListboxOptionProps<"li", T>) {
+}: { children?: ReactNode } & HeadlessListboxOptionProps<"li", T>) {
   const sharedClasses = clsx(
     // Base
     "flex min-w-0 items-center",
@@ -222,7 +222,7 @@ export function ListboxOption<T>({
 export function ListboxLabel({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"span">) {
+}: ComponentPropsWithoutRef<"span">) {
   return (
     <span
       className={clsx(
@@ -238,7 +238,7 @@ export function ListboxDescription({
   className,
   children,
   ...props
-}: React.ComponentPropsWithoutRef<"span">) {
+}: ComponentPropsWithoutRef<"span">) {
   return (
     <span
       className={clsx(

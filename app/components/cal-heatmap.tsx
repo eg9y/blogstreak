@@ -1,13 +1,15 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+
 import { getUser } from "@/utils/getUser";
 import { useStreaksQuery } from "@/utils/hooks/query/use-streaks-query";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Database } from "@/schema";
-import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
+
 import { Button } from "./button";
-import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
 export function Cal() {
   const { currentUser } = getUser();
@@ -28,10 +30,12 @@ export function Cal() {
 
   const currentYear = parseInt(
     searchParams.get("year") || new Date().getFullYear().toString(),
+    10,
   );
   const currentMonth =
     parseInt(
       searchParams.get("month") || (new Date().getMonth() + 1).toString(),
+      10,
     ) - 1;
 
   const previousDate = new Date(currentYear, currentMonth - 1);
@@ -63,7 +67,7 @@ export function Cal() {
   }
 
   function calculateStreaks(
-    data: (Database["public"]["Functions"]["get_posts_dates"]["Returns"][number] & {
+    streakData: (Database["public"]["Functions"]["get_posts_dates"]["Returns"][number] & {
       streaks: number | null;
     })[],
   ) {
@@ -72,19 +76,19 @@ export function Cal() {
     let tempStreak = 0;
     const today = new Date();
 
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].post_id !== -1) {
+    for (let i = 0; i < streakData.length; i++) {
+      if (streakData[i].post_id === -1) {
+        tempStreak = 0;
+      } else {
         tempStreak++;
 
         if (tempStreak > topStreak) {
           topStreak = tempStreak;
         }
 
-        if (isSameDay(new Date(data[i].post_date), today)) {
+        if (isSameDay(new Date(streakData[i].post_date), today)) {
           currentStreak = tempStreak;
         }
-      } else {
-        tempStreak = 0;
       }
     }
 
@@ -92,51 +96,58 @@ export function Cal() {
   }
 
   useEffect(() => {
-    if (data && isSuccess && finalData.length === 0) {
-      const timestamps = data.data.map((d) => new Date(d.post_date).getTime());
-      const minTimestamp = Math.min(...timestamps);
-
-      const minDate = new Date(minTimestamp);
-
-      const allDates = getAllDatesInMonth(
-        minDate.getFullYear(),
-        minDate.getMonth(),
-      );
-
-      const filledData = allDates.map((date) => {
-        const dateString = date.toISOString().split("T")[0];
-        const existingPost = data.data.find((d) =>
-          new Date(d.post_date).toISOString().startsWith(dateString),
-        );
-        if (existingPost) {
-          return {
-            ...existingPost,
-            streaks: existingPost.streaks || null, // Ensure streaks is number | null
-          };
-        }
-
-        // Adjusted to include all necessary fields with default or placeholder values
-        return {
-          post_date: dateString,
-          post_id: -1, // Placeholder value since null is not accepted; consider a negative value to indicate a non-existing post
-          post_text: "", // Empty string or suitable placeholder
-          post_user_id: "", // Empty string or suitable placeholder
-          post_topics: null, // Assuming this can be null; adjust as necessary
-          streaks: null,
-        };
-      });
-
-      filledData.sort(
-        (a, b) =>
-          new Date(a.post_date).getTime() - new Date(b.post_date).getTime(),
-      );
-
-      const { topStreak, currentStreak } = calculateStreaks(filledData);
-      setTopStreaks(topStreak);
-      setCurrentStreaks(currentStreak);
-
-      setFinalData(filledData);
+    if (!data || !isSuccess || finalData.length !== 0) {
+      return;
     }
+
+    const timestamps = data.data.map((post) =>
+      new Date(post.post_date).getTime(),
+    );
+    const minTimestamp = Math.min(...timestamps);
+
+    const minDate = new Date(minTimestamp);
+
+    const allDates = getAllDatesInMonth(
+      minDate.getFullYear(),
+      minDate.getMonth(),
+    );
+
+    const filledData = allDates.map((date) => {
+      const dateString = date.toISOString().split("T")[0];
+      const existingPost = data.data.find((post) =>
+        new Date(post.post_date).toISOString().startsWith(dateString),
+      );
+      if (existingPost) {
+        return {
+          ...existingPost,
+          // Ensure streaks is number | null
+          streaks: existingPost.streaks || null,
+        };
+      }
+
+      // Adjusted to include all necessary fields with default or placeholder values
+      return {
+        post_date: dateString,
+        post_id: -1,
+        post_text: "",
+        post_user_id: "",
+        post_topics: null,
+        streaks: null,
+      };
+    });
+
+    filledData.sort(
+      (currentPost, nextPost) =>
+        new Date(currentPost.post_date).getTime() -
+        new Date(nextPost.post_date).getTime(),
+    );
+
+    const { topStreak, currentStreak } = calculateStreaks(filledData);
+    setTopStreaks(topStreak);
+    setCurrentStreaks(currentStreak);
+
+    setFinalData(filledData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, data]);
 
   function isSameDay(d1: Date, d2: Date) {

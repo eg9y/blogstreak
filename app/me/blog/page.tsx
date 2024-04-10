@@ -1,9 +1,10 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
+
 import { Button } from "@/app/components/button";
 import { getUser } from "@/utils/getUser";
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
-import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Blog() {
   const { currentUser } = getUser();

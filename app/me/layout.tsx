@@ -1,15 +1,14 @@
 import { cookies } from "next/headers";
-import AppSidebar from "../components/app-sidebar";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { ReactNode } from "react";
+
+import { createClient } from "@/utils/supabase/server";
+
+import AppSidebar from "../components/app-sidebar";
 import { ForceChangeUsernameDialog } from "../components/nav/force-change-username-dialog";
 import ViewSidebar from "../components/view-sidebar";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
   const supabase = createClient(cookie);
 
@@ -18,7 +17,7 @@ export default async function Layout({
     redirect("/");
   }
 
-  const { data: userProfile, error: userProfileError } = await supabase
+  const { data: userProfile } = await supabase
     .from("profiles")
     .select("*")
     .eq("user_id", data.session.user.id)

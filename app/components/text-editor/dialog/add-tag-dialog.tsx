@@ -1,23 +1,17 @@
-import { HexColorPicker } from "react-colorful";
-import { Dispatch, useState } from "react";
+import { Dispatch } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-import { Badge } from "../../badge";
-import {
-  Dialog,
-  DialogActions,
-  DialogBody,
-  DialogDescription,
-  DialogTitle,
-} from "../../dialog";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { getUser } from "@/utils/getUser";
+import { useCreateTag } from "@/utils/hooks/mutation/use-create-tag";
+import { cn } from "@/utils/cn";
+import { presetColors } from "@/utils/presetColors";
+
+import { Badge } from "../../badge";
+import { Dialog, DialogActions, DialogBody, DialogTitle } from "../../dialog";
 import { Field, FieldGroup, Fieldset, Label } from "../../fieldset";
 import { Input } from "../../input";
 import { Button } from "../../button";
-import { useCreateTag } from "@/utils/hooks/mutation/use-create-tag";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { cn } from "@/utils/cn";
-import { presetColors } from "@/utils/presetColors";
 
 type InsertTagInputs = {
   name: string;
@@ -46,11 +40,11 @@ export function AddTagDialog({
   const { data, isSuccess } = useGetTopicsQuery(currentUser);
   const useCreateTagMutation = useCreateTag();
 
-  const onSubmit: SubmitHandler<InsertTagInputs> = (data) => {
+  const onSubmit: SubmitHandler<InsertTagInputs> = (submitData) => {
     useCreateTagMutation.mutate(
       {
-        name: data.name,
-        hexColor: data.color,
+        name: submitData.name,
+        hexColor: submitData.color,
       },
       {
         onSuccess() {

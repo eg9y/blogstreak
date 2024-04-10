@@ -1,12 +1,12 @@
-import { ViewTextEditor } from "@/app/components/text-editor/view";
-import { createClient } from "@/utils/supabase/server";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
-import Link from "next/link";
+
+import { createClient } from "@/utils/supabase/server";
+import { ViewTextEditor } from "@/app/components/text-editor/view";
 
 export default async function PostDetail({
   params,
@@ -16,7 +16,7 @@ export default async function PostDetail({
   const cookie = cookies();
   const supabase = createClient(cookie);
 
-  const queryFn = async () => {
+  const queryFn = () => {
     return supabase
       .from("posts")
       .select("*")
@@ -29,7 +29,7 @@ export default async function PostDetail({
 
   await queryClient.prefetchQuery({
     queryKey: ["post", params.user, params.postId],
-    queryFn: queryFn,
+    queryFn,
   });
 
   return (

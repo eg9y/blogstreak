@@ -2,17 +2,17 @@
 
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { useEffect, useRef, useState } from "react";
-
-import { Button } from "@/app/components/button";
-
-import { Toolbar } from "./toolbar";
-import { getUser } from "@/utils/getUser";
 import { Scrollbar } from "react-scrollbars-custom";
+import { toast } from "sonner";
+
 import { extensions } from "@/utils/textEditor";
 import { useCreateBio } from "@/utils/hooks/mutation/use-create-bio";
-import { toast } from "sonner";
+import { getUser } from "@/utils/getUser";
+import { Button } from "@/app/components/button";
 import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
 import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
+
+import { Toolbar } from "./toolbar";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -60,10 +60,11 @@ export const CreateBioEditor = () => {
   }, [editor]);
 
   useEffect(() => {
-    if (postData?.data?.bio && editor) {
-      editor.commands.setContent(JSON.parse(postData.data.bio));
-      editor.setEditable(true);
+    if (!postData?.data?.bio || !editor) {
+      return;
     }
+    editor.commands.setContent(JSON.parse(postData.data.bio));
+    editor.setEditable(true);
   }, [postData, editor]);
 
   function submitPost() {

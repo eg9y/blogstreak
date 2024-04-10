@@ -1,8 +1,12 @@
+import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Toaster } from "sonner";
+import { ReactNode } from "react";
+
 import "./globals.css";
+
 import { cn } from "@/utils/cn";
+
 import { ReactQueryProvider } from "./components/react-query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,11 +16,7 @@ export const metadata: Metadata = {
   description: "Personal journalging platform",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"

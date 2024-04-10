@@ -2,19 +2,23 @@
 
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
-import { Toolbar } from "./toolbar";
-import { Button } from "@/app/components/button";
-import { BadgeButton } from "../badge";
 import { useEffect, useRef, useState } from "react";
+import { PlusIcon } from "@radix-ui/react-icons";
+import Scrollbar from "react-scrollbars-custom";
+
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
 import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { Database } from "@/schema";
-import Scrollbar from "react-scrollbars-custom";
-import { IsPublicSwitch } from "./is-public-switch";
+import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
+
+import { BadgeButton } from "../badge";
+
+import { IsPublicSwitch } from "./is-public-switch";
+import { Toolbar } from "./toolbar";
+import { AddTagDialog } from "./dialog/add-tag-dialog";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -33,9 +37,9 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
-  let [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(true);
 
-  const editorContainerRef = useRef(null); // Step 1: Create a ref for the parent div
+  const editorContainerRef = useRef(null);
 
   const { currentUser } = getUser();
   const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
@@ -44,27 +48,31 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
   const editPostMutation = useEditPost();
 
   useEffect(() => {
-    if (isSuccess) {
-      const associatedTags = data.filter((tag) => {
-        return tag.isSelected;
-      });
-      setTags(associatedTags);
+    if (!isSuccess) {
+      return;
     }
+
+    const associatedTags = data.filter((tag) => {
+      return tag.isSelected;
+    });
+    setTags(associatedTags);
   }, [data, isSuccess]);
 
   useEffect(() => {
-    if (postData?.data?.text && editor) {
-      setIsPublic(postData.data.is_public);
-      editor.commands.setContent(JSON.parse(postData.data.text));
-      editor.setEditable(true);
+    if (!postData?.data?.text || !editor) {
+      return;
     }
+
+    setIsPublic(postData.data.is_public);
+    editor.commands.setContent(JSON.parse(postData.data.text));
+    editor.setEditable(true);
   }, [postData, editor]);
 
   useEffect(() => {
     // Step 3: Add an event listener to focus the editor
     const handleFocus = () => {
       if (editor && editor.isEditable) {
-        editor.commands.focus(); // Focus the editor
+        editor.commands.focus();
       }
     };
 
@@ -83,9 +91,9 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
         );
       }
     };
-  }, [editor]); // Dependency array to re-run effect if the editor instance changes
+  }, [editor]);
 
-  async function editPost() {
+  function editPost() {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
     editPostMutation.mutate(
@@ -190,6 +198,10 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
           </Button>
         </div>
       </div>
+      <AddTagDialog
+        openAddTagDialog={openAddTagDialog}
+        setOpenAddTagDialog={setOpenAddTagDialog}
+      />
     </div>
   );
 };

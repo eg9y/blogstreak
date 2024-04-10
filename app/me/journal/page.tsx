@@ -1,10 +1,13 @@
 "use client";
+
 import Scrollbar from "react-scrollbars-custom";
-import { Posts } from "@/app/components/feed/posts";
 import { Pencil1Icon } from "@radix-ui/react-icons";
+
+import { Posts } from "@/app/components/feed/posts";
 import { Button } from "@/app/components/button";
-import { Options } from "../options";
 import { Cal } from "@/app/components/cal-heatmap";
+
+import { Options } from "../options";
 
 export default function Home() {
   return (

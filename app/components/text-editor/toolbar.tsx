@@ -1,4 +1,3 @@
-import { cn } from "@/utils/cn";
 import { Editor } from "@tiptap/react";
 import {
   CodeIcon,
@@ -8,6 +7,8 @@ import {
   StrikethroughIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/image";
+
+import { cn } from "@/utils/cn";
 
 export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {

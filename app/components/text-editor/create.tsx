@@ -4,20 +4,20 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
+import { Scrollbar } from "react-scrollbars-custom";
 
 import { Button } from "@/app/components/button";
 import { useCreatePost } from "@/utils/hooks/mutation/use-create-post";
+import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
+import { getUser } from "@/utils/getUser";
+import { Database } from "@/schema";
+import { extensions } from "@/utils/textEditor";
 
 import { BadgeButton } from "../badge";
 
 import { Toolbar } from "./toolbar";
 import { AddTagDialog } from "./dialog/add-tag-dialog";
-import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { getUser } from "@/utils/getUser";
-import { Database } from "@/schema";
-import { Scrollbar } from "react-scrollbars-custom";
 import { IsPublicSwitch } from "./is-public-switch";
-import { extensions } from "@/utils/textEditor";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -35,7 +35,7 @@ export const CreateTextEditor = () => {
   );
   const [openAddTagDialog, setOpenAddTagDialog] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
-  let [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(true);
 
   const editorContainerRef = useRef(null);
 

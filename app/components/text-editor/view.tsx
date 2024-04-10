@@ -1,22 +1,24 @@
 "use client";
 
 import { generateHTML } from "@tiptap/react";
-import { Badge } from "../badge";
 import { useMemo } from "react";
+import Scrollbar from "react-scrollbars-custom";
+import { usePathname } from "next/navigation";
+
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { getUser } from "@/utils/getUser";
-import { Button } from "../button";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import Scrollbar from "react-scrollbars-custom";
-import { IsPublicSwitch } from "./is-public-switch";
 import { extensions } from "@/utils/textEditor";
-import { usePathname } from "next/navigation";
+
+import { Badge } from "../badge";
+import { Button } from "../button";
+
+import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewTextEditor = ({ postId }: { postId: number }) => {
   const { currentUser } = getUser();
   const { data: postData } = useGetPostQuery(currentUser, postId);
-  const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser, postId);
+  const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
   const pathname = usePathname();
 
   const output = useMemo(() => {

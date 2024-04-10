@@ -21,7 +21,7 @@ import {
 } from "../dialog";
 import { Button } from "../button";
 
-export function PostOptions({
+export function BlogOptions({
   post,
 }: {
   post: Database["public"]["Functions"]["get_posts_by_topics"]["Returns"][number] & {

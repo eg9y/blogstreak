@@ -1,11 +1,12 @@
-import { EditBlogTextEditorComponent } from "@/app/components/text-editor/editBlog";
-import { createClient } from "@/utils/supabase/server";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
+
+import { EditBlogTextEditorComponent } from "@/app/components/text-editor/editBlog";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function EditBlogComponent({
   params,
@@ -16,10 +17,9 @@ export default async function EditBlogComponent({
   const supabase = createClient(cookie);
   const {
     data: { user },
-    error,
   } = await supabase.auth.getUser();
 
-  const queryFn = async () => {
+  const queryFn = () => {
     return supabase
       .from("blogs")
       .select("*")
@@ -33,7 +33,7 @@ export default async function EditBlogComponent({
 
   await queryClient.prefetchQuery({
     queryKey: ["blogs", user?.id, params.blogId],
-    queryFn: queryFn,
+    queryFn,
   });
 
   return (

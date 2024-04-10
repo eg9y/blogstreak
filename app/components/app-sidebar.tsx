@@ -1,23 +1,22 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, ReactNode, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { cn } from "@/utils/cn";
-import { createClient } from "@/utils/supabase/client";
 import { HamburgerMenuIcon, Pencil1Icon } from "@radix-ui/react-icons";
-import { getUser } from "@/utils/getUser";
-import { Button } from "./button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+import { cn } from "@/utils/cn";
+import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/utils/getUser";
+
+import { Button } from "./button";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 
-export default function AppSidebar({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AppSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = getUser();
   const router = useRouter();
@@ -27,18 +26,20 @@ export default function AppSidebar({
 
   useEffect(() => {
     (async () => {
-      if (currentUser) {
-        const { data: profile, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", currentUser.id)
-          .single();
+      if (!currentUser) {
+        return;
+      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .single();
 
-        if (profile?.name) {
-          setUsername(profile.name);
-        }
+      if (profile?.name) {
+        setUsername(profile.name);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const userNavigation = [
@@ -51,7 +52,7 @@ export default function AppSidebar({
     },
     {
       name: "Change Username",
-      onClick: async () => {
+      onClick: () => {
         setIsOpenChangeUsername(true);
       },
     },
@@ -99,7 +100,7 @@ export default function AppSidebar({
               <Menu as="div" className="relative">
                 <Menu.Button className="-m-1.5 flex items-center p-1.5">
                   <span className="sr-only">Open user menu</span>
-                  <img
+                  <Image
                     className="h-6 w-6 rounded-full bg-slate-50 dark:bg-slate-800"
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     alt=""

@@ -1,12 +1,15 @@
 "use client";
-import { getUser } from "@/utils/getUser";
-import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
-import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
-import { extensions } from "@/utils/textEditor";
+
 import { generateHTML } from "@tiptap/react";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import Scrollbar from "react-scrollbars-custom";
+
+import { getUser } from "@/utils/getUser";
+import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
+import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
+import { extensions } from "@/utils/textEditor";
+
 import { Button } from "../components/button";
 
 export default function Home() {
@@ -15,11 +18,7 @@ export default function Home() {
   const { currentUser } = getUser();
   const { data: user } = useGetUsernameQuery(currentUser);
 
-  const {
-    data: bioData,
-    isLoading,
-    isSuccess,
-  } = useGetBioQuery(
+  const { data: bioData, isSuccess } = useGetBioQuery(
     user ? (possibleUsername === "me" ? user : possibleUsername) : undefined,
   );
 

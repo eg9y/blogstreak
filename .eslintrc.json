@@ -15,6 +15,10 @@
     "import/order": 2,
     "no-warning-comments": "off",
     "no-console": "off",
+    "@shopify/strict-component-boundaries": "off",
+    "no-process-env": "off",
+    "no-nested-ternary": "off",
+    "no-empty-function": "off"
   },
   "settings": {
     "import/parsers": {

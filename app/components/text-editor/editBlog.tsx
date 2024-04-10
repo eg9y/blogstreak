@@ -2,17 +2,20 @@
 
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
-import { Toolbar } from "./toolbar";
-import { Button } from "@/app/components/button";
 import { useEffect, useRef, useState } from "react";
-import { getUser } from "@/utils/getUser";
 import Scrollbar from "react-scrollbars-custom";
+import { Controller, useForm } from "react-hook-form";
+
+import { Button } from "@/app/components/button";
+import { getUser } from "@/utils/getUser";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
 import { useEditBlog } from "@/utils/hooks/mutation/use-edit-blog";
+
 import { Field, FieldGroup, Fieldset, Label } from "../fieldset";
-import { Controller, useForm } from "react-hook-form";
 import { Input } from "../input";
+
+import { Toolbar } from "./toolbar";
 import { IsPublicSwitch } from "./is-public-switch";
 
 const editorOptions: Partial<EditorOptions> = {
@@ -27,12 +30,12 @@ const editorOptions: Partial<EditorOptions> = {
 
 export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
   const [loadingEdit, setLoadingEdit] = useState(false);
-  let [isPublished, setIsPublished] = useState(true);
+  const [isPublished, setIsPublished] = useState(true);
 
   const editorContainerRef = useRef(null);
 
   const { currentUser } = getUser();
-  const { data: blogData } = useGetBlogQuery(currentUser, blogId);
+  const { data: blogData, isLoading } = useGetBlogQuery(currentUser, blogId);
   const editor = useEditor({ extensions, ...editorOptions });
   const editBlogMutation = useEditBlog();
   const {
@@ -46,21 +49,23 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
     },
   });
   useEffect(() => {
-    if (blogData?.data?.text && editor) {
-      reset({
-        title: blogData.data.title,
-      });
-      setIsPublished(blogData.data.is_published);
-      editor.commands.setContent(JSON.parse(blogData.data.text));
-      editor.setEditable(true);
+    if (!blogData?.data?.text || !editor) {
+      return;
     }
+    reset({
+      title: blogData.data.title,
+    });
+    setIsPublished(blogData.data.is_published);
+    editor.commands.setContent(JSON.parse(blogData.data.text));
+    editor.setEditable(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blogData, editor]);
 
   useEffect(() => {
     // Step 3: Add an event listener to focus the editor
     const handleFocus = () => {
       if (editor && editor.isEditable) {
-        editor.commands.focus(); // Focus the editor
+        editor.commands.focus();
       }
     };
 
@@ -79,7 +84,8 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
         );
       }
     };
-  }, [editor]); // Dependency array to re-run effect if the editor instance changes
+    // Dependency array to re-run effect if the editor instance changes
+  }, [editor]);
 
   const onSubmit = ({ title }: { title: string }) => {
     setLoadingEdit(true);
@@ -117,7 +123,7 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
                 },
               }}
               render={({ field: { onChange, value } }) => (
-                <Input onChange={onChange} value={value} />
+                <Input onChange={onChange} value={value} disabled={isLoading} />
               )}
             />
             {errors && (

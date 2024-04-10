@@ -1,4 +1,5 @@
 import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
+
 import { LandingNavbarContainer } from "./landing-navbar-container";
 import { Button } from "./button";
 import { Fieldset } from "./fieldset";

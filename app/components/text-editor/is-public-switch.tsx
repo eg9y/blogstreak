@@ -1,14 +1,15 @@
 import { Field as HeadlessField } from "@headlessui/react";
+import { Dispatch, SetStateAction } from "react";
+
 import { Switch } from "../switch";
 import { Label } from "../fieldset";
-import { SetStateAction } from "react";
 
 export function IsPublicSwitch({
   isPublic,
   setIsPublic,
 }: {
   isPublic: boolean;
-  setIsPublic: React.Dispatch<SetStateAction<boolean>>;
+  setIsPublic: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <HeadlessField className="flex items-center gap-1">

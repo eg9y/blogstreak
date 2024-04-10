@@ -1,10 +1,13 @@
 "use client";
 
-import { Post } from "./post";
+import { usePathname, useSearchParams } from "next/navigation";
+
 import { getUser } from "@/utils/getUser";
 import { usePostsInfiniteQuery } from "@/utils/hooks/query/use-posts-infinite-query";
-import { usePathname, useSearchParams } from "next/navigation";
+
 import { Button } from "../button";
+
+import { Post } from "./post";
 
 export function Posts() {
   const { currentUser } = getUser();
@@ -12,15 +15,8 @@ export function Posts() {
   const pathName = usePathname();
   const username = pathName.split("/")[1];
 
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isPending,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = usePostsInfiniteQuery(currentUser, searchParams, username);
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    usePostsInfiniteQuery(currentUser, searchParams, username);
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -28,9 +24,9 @@ export function Posts() {
         page.data
           ?.filter((post) => post.post_text)
           .sort(
-            (a, b) =>
-              new Date(b.post_created_at).getTime() -
-              new Date(a.post_created_at).getTime(),
+            (currentPost, nextPost) =>
+              new Date(nextPost.post_created_at).getTime() -
+              new Date(currentPost.post_created_at).getTime(),
           )
           .map((post) => (
             <Post

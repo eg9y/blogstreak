@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { createClient } from "../../supabase/client";
-import { Database } from "@/schema";
 
 export function useEditBlog() {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export function useEditBlog() {
     blogId: number;
     title: string;
     content: string;
-    isPublished: boolean | null;
+    isPublished: boolean;
   }) {
     const {
       data: { user },
@@ -27,10 +27,10 @@ export function useEditBlog() {
       return;
     }
 
-    const res = await supabase
+    await supabase
       .from("blogs")
       .update({
-        title: title,
+        title,
         text: content,
         user_id: user?.id,
         is_published: isPublished,
@@ -40,7 +40,7 @@ export function useEditBlog() {
 
   return useMutation({
     mutationFn,
-    onSuccess: async () => {
+    onSuccess: () => {
       return Promise.all([
         queryClient.invalidateQueries({
           queryKey: ["blogs"],

@@ -1,6 +1,9 @@
 "use client";
+
 import Scrollbar from "react-scrollbars-custom";
+
 import { Posts } from "@/app/components/feed/posts";
+
 import { Cal } from "../../components/cal-heatmap";
 
 export default function Home() {

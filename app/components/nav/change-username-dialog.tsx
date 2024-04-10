@@ -1,3 +1,5 @@
+import { Dispatch } from "react";
+
 import { Button } from "../button";
 import {
   Dialog,
@@ -14,7 +16,7 @@ export function ChangeUsernameDialog({
   setIsOpen,
 }: {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<boolean>;
+  setIsOpen: Dispatch<boolean>;
 }) {
   return (
     <Dialog open={isOpen} onClose={setIsOpen}>

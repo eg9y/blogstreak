@@ -6,6 +6,7 @@ import {
 } from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
+import Image from "next/image";
 
 import { TouchTarget } from "./button";
 import { Link } from "./link";
@@ -61,7 +62,7 @@ export function Avatar({
           </text>
         </svg>
       )}
-      {src && <img src={src} alt={alt} />}
+      {src && <Image src={src} alt={alt} />}
       {/* Add an inset border that sits on top of the image */}
       <span
         className="ring-1 ring-inset ring-black/5 dark:ring-white/5 forced-colors:outline"

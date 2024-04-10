@@ -1,6 +1,6 @@
 import { CreateBlogEditor } from "@/app/components/text-editor/createBlog";
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className="min-h-full">
       <main className="mx-auto flex min-w-[400px] flex-col gap-4 px-2 py-12">

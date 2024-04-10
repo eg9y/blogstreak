@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { createClient } from "@/utils/supabase/client";
-import { getUser } from "@/utils/getUser";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ChangeUsernameDialog } from "./nav/change-username-dialog";
+
+import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/utils/getUser";
 import { cn } from "@/utils/cn";
 
-export default function ViewSidebar({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { ChangeUsernameDialog } from "./nav/change-username-dialog";
+
+export default function ViewSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = getUser();
   const [username, setUsername] = useState("");
@@ -26,21 +24,22 @@ export default function ViewSidebar({
   useEffect(() => {
     (async () => {
       if (currentUser) {
-        const { data: profile, error } = await supabase
+        const { data: profile } = await supabase
           .from("profiles")
           .select("*")
           .eq("user_id", currentUser.id)
           .single();
 
         if (profile?.name) {
-          const isMe = pathName.split("/")[1] === "me";
-          setIsMe(isMe);
+          const correctIsMe = pathName.split("/")[1] === "me";
+          setIsMe(correctIsMe);
           setUsername(profile.name);
         }
       } else {
         setUsername(pathName.split("/")[1]);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, pathName]);
 
   return (

@@ -1,8 +1,13 @@
+/* eslint-disable no-unused-vars */
 "use client";
 
 import { toast } from "sonner";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { createClient } from "@/utils/supabase/client";
+
 import { Button } from "../button";
 import {
   Dialog,
@@ -13,8 +18,6 @@ import {
 } from "../dialog";
 import { Field, Fieldset, Label } from "../fieldset";
 import { Input } from "../input";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 type setUsernameInputs = {
   username: string;

@@ -1,9 +1,11 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+
 import { cn } from "@/utils/cn";
 import { getUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { useSearchParams } from "next/navigation";
+
 import { Button } from "../components/button";
 import { Checkbox } from "../components/checkbox";
 
@@ -11,8 +13,7 @@ export function Options() {
   const searchQuery = useSearchParams();
   const { currentUser } = getUser();
 
-  const { data, isLoading, isFetching, isPending, isSuccess } =
-    useGetTopicsQuery(currentUser);
+  const { data } = useGetTopicsQuery(currentUser);
 
   return (
     <ul role="list" className="flex w-full flex-wrap  gap-1 ">

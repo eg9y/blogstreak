@@ -1,10 +1,11 @@
-import { Button } from "@/app/components/button";
-
-import { LandingNavbar } from "./components/landing-navbar";
-import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
 import { Fieldset } from "@headlessui/react";
 
-export default async function Home() {
+import { Button } from "@/app/components/button";
+import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
+
+import { LandingNavbar } from "./components/landing-navbar";
+
+export default function Home() {
   return (
     <>
       <LandingNavbar />

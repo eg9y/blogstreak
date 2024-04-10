@@ -1,13 +1,11 @@
 "use client";
 
 import { clsx } from "clsx";
+import { ComponentPropsWithoutRef } from "react";
 
 import { Link } from "./link";
 
-export function Text({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"p">) {
+export function Text({ className, ...props }: ComponentPropsWithoutRef<"p">) {
   return (
     <p
       {...props}
@@ -23,7 +21,7 @@ export function Text({
 export function TextLink({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Link>) {
+}: ComponentPropsWithoutRef<typeof Link>) {
   return (
     <Link
       {...props}
@@ -38,7 +36,7 @@ export function TextLink({
 export function Strong({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"strong">) {
+}: ComponentPropsWithoutRef<"strong">) {
   return (
     <strong
       {...props}
@@ -50,7 +48,7 @@ export function Strong({
 export function Code({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"code">) {
+}: ComponentPropsWithoutRef<"code">) {
   return (
     <code
       {...props}

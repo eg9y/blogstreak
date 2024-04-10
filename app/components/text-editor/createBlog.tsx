@@ -3,17 +3,18 @@
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
+import { Scrollbar } from "react-scrollbars-custom";
+import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/app/components/button";
-
-import { Toolbar } from "./toolbar";
-import { Scrollbar } from "react-scrollbars-custom";
 import { extensions } from "@/utils/textEditor";
 import { useCreateBlog } from "@/utils/hooks/mutation/use-create-blog";
-import { IsPublicSwitch } from "./is-public-switch";
+
 import { Field, FieldGroup, Fieldset, Label } from "../fieldset";
 import { Input } from "../input";
-import { Controller, useForm } from "react-hook-form";
+
+import { IsPublicSwitch } from "./is-public-switch";
+import { Toolbar } from "./toolbar";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -27,12 +28,11 @@ const editorOptions: Partial<EditorOptions> = {
 
 export const CreateBlogEditor = () => {
   const [loadingEdit, setLoadingEdit] = useState(false);
-  let [isPublished, setIsPublished] = useState(true);
+  const [isPublished, setIsPublished] = useState(true);
   const submitBlogMutation = useCreateBlog();
   const editorContainerRef = useRef(null);
   const editor = useEditor({ extensions, content: "", ...editorOptions });
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },

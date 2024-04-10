@@ -2,13 +2,16 @@
 
 import { generateHTML } from "@tiptap/react";
 import { useMemo } from "react";
-import { getUser } from "@/utils/getUser";
-import { Button } from "../button";
 import Scrollbar from "react-scrollbars-custom";
-import { IsPublicSwitch } from "./is-public-switch";
-import { extensions } from "@/utils/textEditor";
 import { usePathname } from "next/navigation";
+
+import { getUser } from "@/utils/getUser";
+import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
+
+import { Button } from "../button";
+
+import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   const { currentUser } = getUser();
@@ -25,8 +28,9 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className=" w-full p-2  dark:bg-slate-800 ">
+        <p className="text-4xl font-bold">{blogData?.data?.title}</p>
         <div
-          className="h-full cursor-text"
+          className="h-full cursor-text pt-2"
           // Make the div focusable
         >
           <Scrollbar
