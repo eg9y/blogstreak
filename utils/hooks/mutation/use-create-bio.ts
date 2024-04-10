@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { createClient } from "../../supabase/client";
 
 export function useCreateBio() {
@@ -22,7 +23,7 @@ export function useCreateBio() {
       return;
     }
 
-    const { data, error: profilesUpdateError } = await supabase
+    await supabase
       .from("profiles")
       .update({
         bio: content,
@@ -30,14 +31,6 @@ export function useCreateBio() {
       .eq("user_id", userId)
       .select()
       .single();
-
-    if (!data) {
-      return;
-    }
-
-    if (profilesUpdateError) {
-      return;
-    }
   }
 
   return useMutation({

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
 import { useDeletePost } from "@/utils/hooks/mutation/use-delete-post";
@@ -30,6 +31,7 @@ export function BlogOptions({
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const submitPostMutation = useDeletePost();
+  const queryClient = useQueryClient();
 
   return (
     <>
@@ -73,6 +75,9 @@ export function BlogOptions({
               submitPostMutation.mutate(post.post_id, {
                 onSuccess() {
                   setIsOpenDelete(false);
+                  return queryClient.invalidateQueries({
+                    queryKey: ["blogs"],
+                  });
                 },
               });
             }}

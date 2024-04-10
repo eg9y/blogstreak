@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { createClient } from "../../supabase/client";
 
 export function useCreatePost() {
@@ -43,17 +44,15 @@ export function useCreatePost() {
     }
 
     if (tagIds.length > 0) {
-      const { data: tagData, error: tagInsertError } = await supabase
-        .from("post_topics")
-        .insert(
-          tagIds.map((tag) => {
-            return {
-              post_id: data.id,
-              topic_id: tag,
-              user_id: user.id,
-            };
-          }),
-        );
+      await supabase.from("post_topics").insert(
+        tagIds.map((tag) => {
+          return {
+            post_id: data.id,
+            topic_id: tag,
+            user_id: user.id,
+          };
+        }),
+      );
     }
 
     console.log(data);

@@ -41,6 +41,8 @@ export const LandingNavbarContainer = ({
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=500"
                     alt="Your Company"
+                    height={10}
+                    width={10}
                   />
                 </Link>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
