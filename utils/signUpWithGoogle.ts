@@ -12,7 +12,7 @@ export const signUpWithGoogle = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${headers().get("origin")}/auth/callback?next=${process.env.NODE_ENV === "production" ? "blogstreak.com" : "localhost:3000"}/me`,
+      redirectTo: `${headers().get("origin")}/auth/callback?next=/me`,
       queryParams: {
         access_type: "offline",
         prompt: "consent",
