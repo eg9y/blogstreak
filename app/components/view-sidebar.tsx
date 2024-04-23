@@ -77,7 +77,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
                   )}
                 >
-                  Home
+                  🏠 Home
                 </button>
               </Link>
               <Link
