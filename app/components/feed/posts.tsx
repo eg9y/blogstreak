@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 import { getUser } from "@/utils/getUser";
 import { usePostsInfiniteQuery } from "@/utils/hooks/query/use-posts-infinite-query";
@@ -23,6 +24,10 @@ export function Posts() {
       searchParams,
       isMe ? "me" : actualUsername,
     );
+
+  useEffect(() => {
+    console.log("actualUsername", actualUsername);
+  }, [actualUsername]);
 
   return (
     <div className="flex w-full flex-col gap-4">

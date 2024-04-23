@@ -21,6 +21,11 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
 
   const supabase = createClient();
 
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://blogstreak.com"
+      : "http://localhost:3000";
+
   useEffect(() => {
     (async () => {
       if (currentUser) {
@@ -60,7 +65,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </div>
               )}
               <Link
-                href={`/${isMe ? "me" : username}`}
+                href={`${baseUrl}/${isMe ? "me" : username}`}
                 className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
               >
                 <button
@@ -76,7 +81,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`/${isMe ? "me" : username}/blog`}
+                href={`${baseUrl}/${isMe ? "me" : username}/blog`}
                 className="flex h-full items-end"
               >
                 <button
@@ -91,7 +96,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`/${isMe ? "me" : username}/journal`}
+                href={`${baseUrl}/${isMe ? "me" : username}/journal`}
                 className="flex h-full items-end"
               >
                 <button
@@ -108,7 +113,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
               </Link>
               {isMe && (
                 <Link
-                  href={`/me/journal?private=true`}
+                  href={`${baseUrl}/me/journal?private=true`}
                   className="flex h-full items-end"
                 >
                   <button
