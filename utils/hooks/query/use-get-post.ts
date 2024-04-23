@@ -9,21 +9,20 @@ export function useGetPostQuery(user: User | null, postId?: number) {
   const queryKey = ["post", undefined, postId];
 
   const queryFn = async () => {
-    return (
-      supabase
-        .from("posts")
-        .select("*")
-        // .eq("user_id", user!.id)
-        .eq("id", postId!)
-        .single()
-        .throwOnError()
-    );
+    const res = await supabase
+      .from("posts")
+      .select("*")
+      // .eq("user_id", user!.id)
+      .eq("id", postId!)
+      .single()
+      .throwOnError();
+    return res;
   };
 
   return useQuery({
     queryKey,
     queryFn,
-    enabled: !!user && !!postId,
+    enabled: Boolean(user) && Boolean(postId),
     staleTime: 60 * 1000,
   });
 }

@@ -9,18 +9,19 @@ export function useGetBlogQuery(user: User | null, blogId?: number) {
   const queryKey = ["blog", undefined, blogId];
 
   const queryFn = async () => {
-    return supabase
+    const res = await supabase
       .from("blogs")
       .select("*")
       .eq("id", blogId!)
       .single()
       .throwOnError();
+    return res;
   };
 
   return useQuery({
     queryKey,
     queryFn,
-    enabled: !!user && !!blogId,
+    enabled: Boolean(user) && Boolean(blogId),
     staleTime: 60 * 1000,
   });
 }

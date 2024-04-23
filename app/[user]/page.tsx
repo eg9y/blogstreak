@@ -1,27 +1,16 @@
 "use client";
 
 import Scrollbar from "react-scrollbars-custom";
-import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { generateHTML } from "@tiptap/react";
 
 import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
-import { getUser } from "@/utils/getUser";
 import { extensions } from "@/utils/textEditor";
-import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
+
+import { useUsername } from "../components/subdomain-context";
 
 export default function Home() {
-  const pathName = usePathname();
-  const possibleUsername = pathName.split("/")[1];
-  const { currentUser } = getUser();
-  const { data: user } = useGetUsernameQuery(currentUser);
-
-  let actualUsername = possibleUsername;
-  if (user) {
-    if (possibleUsername === "me") {
-      actualUsername = user;
-    }
-  }
+  const actualUsername = useUsername();
 
   const { data: bioData, isSuccess } = useGetBioQuery(actualUsername);
 

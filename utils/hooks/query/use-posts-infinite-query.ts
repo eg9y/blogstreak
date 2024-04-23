@@ -1,19 +1,36 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
-import { createClient } from "../../supabase/client";
 import { ReadonlyURLSearchParams } from "next/navigation";
+
+import { createClient } from "../../supabase/client";
+
+const areConsecutiveDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 1 && sameMonth && sameYear;
+};
+
+const areSameDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 0 && sameMonth && sameYear;
+};
 
 export function usePostsInfiniteQuery(
   user: User | null,
   searchParams: ReadonlyURLSearchParams,
-  username: string,
+  username: string | null,
 ) {
   const month = parseInt(
     searchParams.get("month") || (new Date().getMonth() + 1).toString(),
+    10,
   );
 
   const year = parseInt(
     searchParams.get("year") || new Date().getFullYear().toString(),
+    10,
   );
 
   const supabase = createClient();
@@ -30,17 +47,17 @@ export function usePostsInfiniteQuery(
   const tagNames = searchParams.get("tags")?.split(",") || undefined;
   const isPrivateJournals =
     username === "me" ? searchParams.get("private") === "true" : false;
-  const limit = 15; // Number of posts per page
+  const limit = 15;
 
   const queryFn = async ({ pageParam = -1 }) => {
     const { data, error } = await supabase.rpc("get_posts_by_topics", {
-      earliest_post_id_param: pageParam, // Assuming this is correctly set to null or the appropriate ID
+      earliest_post_id_param: pageParam,
       month_param: month,
-      is_private_param: isPrivateJournals, // Updated to use is_private_param
+      is_private_param: isPrivateJournals,
       topic_names_arr: tagNames,
       total_posts_param: limit,
       user_id_param: user?.id,
-      username_param: decodeURIComponent(username),
+      username_param: username ? decodeURIComponent(username) : "",
       year_param: year,
     });
 
@@ -49,14 +66,12 @@ export function usePostsInfiniteQuery(
       throw new Error("Error fetching posts");
     }
 
-    // Ensure data is sorted by post_created_at in ascending order
     const sortedData = data.sort(
-      (a, b) =>
-        new Date(a.post_created_at).getTime() -
-        new Date(b.post_created_at).getTime(),
+      (currentJournal, nextJournal) =>
+        new Date(nextJournal.post_created_at).getTime() -
+        new Date(currentJournal.post_created_at).getTime(),
     );
 
-    // Calculate streaks
     let currentStreak = 0;
     let previousDate: Date | null = null;
 
@@ -64,26 +79,24 @@ export function usePostsInfiniteQuery(
       const postDate = new Date(post.post_created_at);
 
       if (!previousDate) {
-        currentStreak = 1; // Start with a streak of 1 for the first post
+        currentStreak = 1;
       } else if (areConsecutiveDays(previousDate, postDate)) {
-        currentStreak++; // Increment streak if dates are consecutive
-      } else if (areSameDays(previousDate, postDate)) {
-        currentStreak = currentStreak;
-      } else {
-        currentStreak = 1; // Reset streak if not consecutive
+        currentStreak++;
+      } else if (!areSameDays(previousDate, postDate)) {
+        currentStreak = 1;
       }
 
-      previousDate = postDate; // Update previousDate to current post's date for next iteration
+      previousDate = postDate;
 
       return {
         ...post,
-        streaks: currentStreak, // Add streaks number to each post object
+        streaks: currentStreak,
       };
     });
 
     return {
       data: dataWithStreaks,
-      nextPage: data.length ? data[0].post_id : null, // Use the ID of the last post as the cursor for the next query
+      nextPage: data.length ? data[0].post_id : null,
     };
   };
 
@@ -92,22 +105,7 @@ export function usePostsInfiniteQuery(
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: (username === "me" ? user : true) && searchParams ? true : false, // Query enabled only if user is not null
-    staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
+    enabled: Boolean((username === "me" ? user : true) && searchParams),
+    staleTime: 60 * 60 * 1000,
   });
 }
-
-// Helper function to check if two dates are consecutive days
-const areConsecutiveDays = (date1: Date, date2: Date) => {
-  const difference = date2.getDate() - date1.getDate();
-  const sameMonth = date2.getMonth() === date1.getMonth();
-  const sameYear = date2.getFullYear() === date1.getFullYear();
-  return difference === 1 && sameMonth && sameYear;
-};
-
-const areSameDays = (date1: Date, date2: Date) => {
-  const difference = date2.getDate() - date1.getDate();
-  const sameMonth = date2.getMonth() === date1.getMonth();
-  const sameYear = date2.getFullYear() === date1.getFullYear();
-  return difference === 0 && sameMonth && sameYear;
-};

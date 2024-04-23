@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
@@ -10,15 +10,16 @@ import { Database } from "@/schema";
 import { cn } from "@/utils/cn";
 
 import { Button } from "./button";
+import { useUsername } from "./subdomain-context";
 
 export function Cal() {
   const { currentUser } = getUser();
   const searchParams = useSearchParams();
-  const username = usePathname().split("/")[1];
+  const actualUsername = useUsername();
   const { data, isSuccess } = useStreaksQuery(
     currentUser,
     searchParams,
-    username,
+    actualUsername,
   );
   const [finalData, setFinalData] = useState<
     (Database["public"]["Functions"]["get_posts_dates"]["Returns"][number] & {

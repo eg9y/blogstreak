@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
-import { createClient } from "../../supabase/client";
 import { Database } from "@/schema";
+
+import { createClient } from "../../supabase/client";
 
 export function useGetTopicsQuery(user: User | null, postId?: number) {
   const supabase = createClient();
@@ -47,9 +48,11 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
     const response = topicsData?.map((topic) => {
       return {
         ...topic,
-        isSelected: !!associatedTagsData.find((associated) => {
-          return associated.topic_id === topic.id;
-        }),
+        isSelected: Boolean(
+          associatedTagsData.find((associated) => {
+            return associated.topic_id === topic.id;
+          }),
+        ),
       };
     });
 

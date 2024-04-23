@@ -1,19 +1,37 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
-import { createClient } from "../../supabase/client";
 import { ReadonlyURLSearchParams } from "next/navigation";
+
+import { createClient } from "../../supabase/client";
+
+// Helper function to check if two dates are consecutive days
+const areConsecutiveDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 1 && sameMonth && sameYear;
+};
+
+const areSameDays = (date1: Date, date2: Date) => {
+  const difference = date2.getDate() - date1.getDate();
+  const sameMonth = date2.getMonth() === date1.getMonth();
+  const sameYear = date2.getFullYear() === date1.getFullYear();
+  return difference === 0 && sameMonth && sameYear;
+};
 
 export function useStreaksQuery(
   user: User | null,
   searchParams: ReadonlyURLSearchParams,
-  username: string,
+  username: string | null,
 ) {
   const month = parseInt(
     searchParams.get("month") || (new Date().getMonth() + 1).toString(),
+    10,
   );
 
   const year = parseInt(
     searchParams.get("year") || new Date().getFullYear().toString(),
+    10,
   );
 
   const supabase = createClient();
@@ -27,6 +45,10 @@ export function useStreaksQuery(
   ];
 
   const queryFn = async () => {
+    if (!username) {
+      return { data: [], count: 0 };
+    }
+
     const { data, error } = await supabase.rpc("get_posts_dates", {
       user_id_param: user?.id,
       username_param: decodeURIComponent(username),
@@ -53,8 +75,9 @@ export function useStreaksQuery(
 
     // Ensure data is sorted by post_date in ascending order
     const sortedData = data.sort(
-      (a, b) =>
-        new Date(a.post_date).getTime() - new Date(b.post_date).getTime(),
+      (currentPost, nextPost) =>
+        new Date(currentPost.post_date).getTime() -
+        new Date(nextPost.post_date).getTime(),
     );
 
     // Calculate streaks
@@ -65,20 +88,18 @@ export function useStreaksQuery(
       const postDate = new Date(post.post_date);
 
       if (!previousDate) {
-        currentStreak = 1; // Start with a streak of 1 for the first post
+        currentStreak = 1;
       } else if (areConsecutiveDays(previousDate, postDate)) {
-        currentStreak++; // Increment streak if dates are consecutive
-      } else if (areSameDays(previousDate, postDate)) {
-        currentStreak = currentStreak;
-      } else {
-        currentStreak = 1; // Reset streak if not consecutive
+        currentStreak++;
+      } else if (!areSameDays(previousDate, postDate)) {
+        currentStreak = 1;
       }
 
-      previousDate = postDate; // Update previousDate to current post's date for next iteration
+      previousDate = postDate;
 
       return {
         ...post,
-        streaks: currentStreak, // Add streaks number to each post object
+        streaks: currentStreak,
       };
     });
 
@@ -88,22 +109,7 @@ export function useStreaksQuery(
   return useQuery({
     queryKey,
     queryFn,
-    enabled: (username === "me" ? user : true) && searchParams ? true : false, // Query enabled only if user is not null
-    staleTime: 60 * 60 * 1000, // Data is considered fresh for 60 seconds
+    enabled: Boolean((username === "me" ? user : true) && searchParams),
+    staleTime: 60 * 60 * 1000,
   });
 }
-
-// Helper function to check if two dates are consecutive days
-const areConsecutiveDays = (date1: Date, date2: Date) => {
-  const difference = date2.getDate() - date1.getDate();
-  const sameMonth = date2.getMonth() === date1.getMonth();
-  const sameYear = date2.getFullYear() === date1.getFullYear();
-  return difference === 1 && sameMonth && sameYear;
-};
-
-const areSameDays = (date1: Date, date2: Date) => {
-  const difference = date2.getDate() - date1.getDate();
-  const sameMonth = date2.getMonth() === date1.getMonth();
-  const sameYear = date2.getFullYear() === date1.getFullYear();
-  return difference === 0 && sameMonth && sameYear;
-};
