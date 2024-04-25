@@ -62,6 +62,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
               {!isMe && (
                 <div>
                   <p className="font-bold dark:text-slate-100">{username}</p>
+                  foo: {pathName}
                 </div>
               )}
               <Link
