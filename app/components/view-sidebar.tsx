@@ -8,6 +8,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/utils/getUser";
 import { cn } from "@/utils/cn";
+import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 
@@ -21,10 +22,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
 
   const supabase = createClient();
 
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? "https://blogstreak.com"
-      : "http://localhost:3000";
+  const baseUrl = useBaseUrl();
 
   useEffect(() => {
     (async () => {

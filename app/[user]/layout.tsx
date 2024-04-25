@@ -14,7 +14,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto lg:w-[1000px]">
       <SubdomainContextProvider subdomain={subdomain}>
-        <ViewSidebar>{children}</ViewSidebar>
+        <div className="py-4">
+          <ViewSidebar>{children}</ViewSidebar>
+        </div>
       </SubdomainContextProvider>
     </div>
   );
