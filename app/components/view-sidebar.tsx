@@ -28,20 +28,25 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     (async () => {
-      if (currentUser) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", currentUser.id)
-          .single();
+      try {
+        if (currentUser) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("user_id", currentUser.id)
+            .single();
 
-        if (profile?.name) {
-          const correctIsMe = pathName.split("/")[1] === "me";
-          setIsMe(correctIsMe);
-          setUsername(profile.name);
+          if (profile?.name) {
+            const correctIsMe = pathName.split("/")[1] === "me";
+            setIsMe(correctIsMe);
+            setUsername(profile.name);
+          }
+        } else {
+          setUsername(subdomainUsername!);
         }
-      } else {
-        setUsername(subdomainUsername!!);
+      } catch (error) {
+        setIsMe(false);
+        setUsername(subdomainUsername!);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
