@@ -28,7 +28,7 @@ export default async function PostDetail({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["post", params.user, params.journalId],
+    queryKey: ["blog", params.journalId],
     queryFn,
   });
 

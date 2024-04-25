@@ -3,17 +3,16 @@ import { User } from "@supabase/supabase-js";
 
 import { createClient } from "../../supabase/client";
 
-export function useGetPostQuery(user: User | null, postId?: number) {
+export function useGetPostQuery(user: User | null, journalId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["post", undefined, postId];
+  const queryKey = ["blog", journalId];
 
   const queryFn = async () => {
     const res = await supabase
       .from("posts")
       .select("*")
-      // .eq("user_id", user!.id)
-      .eq("id", postId!)
+      .eq("id", journalId!)
       .single()
       .throwOnError();
     return res;
@@ -22,7 +21,7 @@ export function useGetPostQuery(user: User | null, postId?: number) {
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean(user) && Boolean(postId),
+    enabled: Boolean(journalId),
     staleTime: 60 * 1000,
   });
 }
