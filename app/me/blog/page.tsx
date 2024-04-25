@@ -17,7 +17,7 @@ export default function Blog() {
 
   return (
     <div className="flex flex-col gap-4 pt-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-2">
         <div>
           <p className="text-2xl font-bold dark:text-slate-100">Blog</p>
         </div>

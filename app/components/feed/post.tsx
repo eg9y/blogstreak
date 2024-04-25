@@ -41,7 +41,7 @@ export function Post({ post, isMine }: PostProps) {
         {isMine && <PostOptions post={post} />}
       </div>
       <Link
-        href={`/${isMine ? "me" : ""}/journal/${post.post_id}`}
+        href={`journal/${post.post_id}`}
         className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
         dangerouslySetInnerHTML={{ __html: output }}
       />
