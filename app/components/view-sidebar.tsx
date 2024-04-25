@@ -65,13 +65,12 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </div>
               )}
               <Link
-                href={`${baseUrl}/${isMe ? "me" : username}`}
+                href={isMe ? `${baseUrl}/me` : `${baseUrl}`}
                 className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
               >
                 <button
                   className={cn(
-                    pathName.split("/")[pathName.split("/").length - 1] ===
-                      (isMe ? "me" : username)
+                    pathName === "/" || pathName === "/me"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
@@ -81,7 +80,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`${baseUrl}/${isMe && "me/"}blog`}
+                href={isMe ? `${baseUrl}/me/journal` : `${baseUrl}/blog`}
                 className="flex h-full items-end"
               >
                 <button
@@ -96,7 +95,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`${baseUrl}/${isMe && "me/"}journal`}
+                href={isMe ? `${baseUrl}/me/journal` : `${baseUrl}/journal`}
                 className="flex h-full items-end"
               >
                 <button
