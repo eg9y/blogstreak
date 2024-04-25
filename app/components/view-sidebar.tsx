@@ -42,6 +42,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
             setUsername(profile.name);
           }
         } else {
+          setIsMe(false);
           setUsername(subdomainUsername!);
         }
       } catch (error) {
