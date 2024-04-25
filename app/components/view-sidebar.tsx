@@ -81,12 +81,13 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={isMe ? `${baseUrl}/me/journal` : `${baseUrl}/blog`}
+                href={isMe ? `${baseUrl}/me/blog` : `${baseUrl}/blog`}
                 className="flex h-full items-end"
               >
                 <button
                   className={cn(
-                    pathName.split("/")[2] === "blog"
+                    pathName.split("/")[pathName.split("/").length - 1] ===
+                      "blog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
@@ -101,8 +102,8 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
               >
                 <button
                   className={cn(
-                    pathName.split("/")[2] === "journal" &&
-                      !searchParams.get("private")
+                    pathName.split("/")[pathName.split("/").length - 1] ===
+                      "journal" && !searchParams.get("private")
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
@@ -118,8 +119,8 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 >
                   <button
                     className={cn(
-                      pathName.split("/")[2] === "journal" &&
-                        searchParams.get("private")
+                      pathName.split("/")[pathName.split("/").length - 1] ===
+                        "journal" && searchParams.get("private")
                         ? "border-b-slate-400"
                         : "border-b-transparent",
                       "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
@@ -135,7 +136,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
               >
                 <button
                   className={cn(
-                    pathName.split("/")[2] === "blog"
+                    pathName.split("/")[pathName.split("/").length -1] === "blog"
                       ? "border-b-slate-400"
                       : "border-b-transparent",
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
