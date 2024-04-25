@@ -72,7 +72,7 @@ export function BlogOptions({
                 onSuccess() {
                   setIsOpenDelete(false);
                   return queryClient.invalidateQueries({
-                    queryKey: ["posts"],
+                    queryKey: ["journal"],
                   });
                 },
               });

@@ -32,7 +32,7 @@ export default async function PostDetail({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["post", user?.id, params.journalId],
+    queryKey: ["journal", user?.id, params.journalId],
     queryFn,
   });
 

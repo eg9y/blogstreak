@@ -6,7 +6,7 @@ import { createClient } from "../../supabase/client";
 export function useGetPostQuery(user: User | null, journalId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["blog", journalId];
+  const queryKey = ["journal", journalId];
 
   const queryFn = async () => {
     const res = await supabase

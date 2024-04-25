@@ -45,9 +45,6 @@ export function useEditBlog() {
         queryClient.invalidateQueries({
           queryKey: ["blogs"],
         }),
-        queryClient.invalidateQueries({
-          queryKey: ["blog"],
-        }),
       ]);
     },
   });

@@ -62,7 +62,7 @@ export function useCreatePost() {
     mutationFn,
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ["journal"],
       });
     },
   });

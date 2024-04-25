@@ -76,7 +76,7 @@ export function PostOptions({
                 onSuccess() {
                   setIsOpenDelete(false);
                   return queryClient.invalidateQueries({
-                    queryKey: ["posts"],
+                    queryKey: ["journal"],
                   });
                 },
               });

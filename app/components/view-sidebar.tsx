@@ -1,12 +1,10 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/client";
-import { useUser } from "@/utils/getUser";
 import { cn } from "@/utils/cn";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
@@ -15,43 +13,12 @@ import { useUsername } from "./subdomain-context";
 
 export default function ViewSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
-  const { loggedInUser } = useUser();
-  const [username, setUsername] = useState("");
-  const [isMe, setIsMe] = useState<null | boolean>(null);
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const supabase = createClient();
-
   const baseUrl = useBaseUrl();
-  const subdomainUsername = useUsername();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (loggedInUser) {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("user_id", loggedInUser.id)
-            .single();
-
-          if (profile?.name) {
-            const correctIsMe = pathName.split("/")[1] === "me";
-            setIsMe(correctIsMe);
-            setUsername(profile.name);
-          }
-        } else {
-          setIsMe(false);
-          setUsername(subdomainUsername!);
-        }
-      } catch (error) {
-        setIsMe(false);
-        setUsername(subdomainUsername!);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInUser, pathName, baseUrl]);
+  const username = useUsername();
+  const isMe = pathName.split("/")[1] === "me";
 
   return (
     <div className="mx-auto h-full">

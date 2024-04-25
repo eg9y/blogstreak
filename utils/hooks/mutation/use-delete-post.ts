@@ -18,7 +18,7 @@ export function useDeletePost() {
         position: "top-center",
       });
       return queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ["journal"],
       });
     },
     onError: () => {

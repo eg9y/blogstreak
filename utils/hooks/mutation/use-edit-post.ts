@@ -59,10 +59,7 @@ export function useEditPost() {
     onSuccess: () => {
       return Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ["posts"],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ["post"],
+          queryKey: ["journal"],
         }),
         queryClient.invalidateQueries({
           queryKey: ["topics"],
