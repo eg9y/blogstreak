@@ -12,15 +12,15 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
   const supabase = createClient(cookie);
 
-  const { data, error } = await supabase.auth.getSession();
-  if (!data.session || error) {
+  const { data, error } = await supabase.auth.getUser();
+  if (!data.user || error) {
     redirect("/");
   }
 
   const { data: userProfile } = await supabase
     .from("profiles")
     .select("*")
-    .eq("user_id", data.session.user.id)
+    .eq("user_id", data.user.id)
     .single();
 
   if (!userProfile?.name) {
