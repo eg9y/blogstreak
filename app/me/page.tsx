@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import Scrollbar from "react-scrollbars-custom";
 
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
 import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
 import { extensions } from "@/utils/textEditor";
@@ -15,7 +15,7 @@ import { Button } from "../components/button";
 export default function Home() {
   const pathName = usePathname();
   const possibleUsername = pathName.split("/")[1];
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data: user } = useGetUsernameQuery(currentUser);
 
   const { data: bioData, isSuccess } = useGetBioQuery(

@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useStreaksQuery } from "@/utils/hooks/query/use-streaks-query";
 import { Database } from "@/schema";
 import { cn } from "@/utils/cn";
@@ -13,7 +13,7 @@ import { Button } from "./button";
 import { useUsername } from "./subdomain-context";
 
 export function Cal() {
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const searchParams = useSearchParams();
   const actualUsername = useUsername();
   const { data, isSuccess } = useStreaksQuery(

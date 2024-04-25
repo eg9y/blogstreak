@@ -6,7 +6,7 @@ import Scrollbar from "react-scrollbars-custom";
 import { usePathname } from "next/navigation";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { extensions } from "@/utils/textEditor";
 
@@ -16,7 +16,7 @@ import { Button } from "../button";
 import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewTextEditor = ({ postId }: { postId: number }) => {
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
   const pathname = usePathname();

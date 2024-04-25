@@ -9,7 +9,7 @@ import { Scrollbar } from "react-scrollbars-custom";
 import { Button } from "@/app/components/button";
 import { useCreatePost } from "@/utils/hooks/mutation/use-create-post";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { Database } from "@/schema";
 import { extensions } from "@/utils/textEditor";
 
@@ -42,7 +42,7 @@ export const CreateTextEditor = () => {
   const editor = useEditor({ extensions, content: "", ...editorOptions });
   const submitPostMutation = useCreatePost();
 
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser);
 
   useEffect(() => {

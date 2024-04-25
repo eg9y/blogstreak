@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import { extensions } from "@/utils/textEditor";
 import { useCreateBio } from "@/utils/hooks/mutation/use-create-bio";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { Button } from "@/app/components/button";
 import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
 import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
@@ -29,7 +29,7 @@ export const CreateBioEditor = () => {
   const editorContainerRef = useRef(null);
 
   const editor = useEditor({ extensions, content: "", ...editorOptions });
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const submitBioMutation = useCreateBio();
   const { data: user } = useGetUsernameQuery(currentUser);
   const { data: postData } = useGetBioQuery(user ? user : undefined);

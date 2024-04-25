@@ -6,15 +6,16 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/client";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { cn } from "@/utils/cn";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
+import { useUsername } from "./subdomain-context";
 
 export default function ViewSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const [username, setUsername] = useState("");
   const [isMe, setIsMe] = useState(false);
   const pathName = usePathname();
@@ -23,6 +24,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
   const supabase = createClient();
 
   const baseUrl = useBaseUrl();
+  const subdomainUsername = useUsername();
 
   useEffect(() => {
     (async () => {
@@ -39,11 +41,11 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
           setUsername(profile.name);
         }
       } else {
-        setUsername(pathName.split("/")[1]);
+        setUsername(subdomainUsername!!);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, pathName]);
+  }, [currentUser, pathName, baseUrl]);
 
   return (
     <div className="mx-auto h-full">
@@ -79,7 +81,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`${baseUrl}/${isMe ? "me" : username}/blog`}
+                href={`${baseUrl}/${isMe && "me/"}blog`}
                 className="flex h-full items-end"
               >
                 <button
@@ -94,7 +96,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={`${baseUrl}/${isMe ? "me" : username}/journal`}
+                href={`${baseUrl}/${isMe && "me/"}journal`}
                 className="flex h-full items-end"
               >
                 <button
@@ -128,7 +130,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </Link>
               )}
               {/* <Link
-                href={`/${isMe ? "me" : username}/blog`}
+                href={`/${isMe && "me/"}blog`}
                 className="flex h-full items-end"
               >
                 <button

@@ -7,7 +7,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import Scrollbar from "react-scrollbars-custom";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { Database } from "@/schema";
@@ -41,7 +41,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   const editorContainerRef = useRef(null);
 
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
   const { data: postData } = useGetPostQuery(currentUser, postId);
   const editor = useEditor({ extensions, ...editorOptions });

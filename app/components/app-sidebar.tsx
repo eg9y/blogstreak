@@ -11,14 +11,14 @@ import Image from "next/image";
 
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 
 import { Button } from "./button";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 
 export default function AppSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const router = useRouter();
   const [username, setUsername] = useState("");
 

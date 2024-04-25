@@ -3,7 +3,7 @@
 import { ReactNode, createContext, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
 
 const SubdomainContext = createContext<string | null>(null);
@@ -19,7 +19,7 @@ export default function SubdomainContextProvider({
 }) {
   const pathName = usePathname();
   const pathnameUsername = useMemo(() => pathName.split("/")[1], [pathName]);
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data: user } = useGetUsernameQuery(currentUser);
 
   const actualUsername = useMemo(() => {

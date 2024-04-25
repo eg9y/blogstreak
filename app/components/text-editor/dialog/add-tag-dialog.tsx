@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useCreateTag } from "@/utils/hooks/mutation/use-create-tag";
 import { cn } from "@/utils/cn";
 import { presetColors } from "@/utils/presetColors";
@@ -36,7 +36,7 @@ export function AddTagDialog({
     },
   });
 
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data, isSuccess } = useGetTopicsQuery(currentUser);
   const useCreateTagMutation = useCreateTag();
 

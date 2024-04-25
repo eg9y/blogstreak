@@ -7,7 +7,7 @@ import Scrollbar from "react-scrollbars-custom";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/app/components/button";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
 import { useEditBlog } from "@/utils/hooks/mutation/use-edit-blog";
@@ -34,7 +34,7 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
 
   const editorContainerRef = useRef(null);
 
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data: blogData, isLoading } = useGetBlogQuery(currentUser, blogId);
   const editor = useEditor({ extensions, ...editorOptions });
   const editBlogMutation = useEditBlog();

@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { cn } from "@/utils/cn";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 
 import { Button } from "../components/button";
@@ -11,7 +11,7 @@ import { Checkbox } from "../components/checkbox";
 
 export function Options() {
   const searchQuery = useSearchParams();
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
 
   const { data } = useGetTopicsQuery(currentUser);
 

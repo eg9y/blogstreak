@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { usePostsInfiniteQuery } from "@/utils/hooks/query/use-posts-infinite-query";
 
 import { Button } from "../button";
@@ -12,7 +12,7 @@ import { useUsername } from "../subdomain-context";
 import { Post } from "./post";
 
 export function Posts() {
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const isMe = pathName.split("/")[1] === "me";

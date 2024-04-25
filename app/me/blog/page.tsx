@@ -3,12 +3,12 @@
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { Button } from "@/app/components/button";
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
 import { BlogOptions } from "@/app/components/feed/blog-options";
 
 export default function Blog() {
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const username = pathName.split("/")[1];

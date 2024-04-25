@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import Scrollbar from "react-scrollbars-custom";
 import { usePathname } from "next/navigation";
 
-import { getUser } from "@/utils/getUser";
+import { useUser } from "@/utils/getUser";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
 
@@ -14,7 +14,7 @@ import { Button } from "../button";
 import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
-  const { currentUser } = getUser();
+  const { currentUser } = useUser();
   const { data: blogData } = useGetBlogQuery(currentUser, blogId);
   const pathname = usePathname();
 
