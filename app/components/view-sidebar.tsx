@@ -17,7 +17,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const { currentUser } = useUser();
   const [username, setUsername] = useState("");
-  const [isMe, setIsMe] = useState(false);
+  const [isMe, setIsMe] = useState<null | boolean>(null);
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
@@ -57,12 +57,16 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
         <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-6 dark:border-slate-600 dark:bg-slate-800">
           {/* Separator */}
 
-          <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
+          <div
+            className={cn(
+              "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
+              isMe === null && "pointer-events-none",
+            )}
+          >
             <div className="flex grow items-baseline  justify-start gap-x-8">
               {!isMe && (
                 <div>
                   <p className="font-bold dark:text-slate-100">{username}</p>
-                  foo: {pathName}
                 </div>
               )}
               <Link
