@@ -11,9 +11,9 @@ import { Checkbox } from "../components/checkbox";
 
 export function Options() {
   const searchQuery = useSearchParams();
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
 
-  const { data } = useGetTopicsQuery(currentUser);
+  const { data } = useGetTopicsQuery(loggedInUser);
 
   return (
     <ul role="list" className="flex w-full flex-wrap  gap-1 ">

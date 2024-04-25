@@ -36,8 +36,8 @@ export function AddTagDialog({
     },
   });
 
-  const { currentUser } = useUser();
-  const { data, isSuccess } = useGetTopicsQuery(currentUser);
+  const { loggedInUser } = useUser();
+  const { data, isSuccess } = useGetTopicsQuery(loggedInUser);
   const useCreateTagMutation = useCreateTag();
 
   const onSubmit: SubmitHandler<InsertTagInputs> = (submitData) => {

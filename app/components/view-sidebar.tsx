@@ -15,7 +15,7 @@ import { useUsername } from "./subdomain-context";
 
 export default function ViewSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const [username, setUsername] = useState("");
   const [isMe, setIsMe] = useState<null | boolean>(null);
   const pathName = usePathname();
@@ -29,11 +29,11 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
   useEffect(() => {
     (async () => {
       try {
-        if (currentUser) {
+        if (loggedInUser) {
           const { data: profile } = await supabase
             .from("profiles")
             .select("*")
-            .eq("user_id", currentUser.id)
+            .eq("user_id", loggedInUser.id)
             .single();
 
           if (profile?.name) {
@@ -51,7 +51,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, pathName, baseUrl]);
+  }, [loggedInUser, pathName, baseUrl]);
 
   return (
     <div className="mx-auto h-full">

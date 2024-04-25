@@ -14,7 +14,7 @@ import { Button } from "../button";
 import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const { data: blogData } = useGetBlogQuery(blogId);
   const pathname = usePathname();
 
@@ -48,7 +48,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
         </div>
 
         <div className="flex justify-between">
-          {currentUser && (
+          {loggedInUser && (
             <div className="flex items-center gap-1">
               <div className="pointer-events-none">
                 <IsPublicSwitch

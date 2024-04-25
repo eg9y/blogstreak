@@ -15,10 +15,13 @@ import { Button } from "../button";
 
 import { IsPublicSwitch } from "./is-public-switch";
 
-export const ViewTextEditor = ({ postId }: { postId: number }) => {
-  const { currentUser } = useUser();
-  const { data: postData } = useGetPostQuery(currentUser, postId);
-  const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
+export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
+  const { loggedInUser } = useUser();
+  const { data: postData } = useGetPostQuery(loggedInUser, journalId);
+  const { data, isLoading, isSuccess } = useGetTopicsQuery(
+    loggedInUser,
+    journalId,
+  );
   const pathname = usePathname();
 
   const output = useMemo(() => {
@@ -76,7 +79,7 @@ export const ViewTextEditor = ({ postId }: { postId: number }) => {
             <Button
               color="orange"
               className="w-40 cursor-pointer self-end"
-              href={`/me/post/${postId}/edit`}
+              href={`/me/post/${journalId}/edit`}
             >
               Edit
             </Button>

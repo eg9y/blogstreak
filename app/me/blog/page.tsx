@@ -8,12 +8,12 @@ import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
 import { BlogOptions } from "@/app/components/feed/blog-options";
 
 export default function Blog() {
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const username = pathName.split("/")[1];
 
-  const { data } = useGetBlogs(currentUser, searchParams, username);
+  const { data } = useGetBlogs(loggedInUser, searchParams, username);
 
   return (
     <div className="flex flex-col gap-4 pt-2">

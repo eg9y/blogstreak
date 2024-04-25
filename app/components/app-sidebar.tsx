@@ -18,7 +18,7 @@ import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 
 export default function AppSidebar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const router = useRouter();
   const [username, setUsername] = useState("");
 
@@ -26,13 +26,13 @@ export default function AppSidebar({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     (async () => {
-      if (!currentUser) {
+      if (!loggedInUser) {
         return;
       }
       const { data: profile } = await supabase
         .from("profiles")
         .select("*")
-        .eq("user_id", currentUser.id)
+        .eq("user_id", loggedInUser.id)
         .single();
 
       if (profile?.name) {
@@ -40,7 +40,7 @@ export default function AppSidebar({ children }: { children: ReactNode }) {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  }, [loggedInUser]);
 
   const userNavigation = [
     {
@@ -112,7 +112,7 @@ export default function AppSidebar({ children }: { children: ReactNode }) {
                       className="ml-2 text-sm font-semibold leading-6 text-slate-900 dark:text-slate-300"
                       aria-hidden="true"
                     >
-                      {username || currentUser?.email}
+                      {username || loggedInUser?.email}
                     </span>
                     <ChevronDownIcon
                       className="ml-1 h-5 w-5 text-slate-400 dark:text-slate-300"

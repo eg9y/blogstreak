@@ -1,18 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "../../supabase/client";
+
 import { Database } from "@/schema";
+
+import { createClient } from "../../supabase/client";
 
 export function useEditPost() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
   async function mutationFn({
-    postId,
+    journalId,
     content,
     tags,
     isPublic,
   }: {
-    postId: number;
+    journalId: number;
     content: string;
     tags: Database["public"]["Tables"]["topics"]["Row"][];
     isPublic: boolean;
@@ -27,25 +29,25 @@ export function useEditPost() {
       return;
     }
 
-    const res = await supabase
+    await supabase
       .from("posts")
       .update({
         text: content,
         user_id: user?.id,
         is_public: isPublic,
       })
-      .eq("id", postId);
+      .eq("id", journalId);
 
     if (tags.length > 0) {
-      const resDelete = await supabase
+      await supabase
         .from("post_topics")
         .delete()
-        .eq("post_id", postId)
+        .eq("post_id", journalId)
         .eq("user_id", user.id);
-      const resAdd = await supabase.from("post_topics").insert(
+      await supabase.from("post_topics").insert(
         tags.map((tag) => ({
           topic_id: tag.id,
-          post_id: postId,
+          post_id: journalId,
           user_id: user?.id,
         })),
       );
@@ -54,7 +56,7 @@ export function useEditPost() {
 
   return useMutation({
     mutationFn,
-    onSuccess: async () => {
+    onSuccess: () => {
       return Promise.all([
         queryClient.invalidateQueries({
           queryKey: ["posts"],

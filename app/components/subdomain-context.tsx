@@ -19,8 +19,8 @@ export default function SubdomainContextProvider({
 }) {
   const pathName = usePathname();
   const pathnameUsername = useMemo(() => pathName.split("/")[1], [pathName]);
-  const { currentUser } = useUser();
-  const { data: user } = useGetUsernameQuery(currentUser);
+  const { loggedInUser } = useUser();
+  const { data: user } = useGetUsernameQuery(loggedInUser);
 
   const actualUsername = useMemo(() => {
     // If subdomain is provided, use it directly

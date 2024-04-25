@@ -7,7 +7,7 @@ import { createClient } from "./supabase/client";
 
 export function useUser() {
   const supabase = createClient();
-  const [currentUser, setCurrentUser] = useState(null as null | User);
+  const [loggedInUser, setLoggedInUser] = useState(null as null | User);
 
   useEffect(() => {
     async function fetchUser() {
@@ -18,10 +18,11 @@ export function useUser() {
       if (error) {
         return;
       }
-      setCurrentUser(user);
+      setLoggedInUser(user);
     }
     fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { currentUser, setCurrentUser };
+  return { loggedInUser, setLoggedInUser };
 }

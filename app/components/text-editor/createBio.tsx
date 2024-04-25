@@ -29,9 +29,9 @@ export const CreateBioEditor = () => {
   const editorContainerRef = useRef(null);
 
   const editor = useEditor({ extensions, content: "", ...editorOptions });
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const submitBioMutation = useCreateBio();
-  const { data: user } = useGetUsernameQuery(currentUser);
+  const { data: user } = useGetUsernameQuery(loggedInUser);
   const { data: postData } = useGetBioQuery(user ? user : undefined);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const CreateBioEditor = () => {
   }, [postData, editor]);
 
   function submitPost() {
-    if (!currentUser) {
+    if (!loggedInUser) {
       toast.error("Current User not loaded");
       return;
     }
@@ -77,7 +77,7 @@ export const CreateBioEditor = () => {
     submitBioMutation.mutate(
       {
         content,
-        userId: currentUser.id,
+        userId: loggedInUser.id,
       },
       {
         onSuccess: () => {

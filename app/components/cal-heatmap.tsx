@@ -13,11 +13,11 @@ import { Button } from "./button";
 import { useUsername } from "./subdomain-context";
 
 export function Cal() {
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const searchParams = useSearchParams();
   const actualUsername = useUsername();
   const { data, isSuccess } = useStreaksQuery(
-    currentUser,
+    loggedInUser,
     searchParams,
     actualUsername,
   );

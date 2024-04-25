@@ -15,8 +15,8 @@ import { Button } from "../components/button";
 export default function Home() {
   const pathName = usePathname();
   const possibleUsername = pathName.split("/")[1];
-  const { currentUser } = useUser();
-  const { data: user } = useGetUsernameQuery(currentUser);
+  const { loggedInUser } = useUser();
+  const { data: user } = useGetUsernameQuery(loggedInUser);
 
   const { data: bioData, isSuccess } = useGetBioQuery(
     user ? (possibleUsername === "me" ? user : possibleUsername) : undefined,

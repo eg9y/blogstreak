@@ -42,8 +42,8 @@ export const CreateTextEditor = () => {
   const editor = useEditor({ extensions, content: "", ...editorOptions });
   const submitPostMutation = useCreatePost();
 
-  const { currentUser } = useUser();
-  const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser);
+  const { loggedInUser } = useUser();
+  const { data, isLoading, isSuccess } = useGetTopicsQuery(loggedInUser);
 
   useEffect(() => {
     // Step 3: Add an event listener to focus the editor

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "../../supabase/client";
 import { toast } from "sonner";
+
+import { createClient } from "../../supabase/client";
 
 export function useDeletePost() {
   const queryClient = useQueryClient();

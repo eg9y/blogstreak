@@ -11,7 +11,7 @@ import { useUsername } from "../subdomain-context";
 import { Post } from "./post";
 
 export function Posts() {
-  const { currentUser } = useUser();
+  const { loggedInUser } = useUser();
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const isMe = pathName.split("/")[1] === "me";
@@ -19,7 +19,7 @@ export function Posts() {
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     usePostsInfiniteQuery(
-      currentUser,
+      loggedInUser,
       searchParams,
       isMe ? "me" : actualUsername,
     );

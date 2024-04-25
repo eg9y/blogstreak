@@ -30,7 +30,7 @@ const editorOptions: Partial<EditorOptions> = {
   editable: false,
 };
 
-export const EditTextEditor = ({ postId }: { postId: number }) => {
+export const EditTextEditor = ({ journalId }: { journalId: number }) => {
   const [tags, setTags] = useState(
     [] as Database["public"]["Tables"]["topics"]["Row"][],
   );
@@ -41,9 +41,12 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
 
   const editorContainerRef = useRef(null);
 
-  const { currentUser } = useUser();
-  const { data, isLoading, isSuccess } = useGetTopicsQuery(currentUser, postId);
-  const { data: postData } = useGetPostQuery(currentUser, postId);
+  const { loggedInUser } = useUser();
+  const { data, isLoading, isSuccess } = useGetTopicsQuery(
+    loggedInUser,
+    journalId,
+  );
+  const { data: postData } = useGetPostQuery(loggedInUser, journalId);
   const editor = useEditor({ extensions, ...editorOptions });
   const editPostMutation = useEditPost();
 
@@ -98,7 +101,7 @@ export const EditTextEditor = ({ postId }: { postId: number }) => {
     const content = JSON.stringify(editor?.getJSON());
     editPostMutation.mutate(
       {
-        postId,
+        journalId,
         content,
         tags,
         isPublic,
