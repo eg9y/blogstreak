@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import Scrollbar from "react-scrollbars-custom";
 import { usePathname } from "next/navigation";
 
-import { useUser } from "@/utils/getUser";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
+import { useUser } from "@/utils/getUser";
 
 import { Button } from "../button";
 
@@ -15,7 +15,7 @@ import { IsPublicSwitch } from "./is-public-switch";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   const { currentUser } = useUser();
-  const { data: blogData } = useGetBlogQuery(currentUser, blogId);
+  const { data: blogData } = useGetBlogQuery(blogId);
   const pathname = usePathname();
 
   const output = useMemo(() => {
@@ -28,7 +28,9 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className=" w-full p-2  dark:bg-slate-800 ">
-        <p className="text-4xl font-bold">{blogData?.data?.title}</p>
+        <p className="text-4xl font-bold dark:text-slate-200">
+          {blogData?.data?.title}
+        </p>
         <div
           className="h-full cursor-text pt-2"
           // Make the div focusable
@@ -46,14 +48,16 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
         </div>
 
         <div className="flex justify-between">
-          <div className="flex items-center gap-1">
-            <div className="pointer-events-none">
-              <IsPublicSwitch
-                isPublic={blogData?.data?.is_published!!}
-                setIsPublic={() => {}}
-              />
+          {currentUser && (
+            <div className="flex items-center gap-1">
+              <div className="pointer-events-none">
+                <IsPublicSwitch
+                  isPublic={blogData?.data?.is_published!!}
+                  setIsPublic={() => {}}
+                />
+              </div>
             </div>
-          </div>
+          )}
           {pathname.split("/")[1] === "me" && (
             <Button
               color="orange"

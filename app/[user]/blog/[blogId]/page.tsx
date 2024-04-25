@@ -11,19 +11,15 @@ import { createClient } from "@/utils/supabase/server";
 export default async function BlogDetail({
   params,
 }: {
-  params: { blogId: number };
+  params: { blogId: number; user: string };
 }) {
   const cookie = cookies();
   const supabase = createClient(cookie);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const queryFn = () => {
     return supabase
       .from("blogs")
       .select("*")
-      .eq("user_id", user!.id)
       .eq("id", params.blogId!)
       .single()
       .throwOnError();
@@ -32,7 +28,7 @@ export default async function BlogDetail({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["blogs", user?.id, params.blogId],
+    queryKey: ["blogs", params.user, params.blogId],
     queryFn,
   });
 

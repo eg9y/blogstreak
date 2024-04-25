@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { User } from "@supabase/supabase-js";
 
 import { createClient } from "../../supabase/client";
 
-export function useGetBlogQuery(user: User | null, blogId?: number) {
+export function useGetBlogQuery(blogId?: number) {
   const supabase = createClient();
 
   const queryKey = ["blog", undefined, blogId];
@@ -21,7 +20,7 @@ export function useGetBlogQuery(user: User | null, blogId?: number) {
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean(user) && Boolean(blogId),
+    enabled: Boolean(blogId),
     staleTime: 60 * 1000,
   });
 }

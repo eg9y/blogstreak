@@ -16,7 +16,6 @@ export function useUser() {
         error,
       } = await supabase.auth.getUser();
       if (error) {
-        console.log("error", error);
         return;
       }
       setCurrentUser(user);
