@@ -15,7 +15,7 @@ interface PostProps {
     streaks: number | null;
   };
   isMine: boolean;
-  username: string;
+  username: string | null;
 }
 
 export function Post({ post, isMine, username }: PostProps) {
