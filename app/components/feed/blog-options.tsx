@@ -42,7 +42,7 @@ export function BlogOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href={`/me/post/${blog.id}/edit`}>Edit</DropdownItem>
+          <DropdownItem href={`/me/blog/${blog.id}/edit`}>Edit</DropdownItem>
           <DropdownSeparator />
           <DropdownItem
             onClick={() => {

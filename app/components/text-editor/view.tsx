@@ -79,7 +79,7 @@ export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
             <Button
               color="orange"
               className="w-40 cursor-pointer self-end"
-              href={`/me/post/${journalId}/edit`}
+              href={`/me/journal/${journalId}/edit`}
             >
               Edit
             </Button>

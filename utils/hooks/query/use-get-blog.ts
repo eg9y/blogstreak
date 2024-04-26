@@ -5,7 +5,7 @@ import { createClient } from "../../supabase/client";
 export function useGetBlogQuery(blogId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["blog", undefined, blogId];
+  const queryKey = ["blog", blogId];
 
   const queryFn = async () => {
     const res = await supabase
@@ -14,6 +14,7 @@ export function useGetBlogQuery(blogId?: number) {
       .eq("id", blogId!)
       .single()
       .throwOnError();
+
     return res;
   };
 

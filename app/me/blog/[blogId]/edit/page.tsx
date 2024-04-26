@@ -32,7 +32,7 @@ export default async function EditBlogComponent({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["blogs", user?.id, params.blogId],
+    queryKey: ["blogs", params.blogId],
     queryFn,
   });
 
