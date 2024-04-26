@@ -55,7 +55,7 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
       return;
     }
 
-    const associatedTags = data.filter((tag) => {
+    const associatedTags = data.filter((tag: any) => {
       return tag.isSelected;
     });
     setTags(associatedTags);

@@ -24,7 +24,7 @@ export function Post({ post, isMine }: PostProps) {
   }, [post.post_text]);
 
   return (
-    <div className="min-h-30 flex w-full flex-col gap-2 rounded-md bg-slate-50 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-800 dark:ring-slate-700">
+    <div className="min-h-30 flex w-full flex-col gap-2  bg-slate-50 p-2 ring-1 ring-slate-300 drop-shadow-sm dark:bg-slate-900 dark:ring-slate-700">
       <div className="flex h-5 justify-between">
         <div className="flex flex-wrap gap-1">
           {post.post_topics &&

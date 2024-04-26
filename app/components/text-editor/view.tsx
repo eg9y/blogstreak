@@ -57,7 +57,7 @@ export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
               <p className="text-sm text-slate-600">No Tags</p>
             )}
             {isSuccess &&
-              data?.map((topic) => {
+              data?.map((topic: any) => {
                 return (
                   <Badge
                     className=""
