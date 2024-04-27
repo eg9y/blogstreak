@@ -7,7 +7,6 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 
 import { cn } from "@/utils/cn";
 import { createClient } from "@/utils/supabase/client";
@@ -95,13 +94,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               <Menu as="div" className="relative">
                 <Menu.Button className="-m-1.5 flex items-center p-1.5">
                   <span className="sr-only">Open user menu</span>
-                  <Image
-                    className="h-6 w-6 rounded-full bg-slate-50 dark:bg-slate-800"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                    height={10}
-                    width={10}
-                  />
+
                   <span className="hidden md:flex md:items-center">
                     <span
                       className="ml-2 text-sm font-semibold leading-6 text-slate-900 dark:text-slate-300"
