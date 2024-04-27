@@ -11,39 +11,33 @@ import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 import { useUsername } from "./subdomain-context";
 
-export default function ViewSidebar({ children }: { children: ReactNode }) {
+export default function ViewerNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
   const baseUrl = useBaseUrl();
   const username = useUsername();
-  const isMe = pathName.split("/")[1] === "me";
 
   return (
-    <div className="mx-auto h-full">
+    <div className="container mx-auto">
       <ChangeUsernameDialog
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
       <div className="flex flex-col">
         <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm sm:gap-x-6 sm:px-6 md:px-6 dark:border-slate-600 dark:bg-slate-800">
-          {/* Separator */}
-
           <div
             className={cn(
               "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
-              isMe === null && "pointer-events-none",
             )}
           >
             <div className="flex grow items-baseline  justify-start gap-x-8">
-              {!isMe && (
-                <div>
-                  <p className="font-bold dark:text-slate-100">{username}</p>
-                </div>
-              )}
+              <div>
+                <p className="font-bold dark:text-slate-100">{username}</p>
+              </div>
               <Link
-                href={isMe ? `${baseUrl}/me` : `${baseUrl}`}
+                href={`${baseUrl}`}
                 className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
               >
                 <button
@@ -54,13 +48,10 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                     "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
                   )}
                 >
-                  🏠 Home
+                  Home
                 </button>
               </Link>
-              <Link
-                href={isMe ? `${baseUrl}/me/blog` : `${baseUrl}/blog`}
-                className="flex h-full items-end"
-              >
+              <Link href={`${baseUrl}/blog`} className="flex h-full items-end">
                 <button
                   className={cn(
                     pathName.split("/")[pathName.split("/").length - 1] ===
@@ -74,7 +65,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                 </button>
               </Link>
               <Link
-                href={isMe ? `${baseUrl}/me/journal` : `${baseUrl}/journal`}
+                href={`${baseUrl}/journal`}
                 className="flex h-full items-end"
               >
                 <button
@@ -89,24 +80,6 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
                   Journal
                 </button>
               </Link>
-              {isMe && (
-                <Link
-                  href={`${baseUrl}/me/journal?private=true`}
-                  className="flex h-full items-end"
-                >
-                  <button
-                    className={cn(
-                      pathName.split("/")[pathName.split("/").length - 1] ===
-                        "journal" && searchParams.get("private")
-                        ? "border-b-slate-400"
-                        : "border-b-transparent",
-                      "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
-                    )}
-                  >
-                    Private Journal
-                  </button>
-                </Link>
-              )}
               {/* <Link
                 href={`/${isMe && "me/"}blog`}
                 className="flex h-full items-end"
@@ -148,7 +121,7 @@ export default function ViewSidebar({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <div className=" overflow-y-hidden px-2">{children}</div>
+        <div className="px-2">{children}</div>
       </div>
     </div>
   );

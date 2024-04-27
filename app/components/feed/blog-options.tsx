@@ -35,7 +35,7 @@ export function BlogOptions({
     <>
       <Dropdown>
         <DropdownButton
-          className=" size-10 cursor-pointer"
+          className="h-5 w-10 cursor-pointer md:size-10"
           plain
           aria-label="Account options"
         >

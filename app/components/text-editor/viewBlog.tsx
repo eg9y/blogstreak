@@ -25,7 +25,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   }, [blogData]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
       <div className=" relative w-full  p-2 dark:bg-slate-800">
         <p className="text-4xl font-bold dark:text-slate-200">
           {blogData?.data?.title}
@@ -35,13 +35,13 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
           // Make the div focusable
         >
           <div
-            className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
+            className="prose prose-base grow break-words dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
             dangerouslySetInnerHTML={{ __html: output }}
           />
         </div>
 
-        <div className="fixed bottom-0 flex w-[1000px] justify-between bg-slate-100 p-4 dark:bg-slate-800">
-          {loggedInUser && (
+        {loggedInUser && pathname.split("/")[1] === "me" && (
+          <div className="fixed bottom-0 flex w-[1000px] justify-between bg-slate-100 p-4 dark:bg-slate-800">
             <div className="flex items-center gap-1">
               <div className="pointer-events-none">
                 <IsPublicSwitch
@@ -50,8 +50,6 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
                 />
               </div>
             </div>
-          )}
-          {pathname.split("/")[1] === "me" && (
             <Button
               color="orange"
               className="w-40 cursor-pointer self-end"
@@ -59,8 +57,8 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
             >
               Edit
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

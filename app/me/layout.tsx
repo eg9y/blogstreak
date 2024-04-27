@@ -4,9 +4,8 @@ import { ReactNode } from "react";
 
 import { createClient } from "@/utils/supabase/server";
 
-import AppSidebar from "../components/app-sidebar";
+import MeNavbar from "../components/me-navbar";
 import { ForceChangeUsernameDialog } from "../components/nav/force-change-username-dialog";
-import ViewSidebar from "../components/view-sidebar";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
@@ -30,9 +29,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto lg:w-[1000px]">
       {!userProfile?.name && <ForceChangeUsernameDialog />}
-      <AppSidebar>
-        <ViewSidebar>{children}</ViewSidebar>
-      </AppSidebar>
+      <MeNavbar>{children}</MeNavbar>
     </div>
   );
 }

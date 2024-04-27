@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "2.0.0-alpha.4",
     "@heroicons/react": "latest",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
@@ -27,7 +28,9 @@
     "@tiptap/pm": "^2.1.16",
     "@tiptap/react": "^2.1.16",
     "@tiptap/starter-kit": "^2.1.16",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "lucide-react": "^0.376.0",
     "next": "14.0.4",
     "react": "^18",
     "react-colorful": "^5.6.1",
@@ -36,6 +39,7 @@
     "react-scrollbars-custom": "^4.1.1",
     "sonner": "^1.4.0",
     "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
