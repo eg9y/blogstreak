@@ -21,7 +21,7 @@ const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
       class:
-        "prose dark:prose-invert max-w-full prose-sm m-5 focus:outline-none",
+        "prose prose-base grow break-words md:prose-lg dark:prose-invert focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal",
     },
   },
   editable: false,

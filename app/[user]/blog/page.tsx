@@ -24,7 +24,7 @@ export default function Blog() {
       <div>
         {data &&
           data.pages.map((page) => (
-            <div key={page.nextPage} className="flex flex-col gap-8">
+            <div key={page.nextPage} className="flex flex-col gap-8 md:gap-2">
               {page.data.map((blog) => (
                 <Link
                   href={`blog/${blog.id}`}

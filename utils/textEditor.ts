@@ -26,6 +26,9 @@ export const extensions = [
     },
   }),
   Link.configure({
+    // HTMLAttributes: {
+    //   class: "text-slate-500",
+    // },
     openOnClick: false,
     autolink: true,
   }),
