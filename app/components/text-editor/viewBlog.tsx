@@ -26,7 +26,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
 
   return (
     <div className="flex flex-col gap-2 ">
-      <div className=" relative flex w-full flex-col p-2 dark:bg-slate-800">
+      <div className=" relative flex w-full flex-col p-2">
         <p className="max-w-[65ch] text-4xl font-bold dark:text-slate-200">
           {blogData?.data?.title}
         </p>
@@ -41,7 +41,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
         </div>
 
         {loggedInUser && pathname.split("/")[1] === "me" && (
-          <div className="fixed bottom-0 flex w-[1000px] justify-between bg-zinc-200 p-4 dark:bg-slate-800">
+          <div className="fixed bottom-0 flex w-[1000px] justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
             <div className="flex items-center gap-1">
               <div className="pointer-events-none">
                 <IsPublicSwitch

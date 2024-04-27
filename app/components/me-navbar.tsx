@@ -61,7 +61,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         setIsOpen={setIsOpenChangeUsername}
       />
       <div className="flex flex-col">
-        <div className="flex h-[7vh]   max-h-[52px] shrink-0 items-center gap-x-4  bg-transparent px-4 dark:bg-slate-800 sm:gap-x-6 sm:px-6  md:px-8">
+        <div className="flex h-[7vh]   max-h-[52px] shrink-0 items-center gap-x-4  bg-transparent px-4  sm:gap-x-6 sm:px-6  md:px-8">
           {/* Separator */}
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
@@ -170,7 +170,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                 setIsOpen={setIsOpenChangeUsername}
               />
               <div className="flex flex-col">
-                <div className="hidden h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 dark:bg-slate-800 sm:gap-x-6 sm:px-6 md:flex md:px-6">
+                <div className="hidden h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
                   <div
                     className={cn(
                       "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
@@ -260,7 +260,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               </Link> */}
                     </div>
                     <form
-                      className="relative flex flex-1 dark:bg-slate-600"
+                      className="relative flex flex-1 bg-transparent"
                       action="#"
                       method="GET"
                     >
@@ -273,7 +273,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                       />
                       <input
                         id="search-field"
-                        className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0  dark:bg-slate-800 dark:text-slate-300 sm:text-sm"
+                        className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0   dark:text-slate-300 sm:text-sm"
                         placeholder="Search..."
                         autoComplete="off"
                         autoCorrect="off"

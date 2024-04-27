@@ -33,7 +33,7 @@ export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className=" w-full p-2  dark:bg-slate-800 ">
+      <div className=" w-full  p-2 ">
         <div
           className="h-full cursor-text"
           // Make the div focusable
