@@ -7,7 +7,10 @@ export function getBaseUrl(requestPath: string) {
 
   // Check if the first segment of the path is not "me"
   const pathSegments = requestPath.split("/");
-  if (process.env.NODE_ENV === "production" && pathSegments[1] !== "me") {
+  if (
+    process.env.NODE_ENV === "production" &&
+    !["me", "auth"].includes(pathSegments[1])
+  ) {
     // Example: Extract subdomain from path or some other logic
     const subdomainUsername = pathSegments[1];
     baseUrl = `https://${subdomainUsername}.blogstreak.com`;
