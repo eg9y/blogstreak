@@ -1,4 +1,4 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createClient } from "./supabase/server";
@@ -8,11 +8,14 @@ export const signUpWithGoogle = async () => {
 
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://blogstreak.com"
+      : "http://localhost:3000";
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${headers().get("origin")}/auth/callback?next=/me`,
+      redirectTo: `${baseUrl}/auth/callback?next=/me`,
       queryParams: {
         access_type: "offline",
         prompt: "consent",

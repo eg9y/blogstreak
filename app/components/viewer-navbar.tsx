@@ -10,6 +10,7 @@ import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 import { useUsername } from "./subdomain-context";
+import { DarkmodeToggle } from "./darkmode-toggle";
 
 export default function ViewerNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
@@ -118,6 +119,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
                 name="search"
               />
             </form>
+            <DarkmodeToggle />
           </div>
         </div>
 

@@ -44,6 +44,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
     // update link
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
     setIsLinkOptionOpen(false);
+    setLink("");
   }, [editor, link]);
 
   if (!editor) {
