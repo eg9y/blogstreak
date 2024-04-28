@@ -34,6 +34,9 @@ export async function GET(request: Request) {
         },
       },
     );
+
+    console.log("URL TO LOAD", `${url.origin}${next}`);
+
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       return NextResponse.redirect(`${url.origin}${next}`);

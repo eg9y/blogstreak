@@ -21,7 +21,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
   const username = useUsername();
 
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto">
       <ChangeUsernameDialog
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
@@ -98,7 +98,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
               </Link> */}
             </div>
             <form
-              className="relative flex flex-1 bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)]"
+              className="relative hidden flex-1  bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)] md:flex"
               action="#"
               method="GET"
             >
