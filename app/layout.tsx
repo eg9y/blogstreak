@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="">
-      <body className={cn(inter.className, "")}>
+    <html lang="en" className="h-screen">
+      <body className={cn(inter.className, "h-screen")}>
         <ReactQueryProvider>
           <ThemeProvider>{children}</ThemeProvider>
           <Toaster />
