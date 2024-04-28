@@ -23,6 +23,7 @@ import {
 } from "./dropdown";
 import { useUsername } from "./subdomain-context";
 import HamburgerSidebar from "./hamburger-sidebar";
+import { DarkmodeToggle } from "./darkmode-toggle";
 
 export default function MeNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
@@ -147,6 +148,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               <Pencil1Icon />
               Write Blog
             </Button>
+            <DarkmodeToggle />
           </div>
           <div className="flex items-center gap-1 md:hidden">
             <Dropdown>

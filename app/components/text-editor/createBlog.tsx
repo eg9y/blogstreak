@@ -124,7 +124,7 @@ export const CreateBlogEditor = () => {
 
             <Field>
               <Label>Body</Label>
-              <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:ring-slate-700 ">
+              <div className=" w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-transparent dark:ring-slate-700 ">
                 <Toolbar editor={editor} />
                 <div
                   className="h-full cursor-text"

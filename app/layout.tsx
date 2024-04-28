@@ -8,7 +8,7 @@ import "./globals.css";
 import { cn } from "@/utils/cn";
 
 import { ReactQueryProvider } from "./components/react-query-provider";
-import { ThemeProvider } from "./components/theme-provider";
+import ThemeProvider from "./components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="">
       <body className={cn(inter.className, "")}>
         <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
           <Toaster />
         </ReactQueryProvider>
       </body>
