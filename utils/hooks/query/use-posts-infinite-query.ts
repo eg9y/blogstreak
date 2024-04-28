@@ -94,8 +94,6 @@ export function usePostsInfiniteQuery(
       };
     });
 
-    console.log("data hellooo", data);
-
     return {
       data: dataWithStreaks,
       nextPage: data.length ? data[0].post_id : null,
