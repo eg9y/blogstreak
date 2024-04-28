@@ -89,6 +89,9 @@ dependencies:
   react-scrollbars-custom:
     specifier: ^4.1.1
     version: 4.1.1(react-dom@18.2.0)(react@18.2.0)
+  react-sticky-el:
+    specifier: ^2.1.0
+    version: 2.1.0(react-dom@18.2.0)(react@18.2.0)
   sonner:
     specifier: ^1.4.0
     version: 1.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -4374,6 +4377,16 @@ packages:
       zoom-level: 2.5.0
     transitivePeerDependencies:
       - react-dom
+    dev: false
+
+  /react-sticky-el@2.1.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-oo+a2GedF4QMfCfm20e9gD+RuuQp/ngvwGMUXAXpST+h4WnmKhuv7x6MQ4X/e3AHiLYgE0zDyJo1Pzo8m51KpA==}
+    peerDependencies:
+      react: '>=16.3.0'
+      react-dom: '>=16.3.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-style-singleton@2.2.1(@types/react@18.2.47)(react@18.2.0):

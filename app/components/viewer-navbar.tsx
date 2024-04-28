@@ -97,7 +97,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
               </Link> */}
             </div>
             <form
-              className="relative flex flex-1 dark:bg-slate-600"
+              className="relative flex flex-1 bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)]"
               action="#"
               method="GET"
             >
@@ -110,7 +110,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
               />
               <input
                 id="search-field"
-                className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0   dark:text-slate-300 sm:text-sm"
+                className="block h-full w-full border-0 bg-[hsl(0_0%_100%)] bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400   focus:ring-0 dark:bg-[hsl(240_10%_3.9%)] dark:text-slate-300 sm:text-sm"
                 placeholder="Search..."
                 autoComplete="off"
                 autoCorrect="off"

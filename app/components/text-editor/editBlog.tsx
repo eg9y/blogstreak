@@ -3,8 +3,8 @@
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
-import Scrollbar from "react-scrollbars-custom";
 import { Controller, useForm } from "react-hook-form";
+import Sticky from "react-sticky-el";
 
 import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
@@ -144,25 +144,24 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
           // Make the div focusable
           tabIndex={0}
         >
-          <Scrollbar
-            style={{
-              height: "65vh",
-            }}
-          >
-            <EditorContent editor={editor} />
-          </Scrollbar>
+          <EditorContent editor={editor} />
         </div>
-        <div className="flex justify-between">
-          <IsPublicSwitch isPublic={isPublished} setIsPublic={setIsPublished} />
-          <Button
-            color="orange"
-            className="w-40 cursor-pointer self-end"
-            onClick={handleSubmit(onSubmit)}
-            disabled={loadingEdit}
-          >
-            Submit Edit
-          </Button>
-        </div>
+        <Sticky mode="bottom" stickyClassName="z-[100]">
+          <div className="flex justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
+            <IsPublicSwitch
+              isPublic={isPublished}
+              setIsPublic={setIsPublished}
+            />
+            <Button
+              color="orange"
+              className="w-40 cursor-pointer self-end"
+              onClick={handleSubmit(onSubmit)}
+              disabled={loadingEdit}
+            >
+              Submit Edit
+            </Button>
+          </div>
+        </Sticky>
       </div>
     </div>
   );
