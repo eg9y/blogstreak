@@ -68,8 +68,8 @@ export function usePostsInfiniteQuery(
 
     const sortedData = data.sort(
       (currentJournal, nextJournal) =>
-        new Date(nextJournal.post_created_at).getTime() -
-        new Date(currentJournal.post_created_at).getTime(),
+        new Date(currentJournal.post_created_at).getTime() -
+        new Date(nextJournal.post_created_at).getTime(),
     );
 
     let currentStreak = 0;
@@ -93,6 +93,8 @@ export function usePostsInfiniteQuery(
         streaks: currentStreak,
       };
     });
+
+    console.log("data hellooo", data);
 
     return {
       data: dataWithStreaks,

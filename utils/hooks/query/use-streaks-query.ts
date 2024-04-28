@@ -45,8 +45,6 @@ export function useStreaksQuery(
   ];
 
   const queryFn = async () => {
-    console.log("coq", username);
-
     if (!username) {
       return { data: [], count: 0 };
     }

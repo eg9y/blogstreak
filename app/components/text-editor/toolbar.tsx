@@ -240,6 +240,27 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
           >
             blockquote
           </button>
+          {editor.isActive("link") && (
+            <button
+              onClick={() => editor.chain().focus().unsetLink().run()}
+              className={cn(
+                "rounded-sm bg-yellow-200 p-1 text-xs ring-1  ring-slate-500 dark:bg-yellow-500",
+              )}
+            >
+              <Link1Icon />
+            </button>
+          )}
+          {!editor.isActive("link") && (
+            <button
+              onClick={() => setIsLinkOptionOpen(true)}
+              className={cn(
+                "rounded-sm bg-slate-50 p-1 text-xs ring-1  ring-slate-500 dark:bg-slate-400",
+              )}
+            >
+              <Link1Icon />
+            </button>
+          )}
+
           <button
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().chain().focus().undo().run()}
@@ -268,27 +289,6 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
               height={16}
             />
           </button>
-
-          {editor.isActive("link") && (
-            <button
-              onClick={() => editor.chain().focus().unsetLink().run()}
-              className={cn(
-                "rounded-sm bg-yellow-200 p-1 text-xs ring-1  ring-slate-500 dark:bg-yellow-500",
-              )}
-            >
-              <Link1Icon />
-            </button>
-          )}
-          {!editor.isActive("link") && (
-            <button
-              onClick={() => setIsLinkOptionOpen(true)}
-              className={cn(
-                "rounded-sm bg-slate-50 p-1 text-xs ring-1  ring-slate-500 dark:bg-slate-400",
-              )}
-            >
-              <Link1Icon />
-            </button>
-          )}
 
           {/* <button
         onClick={() => editor.chain().focus().setColor("#958DF1").run()}

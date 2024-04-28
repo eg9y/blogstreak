@@ -32,7 +32,7 @@ export default function Home() {
               </div>
             )}
             <div
-              className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none  prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
+              className="prose prose-sm max-w-full grow dark:prose-invert focus:outline-none   prose-p:leading-normal"
               dangerouslySetInnerHTML={{ __html: output }}
             />
           </div>

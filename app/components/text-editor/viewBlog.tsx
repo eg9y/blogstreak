@@ -35,7 +35,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
           // Make the div focusable
         >
           <div
-            className="prose prose-base grow break-words dark:prose-invert md:prose-lg focus:outline-none prose-p:mb-0 prose-p:mt-0 prose-p:leading-normal"
+            className="prose prose-base grow break-words dark:prose-invert md:prose-lg focus:outline-none prose-p:leading-normal"
             dangerouslySetInnerHTML={{ __html: output }}
           />
         </div>
