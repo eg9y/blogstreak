@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BlogStreak",
-  description: "Personal journalging platform",
+  description: "Personal journaling platform",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
