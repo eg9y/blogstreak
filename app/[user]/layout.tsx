@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const subdomain = getSubdomain(host);
 
   return (
-    <div className="h-full w-full lg:mx-auto lg:w-[1000px]">
+    <div className="h-full lg:mx-auto lg:w-[1000px]">
       <SubdomainContextProvider subdomain={subdomain}>
         <ViewerNavbar>{children}</ViewerNavbar>
       </SubdomainContextProvider>

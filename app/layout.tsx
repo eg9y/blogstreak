@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 import "./globals.css";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 
 import { ReactQueryProvider } from "./components/react-query-provider";
 import ThemeProvider from "./components/theme-provider";
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="h-screen">
-      <body className={cn(inter.className, "h-screen")}>
+    <html lang="en" className="">
+      <body className={cn(inter.className, "")}>
         <ReactQueryProvider>
           <ThemeProvider>{children}</ThemeProvider>
           <Toaster />

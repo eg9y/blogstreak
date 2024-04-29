@@ -4,7 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { useUser } from "@/utils/getUser";
 import { useCreateTag } from "@/utils/hooks/mutation/use-create-tag";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 import { presetColors } from "@/utils/presetColors";
 
 import { Badge } from "../../badge";

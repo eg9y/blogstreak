@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 import { useUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 

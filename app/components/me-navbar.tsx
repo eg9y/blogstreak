@@ -8,7 +8,7 @@ import { MagnifyingGlassIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/client";
 import { useUser } from "@/utils/getUser";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";

@@ -7,7 +7,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { useUser } from "@/utils/getUser";
 import { useStreaksQuery } from "@/utils/hooks/query/use-streaks-query";
 import { Database } from "@/schema";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 
 import { Button } from "./button";
 import { useUsername } from "./subdomain-context";

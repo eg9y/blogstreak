@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import { useCallback, useState } from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 
 import { Dialog, DialogActions, DialogBody } from "../dialog";
 import { Field, Label } from "../fieldset";

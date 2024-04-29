@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import Sticky from "react-sticky-el";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils/utils";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";

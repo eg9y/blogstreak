@@ -11,8 +11,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "@/components/ui/sheet";
-import { cn } from "@/utils/cn";
+} from "@/app/components/ui/sheet";
+import { cn } from "@/utils/utils";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 import { Button } from "./button";
