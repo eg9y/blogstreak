@@ -29,7 +29,7 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
       />
       <div className="flex h-full flex-col">
         <Sticky stickyClassName="z-[1000] bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)] ">
-          <div className="flex h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:px-6">
+          <div className="flex h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:px-6">
             <div
               className={cn(
                 "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",

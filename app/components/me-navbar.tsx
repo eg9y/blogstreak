@@ -61,8 +61,8 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
-      <div className="flex flex-col">
-        <div className="flex h-[7vh]   max-h-[52px] shrink-0 items-center gap-x-4  bg-transparent px-4  sm:gap-x-6 sm:px-6  md:px-8">
+      <div className="container flex flex-col ">
+        <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 bg-transparent px-4 sm:gap-x-6 sm:px-6 md:px-6">
           {/* Separator */}
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
@@ -165,14 +165,14 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         </div>
 
         <main className="">
-          <div className="overflow-y-hidden px-2">
-            <div className="container mx-auto">
+          <div className="overflow-y-hidden">
+            <div className="mx-auto">
               <ChangeUsernameDialog
                 isOpen={isOpenChangeUsername}
                 setIsOpen={setIsOpenChangeUsername}
               />
               <div className="flex flex-col">
-                <div className="hidden h-[5vh] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
+                <div className="hidden h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
                   <div
                     className={cn(
                       "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",

@@ -21,6 +21,8 @@ export default function Home() {
             <li className="">Publish your journals</li>
             <li className="">Create tags to organize your posts</li>
             <li>Writing Streaks</li>
+            <li>No Trackers</li>
+            <li>Looks great on any device</li>
           </ul>
         </div>
         <div className="flex-shrink-0">

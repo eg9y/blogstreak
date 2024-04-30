@@ -25,9 +25,9 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   }, [blogData]);
 
   return (
-    <div className="flex flex-col gap-2 ">
+    <div className="mx-auto flex max-w-[65ch] flex-col gap-2">
       <div className=" relative flex w-full flex-col p-2">
-        <p className="max-w-[65ch] text-4xl font-bold dark:text-slate-200">
+        <p className="text-pretty text-4xl font-bold dark:text-slate-200">
           {blogData?.data?.title}
         </p>
         <div
