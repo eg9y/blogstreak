@@ -4,7 +4,8 @@ import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
-import Scrollbar from "react-scrollbars-custom";
+import Sticky from "react-sticky-el";
+import { useMediaQuery } from "react-responsive";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { useUser } from "@/utils/getUser";
@@ -134,77 +135,89 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
     }
   }
 
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 768px)",
+  });
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-transparent dark:ring-slate-700 ">
-        <Toolbar editor={editor} />
-        <div
-          className="h-full cursor-text"
-          ref={editorContainerRef}
-          // Make the div focusable
-          tabIndex={0}
-        >
-          <Scrollbar
-            style={{
-              height: "65vh",
-            }}
+    <>
+      <div className="flex grow flex-col py-4">
+        <div className="w-full grow border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:rounded-md md:border-x md:border-b ">
+          {isDesktopOrLaptop && (
+            <Sticky stickyClassName="z-[100]">
+              <Toolbar editor={editor} />
+            </Sticky>
+          )}
+          <div
+            className="h-full cursor-text pb-[200px] md:pb-[100px]"
+            ref={editorContainerRef}
+            // Make the div focusable
+            tabIndex={0}
           >
             <EditorContent editor={editor} />
-          </Scrollbar>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex items-center gap-1">
-            <BadgeButton
-              className="cursor-pointer"
-              color={"green"}
-              onClick={() => {
-                setOpenAddTagDialog(true);
-              }}
-            >
-              <PlusIcon />
-              New Tag
-            </BadgeButton>
-            {isLoading && "Loading topics"}
-            {isSuccess && data?.length === 0 && (
-              <p className="text-sm text-slate-600">No Tags</p>
-            )}
-            {isSuccess && (
-              <>
-                {data?.map((topic) => {
-                  return (
-                    <BadgeButton
-                      key={topic.name}
-                      color={
-                        tags.find((tag) => tag.name === topic.name)
-                          ? (topic.color as any)
-                          : undefined
-                      }
-                      onClick={() => {
-                        tagClick(topic);
-                      }}
-                    >
-                      {topic.name}
-                    </BadgeButton>
-                  );
-                })}
-                <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
-              </>
-            )}
           </div>
-          <Button
-            color="orange"
-            className="w-40 cursor-pointer self-end"
-            onClick={editPost}
-            disabled={loadingEdit}
-          >
-            Submit Edit
-          </Button>
         </div>
       </div>
+      <Sticky mode="bottom" stickyClassName="z-[100]">
+        <div className="flex h-[200px] flex-col justify-evenly gap-1 border-t border-t-slate-300 bg-[hsl(0_0%_100%)] p-4 dark:border-slate-700 dark:bg-[hsl(240_10%_3.9%)] md:h-[100px] md:border-t-0">
+          {!isDesktopOrLaptop && <Toolbar editor={editor} />}
+          <div className="flex  justify-between">
+            <div className="flex flex-wrap items-center gap-1">
+              <BadgeButton
+                className="cursor-pointer"
+                color={"green"}
+                onClick={() => {
+                  setOpenAddTagDialog(true);
+                }}
+              >
+                <PlusIcon />
+                New Tag
+              </BadgeButton>
+              {isLoading && "Loading topics"}
+              {isSuccess && data?.length === 0 && (
+                <p className="text-sm text-slate-600">No Tags</p>
+              )}
+              {isSuccess && (
+                <>
+                  {data?.map((topic) => {
+                    return (
+                      <BadgeButton
+                        key={topic.name}
+                        color={
+                          tags.find((tag) => tag.name === topic.name)
+                            ? (topic.color as any)
+                            : undefined
+                        }
+                        onClick={() => {
+                          tagClick(topic);
+                        }}
+                      >
+                        {topic.name}
+                      </BadgeButton>
+                    );
+                  })}
+                  <IsPublicSwitch
+                    isPublic={isPublic}
+                    setIsPublic={setIsPublic}
+                  />
+                </>
+              )}
+            </div>
+            <Button
+              color="orange"
+              className="w-40 cursor-pointer self-end"
+              onClick={editPost}
+              disabled={loadingEdit}
+            >
+              Edit
+            </Button>
+          </div>
+        </div>
+      </Sticky>
       <AddTagDialog
         openAddTagDialog={openAddTagDialog}
         setOpenAddTagDialog={setOpenAddTagDialog}
       />
-    </div>
+    </>
   );
 };

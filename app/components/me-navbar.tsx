@@ -64,7 +64,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         setIsOpen={setIsOpenChangeUsername}
       />
       <SearchDialog isOpen={isOpenSearch} setIsOpen={setIsOpenSearch} />
-      <div className="flex flex-col ">
+      <div className="flex min-h-screen flex-col">
         <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 bg-transparent px-4 sm:gap-x-6 md:px-6">
           {/* Separator */}
 
@@ -170,88 +170,87 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <main className="">
-          <div className="overflow-y-hidden">
-            <div className="mx-auto">
-              <ChangeUsernameDialog
-                isOpen={isOpenChangeUsername}
-                setIsOpen={setIsOpenChangeUsername}
-              />
-              <div className="flex flex-col">
-                <div className="hidden h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
-                  <div
-                    className={cn(
-                      "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
-                    )}
-                  >
-                    <div className="flex grow items-baseline justify-start gap-x-8">
-                      <Link
-                        href={`${baseUrl}/me`}
-                        className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
+        <main className="min-h-screen">
+          <div className="mx-auto">
+            <ChangeUsernameDialog
+              isOpen={isOpenChangeUsername}
+              setIsOpen={setIsOpenChangeUsername}
+            />
+            <div className="flex flex-col">
+              <div className="hidden h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
+                <div
+                  className={cn(
+                    "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
+                  )}
+                >
+                  <div className="flex grow items-baseline justify-start gap-x-8">
+                    <Link
+                      href={`${baseUrl}/me`}
+                      className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
+                    >
+                      <button
+                        className={cn(
+                          pathName === "/" || pathName === "/me"
+                            ? "border-b-slate-400"
+                            : "border-b-transparent",
+                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                        )}
                       >
-                        <button
-                          className={cn(
-                            pathName === "/" || pathName === "/me"
-                              ? "border-b-slate-400"
-                              : "border-b-transparent",
-                            "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                          )}
-                        >
-                          🏠 Home
-                        </button>
-                      </Link>
-                      <Link
-                        href={`${baseUrl}/me/blog`}
-                        className="flex h-full items-end"
+                        🏠 Home
+                      </button>
+                    </Link>
+                    <Link
+                      href={`${baseUrl}/me/blog`}
+                      className="flex h-full items-end"
+                    >
+                      <button
+                        className={cn(
+                          pathName.split("/")[
+                            pathName.split("/").length - 1
+                          ] === "blog"
+                            ? "border-b-slate-400"
+                            : "border-b-transparent",
+                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                        )}
                       >
-                        <button
-                          className={cn(
-                            pathName.split("/")[
-                              pathName.split("/").length - 1
-                            ] === "blog"
-                              ? "border-b-slate-400"
-                              : "border-b-transparent",
-                            "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                          )}
-                        >
-                          Blog
-                        </button>
-                      </Link>
-                      <Link
-                        href={`${baseUrl}/me/journal`}
-                        className="flex h-full items-end"
+                        Blog
+                      </button>
+                    </Link>
+                    <Link
+                      href={`${baseUrl}/me/journal`}
+                      className="flex h-full items-end"
+                    >
+                      <button
+                        className={cn(
+                          pathName.split("/")[
+                            pathName.split("/").length - 1
+                          ] === "journal" && !searchParams.get("private")
+                            ? "border-b-slate-400"
+                            : "border-b-transparent",
+                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                        )}
                       >
-                        <button
-                          className={cn(
-                            pathName.split("/")[
-                              pathName.split("/").length - 1
-                            ] === "journal" && !searchParams.get("private")
-                              ? "border-b-slate-400"
-                              : "border-b-transparent",
-                            "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                          )}
-                        >
-                          Journal
-                        </button>
-                      </Link>
-                      <Link
-                        href={`${baseUrl}/me/journal?private=true`}
-                        className="flex h-full items-end"
+                        Journal
+                      </button>
+                    </Link>
+                    <Link
+                      href={`${baseUrl}/me/journal?private=true`}
+                      className="flex h-full items-end"
+                    >
+                      <button
+                        className={cn(
+                          pathName.split("/")[
+                            pathName.split("/").length - 1
+                          ] === "journal" && searchParams.get("private")
+                            ? "border-b-slate-400"
+                            : "border-b-transparent",
+                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                        )}
                       >
-                        <button
-                          className={cn(
-                            pathName.split("/")[
-                              pathName.split("/").length - 1
-                            ] === "journal" && searchParams.get("private")
-                              ? "border-b-slate-400"
-                              : "border-b-transparent",
-                            "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                          )}
-                        >
-                          Private Journal
-                        </button>
-                      </Link>
-                      {/* <Link
+                        Private Journal
+                      </button>
+                    </Link>
+                    {/* <Link
                 href={`/${isMe && "me/"}blog`}
                 className="flex h-full items-end"
               >
@@ -266,30 +265,29 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                   Chat with GPT
                 </button>
               </Link> */}
-                    </div>
-                    <Button
-                      className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
-                      outline
-                      onClick={() => setIsOpenSearch(true)}
-                    >
-                      <MagnifyingGlassIcon
-                        className="pointer-events-none  h-full w-4 dark:text-slate-300"
-                        aria-hidden="true"
-                      />
-                      <p className="text-xs font-light text-slate-300">
-                        Search blog...
-                      </p>
-                      <div className="flex grow justify-end">
-                        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                          <span className="text-xs">⌘</span>K
-                        </kbd>
-                      </div>
-                    </Button>
                   </div>
+                  <Button
+                    className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
+                    outline
+                    onClick={() => setIsOpenSearch(true)}
+                  >
+                    <MagnifyingGlassIcon
+                      className="pointer-events-none  h-full w-4 dark:text-slate-300"
+                      aria-hidden="true"
+                    />
+                    <p className="text-xs font-light text-slate-300">
+                      Search blog...
+                    </p>
+                    <div className="flex grow justify-end">
+                      <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                        <span className="text-xs">⌘</span>K
+                      </kbd>
+                    </div>
+                  </Button>
                 </div>
-
-                <div className="container">{children}</div>
               </div>
+
+              <div className="">{children}</div>
             </div>
           </div>
         </main>
