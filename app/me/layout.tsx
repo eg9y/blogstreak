@@ -33,7 +33,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <SubdomainContextProvider subdomain={subdomain}>
-      <div className="mx-auto lg:w-[1000px]">
+      <div className="mx-auto md:w-[1000px]">
         {!userProfile?.name && <ForceChangeUsernameDialog />}
         <MeNavbar>{children}</MeNavbar>
       </div>

@@ -49,6 +49,8 @@ export function Posts() {
         <Button
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
+          color="dark"
+          className="cursor-pointer"
         >
           {isFetchingNextPage
             ? "Loading more..."

@@ -39,7 +39,7 @@ export default async function BlogDetail({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="min-h-full">
-        <main className="mx-auto flex min-w-[400px] flex-col gap-4 px-2 pb-16 pt-12 md:min-w-full">
+        <main className="mx-auto flex w-full flex-col gap-4 pb-16 md:pt-12">
           <ViewBlogComponent blogId={params.blogId} />
         </main>
       </div>

@@ -22,6 +22,7 @@ export default function Home() {
               <Button
                 href="/me/write"
                 className="hidden max-w-20 sm:inline-flex"
+                color="dark"
               >
                 <Pencil1Icon />
                 Write

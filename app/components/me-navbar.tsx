@@ -24,9 +24,11 @@ import {
 import { useUsername } from "./subdomain-context";
 import HamburgerSidebar from "./hamburger-sidebar";
 import { DarkmodeToggle } from "./darkmode-toggle";
+import { SearchDialog } from "./nav/search-dialog";
 
 export default function MeNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
 
   const pathName = usePathname();
   const searchParams = useSearchParams();
@@ -61,8 +63,9 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
-      <div className="container flex flex-col ">
-        <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 bg-transparent px-4 sm:gap-x-6 sm:px-6 md:px-6">
+      <SearchDialog isOpen={isOpenSearch} setIsOpen={setIsOpenSearch} />
+      <div className="flex flex-col ">
+        <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 bg-transparent px-4 sm:gap-x-6 md:px-6">
           {/* Separator */}
 
           <div className="flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6">
@@ -76,7 +79,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               </Link>
             </div>
 
-            <div className="flex items-center gap-x-4 md:gap-x-6">
+            <div className="flex items-center gap-x-1 md:gap-x-2">
               <button
                 type="button"
                 className="-m-2.5 p-2.5 text-slate-400 hover:text-slate-500"
@@ -84,12 +87,6 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
               </button>
-
-              {/* Separator */}
-              <div
-                className="hidden md:block md:h-6 md:w-px md:bg-slate-900/10"
-                aria-hidden="true"
-              />
 
               {/* Profile dropdown */}
               <Menu as="div" className="relative">
@@ -140,11 +137,11 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="hidden items-center gap-1 md:flex">
-            <Button href="/me/write">
+            <Button href="/me/write" color="dark">
               <Pencil1Icon />
               Write Journal
             </Button>
-            <Button href="/me/blog/write">
+            <Button href="/me/blog/write" color="dark">
               <Pencil1Icon />
               Write Blog
             </Button>
@@ -161,6 +158,15 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                 <DropdownItem href="/me/blog/write">Blog</DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            <Button
+              className="flex cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
+              onClick={() => setIsOpenSearch(true)}
+            >
+              <MagnifyingGlassIcon
+                className="pointer-events-none h-full  w-4 dark:text-slate-300 md:hidden"
+                aria-hidden="true"
+              />
+            </Button>
           </div>
         </div>
 
@@ -178,7 +184,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                       "flex flex-1 justify-between gap-x-4 self-stretch md:gap-x-6",
                     )}
                   >
-                    <div className="flex grow items-baseline  justify-start gap-x-8">
+                    <div className="flex grow items-baseline justify-start gap-x-8">
                       <Link
                         href={`${baseUrl}/me`}
                         className="flex items-center pb-2 text-lg font-bold tracking-tight dark:text-slate-50"
@@ -261,32 +267,28 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                 </button>
               </Link> */}
                     </div>
-                    <form
-                      className="relative flex flex-1 bg-transparent"
-                      action="#"
-                      method="GET"
+                    <Button
+                      className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
+                      outline
+                      onClick={() => setIsOpenSearch(true)}
                     >
-                      <label htmlFor="search-field" className="sr-only">
-                        Search
-                      </label>
                       <MagnifyingGlassIcon
-                        className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-slate-400"
+                        className="pointer-events-none  h-full w-4 dark:text-slate-300"
                         aria-hidden="true"
                       />
-                      <input
-                        id="search-field"
-                        className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400 focus:ring-0   dark:text-slate-300 sm:text-sm"
-                        placeholder="Search..."
-                        autoComplete="off"
-                        autoCorrect="off"
-                        type="search"
-                        name="search"
-                      />
-                    </form>
+                      <p className="text-xs font-light text-slate-300">
+                        Search blog...
+                      </p>
+                      <div className="flex grow justify-end">
+                        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                          <span className="text-xs">⌘</span>K
+                        </kbd>
+                      </div>
+                    </Button>
                   </div>
                 </div>
 
-                <div className="px-2">{children}</div>
+                <div className="container">{children}</div>
               </div>
             </div>
           </div>

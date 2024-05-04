@@ -22,7 +22,9 @@ export default function Blog() {
         <div>
           <p className="text-2xl font-bold dark:text-slate-100">Blog</p>
         </div>
-        <Button href="blog/write">Write Blog</Button>
+        <Button href="blog/write" color="dark">
+          Write Blog
+        </Button>
       </div>
 
       <div>

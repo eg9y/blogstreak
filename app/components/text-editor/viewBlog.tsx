@@ -3,6 +3,7 @@
 import { generateHTML } from "@tiptap/react";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
+import Sticky from "react-sticky-el";
 
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
@@ -25,8 +26,8 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   }, [blogData]);
 
   return (
-    <div className="mx-auto flex max-w-[65ch] flex-col gap-2">
-      <div className=" relative flex w-full flex-col p-2">
+    <div className="mx-auto flex w-full flex-col gap-2 pb-4 md:w-[65ch]">
+      <div className="relative flex w-full flex-col p-2">
         <p className="text-pretty text-4xl font-bold dark:text-slate-200">
           {blogData?.data?.title}
         </p>
@@ -41,7 +42,10 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
         </div>
 
         {loggedInUser && pathname.split("/")[1] === "me" && (
-          <div className="fixed bottom-0 flex w-[1000px] justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
+          <Sticky
+            mode="bottom"
+            stickyClassName="z-[100] flex w-full justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]"
+          >
             <div className="flex items-center gap-1">
               <div className="pointer-events-none">
                 <IsPublicSwitch
@@ -57,7 +61,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
             >
               Edit
             </Button>
-          </div>
+          </Sticky>
         )}
       </div>
     </div>
