@@ -3,7 +3,7 @@ const {
   PHASE_PRODUCTION_BUILD,
 } = require("next/constants");
 
-/** @type {(phase: string, defaultConfig: import("next").NextConfig) => Promise<import("next").NextConfig>} */
+/** @type {import('next').NextConfig} */
 module.exports = async (phase) => {
   /** @type {import("next").NextConfig} */
   const nextConfig = {
