@@ -267,7 +267,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               </Link> */}
                   </div>
                   <Button
-                    className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
+                    className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start md:w-72"
                     outline
                     onClick={() => setIsOpenSearch(true)}
                   >

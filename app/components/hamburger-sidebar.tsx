@@ -47,7 +47,7 @@ export default function HamburgerSidebar() {
           <HamburgerMenuIcon />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="text-left">
+      <SheetContent side="left" className="z-[2000] text-left">
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
