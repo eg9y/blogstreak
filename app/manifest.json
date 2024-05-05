@@ -3,7 +3,7 @@
   "short_name": "BStreak",
   "icons": [
     {
-      "src": "logo-192x192.webp",
+      "src": "/icons/logo-192x192.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "maskable"
