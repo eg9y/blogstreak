@@ -3,24 +3,10 @@ const {
   PHASE_PRODUCTION_BUILD,
 } = require("next/constants");
 
-/** @type {import('next').NextConfig} */
+/** @type {(phase: string, defaultConfig: import("next").NextConfig) => Promise<import("next").NextConfig>} */
 module.exports = async (phase) => {
   /** @type {import("next").NextConfig} */
-  const nextConfig = {
-    reactStrictMode: false,
-    images: {
-      remotePatterns: [
-        {
-          protocol: "https",
-          hostname: "images.unsplash.com",
-        },
-        {
-          protocol: "https",
-          hostname: "tailwindui.com",
-        },
-      ],
-    },
-  };
+  const nextConfig = {};
 
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
     const withSerwist = (await import("@serwist/next")).default({

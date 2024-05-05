@@ -45,7 +45,7 @@ export function Select({ className, multiple, ...props }: HeadlessSelectProps) {
           "[&_optgroup]:font-semibold",
 
           // Typography
-          "text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white dark:*:text-white",
+          "text-base/6 text-zinc-950 placeholder:text-zinc-500 dark:text-white dark:*:text-white sm:text-sm/6",
 
           // Border
           "border border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20",
@@ -66,7 +66,7 @@ export function Select({ className, multiple, ...props }: HeadlessSelectProps) {
       {!multiple && (
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <svg
-            className="size-5 stroke-zinc-500 group-has-[[data-disabled]]:stroke-zinc-600 sm:size-4 dark:stroke-zinc-400 forced-colors:stroke-[CanvasText]"
+            className="size-5 stroke-zinc-500 group-has-[[data-disabled]]:stroke-zinc-600 dark:stroke-zinc-400 sm:size-4 forced-colors:stroke-[CanvasText]"
             viewBox="0 0 16 16"
             aria-hidden="true"
             fill="none"
