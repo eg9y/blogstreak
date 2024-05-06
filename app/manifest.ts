@@ -3,7 +3,8 @@ import { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "BlogStreak",
-    short_name: "BStreak",
+    short_name: "BlogStreak",
+    lang: "en",
     icons: [
       {
         src: "/icons/logo-192x192.webp",

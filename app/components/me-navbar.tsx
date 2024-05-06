@@ -250,6 +250,23 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                         Private Journal
                       </button>
                     </Link>
+                    <Link
+                      href={`${baseUrl}/me/chat`}
+                      className="flex h-full items-end"
+                    >
+                      <button
+                        className={cn(
+                          pathName.split("/")[
+                            pathName.split("/").length - 1
+                          ] === "chat"
+                            ? "border-b-slate-400"
+                            : "border-b-transparent",
+                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                        )}
+                      >
+                        Chat
+                      </button>
+                    </Link>
                     {/* <Link
                 href={`/${isMe && "me/"}blog`}
                 className="flex h-full items-end"
