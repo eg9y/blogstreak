@@ -19,6 +19,7 @@ export default function Chat() {
 
   const updateMessage = (kind: string, text: string, append: boolean) => {
     if (kind === "init") {
+      // eslint-disable-next-line no-param-reassign
       text = `[System Initalize] ${text}`;
     }
     const msgCopy = [...messages];
