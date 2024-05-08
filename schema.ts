@@ -44,6 +44,41 @@ export type Database = {
           },
         ]
       }
+      journal_sections: {
+        Row: {
+          content: string | null
+          created_at: string
+          embedding: string | null
+          id: number
+          journal_id: number
+          token_count: number | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          embedding?: string | null
+          id?: number
+          journal_id: number
+          token_count?: number | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          embedding?: string | null
+          id?: number
+          journal_id?: number
+          token_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_sections_journal_id_fkey"
+            columns: ["journal_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_topics: {
         Row: {
           created_at: string

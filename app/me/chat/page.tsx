@@ -1,117 +1,142 @@
+/* eslint-disable no-unused-vars */
 "use client";
 
-import { useState } from "react";
-import { ChatCompletionMessageParam, Engine } from "@mlc-ai/web-llm";
+import { useCallback, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { SSE } from "sse.js";
+import { LoaderIcon } from "lucide-react";
+import type { OpenAI } from "openai";
 
-import ChatUI from "@/utils/chatUi";
 import { Button } from "@/app/components/button";
 
-export default function Chat() {
-  const [messages, setMessages] = useState<{ kind: string; text: string }[]>(
-    [],
-  );
-  const [prompt, setPrompt] = useState("");
-  const [runtimeStats, setRuntimeStats] = useState("");
-  const [chatHistory, setChatHistory] = useState<ChatCompletionMessageParam[]>(
-    [],
-  );
-  const [chat_ui] = useState(new ChatUI(new Engine(), setChatHistory));
+const edgeFunctionUrl =
+  "https://rtqqghdaovkqqpwcsrpy.supabase.co/functions/v1/openai";
 
-  const updateMessage = (kind: string, text: string, append: boolean) => {
-    if (kind === "init") {
-      // eslint-disable-next-line no-param-reassign
-      text = `[System Initalize] ${text}`;
+export default function Chat() {
+  const [prompt, setPrompt] = useState<string>("");
+  const [answer, setAnswer] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResponding, setIsResponding] = useState(false);
+  const [hasClippyError, setHasClippyError] = useState(false);
+  const [hasSearchError, setHasSearchError] = useState(false);
+  const eventSourceRef = useRef<SSE>();
+
+  const handleChatResponse = useCallback((query: string) => {
+    setAnswer(undefined);
+    setIsResponding(false);
+    setHasClippyError(false);
+    setHasSearchError(false);
+    setIsLoading(true);
+
+    const eventSource = new SSE(`${edgeFunctionUrl}/openai`, {
+      headers: {
+        apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+        "Content-Type": "application/json",
+      },
+      payload: JSON.stringify({ messages: [{ role: "user", content: query }] }),
+    });
+
+    function handleError<T>(err: T) {
+      setIsLoading(false);
+      setIsResponding(false);
+      setHasClippyError(true);
+      console.error(err);
     }
-    const msgCopy = [...messages];
-    if (msgCopy.length === 0 || append) {
-      setMessages([...msgCopy, { kind, text }]);
-    } else {
-      msgCopy[msgCopy.length - 1] = { kind, text };
-      setMessages([...msgCopy]);
-    }
-  };
+
+    eventSource.addEventListener("error", handleError);
+    eventSource.addEventListener("message", (event: any) => {
+      try {
+        setIsLoading(false);
+
+        if (event.data === "[DONE]") {
+          setIsResponding(false);
+          return;
+        }
+
+        setIsResponding(true);
+
+        const completionResponse: OpenAI.ChatCompletionChunk = JSON.parse(
+          event.data,
+        );
+
+        const [{ delta }] = completionResponse.choices;
+
+        console.log("completionResponse", completionResponse);
+
+        setAnswer((currentAnswer: string | undefined) => {
+          return (currentAnswer ?? "") + (delta.content ?? "");
+        });
+      } catch (err) {
+        handleError(err);
+      }
+    });
+
+    eventSource.stream();
+
+    eventSourceRef.current = eventSource;
+
+    setIsLoading(true);
+  }, []);
+
+  const status = isLoading
+    ? "Blogstreak is searching..."
+    : isResponding
+      ? "Blogstreak is responding..."
+      : undefined;
+
   return (
     <div className="flex flex-col items-center">
-      {/* <Button
-        className="chatui-btn"
-        onClick={() => {
-          chat_ui.asyncInitChat(updateMessage).catch((error) => {
-            console.log(error);
-          });
-        }}
-      >
-        Download Model
-      </Button> */}
-
       <div className="chatui">
-        <div className="flex flex-col" id="chatui-chat">
-          {chatHistory.map((value, index) => (
-            <div key={index}>
-              <div className="msg-bubble">
-                <div className="msg-text">
-                  ${value.role}: {JSON.stringify(value.content, null, 2)}
-                </div>
-              </div>
+        <div className="flex flex-col">
+          {answer && (
+            <div className="prose dark:prose-invert">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {answer}
+              </ReactMarkdown>
             </div>
-          ))}
-
-          {chat_ui.requestInProgress &&
-            messages.map((value, index) => (
-              <div key={index} className={`msg ${value.kind}-msg`}>
-                <div className="msg-bubble">
-                  <div className="msg-text">${value.text}</div>
-                </div>
-              </div>
-            ))}
+          )}
         </div>
 
-        {chat_ui && (
-          <div className="chatui-inputarea">
+        {
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleChatResponse(prompt || "");
+            }}
+            className=""
+          >
             <input
               id="chatui-input"
               type="text"
               className="chatui-input"
               placeholder="Enter your message..."
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  try {
-                    chat_ui.onGenerate(prompt, updateMessage, setRuntimeStats);
-                  } catch (error) {
-                    console.log("error", error);
-                  }
-                }
-              }}
               value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-            />
-            <Button
-              onClick={() => {
-                try {
-                  chat_ui.onGenerate(prompt, updateMessage, setRuntimeStats);
-                } catch (error) {
-                  console.log("error", error);
-                }
+              onChange={(event) => {
+                setPrompt(event.target.value);
               }}
-            >
-              Send
-            </Button>
-          </div>
-        )}
+            />
+            <Button onClick={() => {}}>Send</Button>
+          </form>
+        }
       </div>
 
       <div className="chatui-extra-control">
-        <Button
-          onClick={() => {
-            chat_ui
-              .onReset(() => {
-                setMessages([]);
-              })
-              .catch((error) => console.log(error));
-          }}
-        >
-          Reset Chat
-        </Button>
-        <label id="chatui-info-label">{runtimeStats}</label>
+        <Button onClick={() => {}}>Reset Chat</Button>
+      </div>
+
+      <div className="flex items-center gap-6 py-1">
+        {status ? (
+          <span className="bg-scale-400 hidden items-center gap-2 rounded-lg px-2 py-1 md:flex">
+            {(isLoading || isResponding) && (
+              <LoaderIcon size={14} className="animate-spin" />
+            )}
+            {status}
+          </span>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
