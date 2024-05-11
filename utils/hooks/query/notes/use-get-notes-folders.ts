@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 export function useGetNotesFolders(user: User | null, username: string | null) {
   const supabase = createClient();
 
-  const queryKey = ["notes-folders", user?.id || username];
+  const queryKey = ["notes-folders", username];
 
   const queryFn = async () => {
     let userId = user?.id;
@@ -49,7 +49,7 @@ export function useGetNotesFolders(user: User | null, username: string | null) {
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean(username === "me" ? user : true),
+    enabled: Boolean(username && (username === "me" ? user : true)),
     staleTime: 60 * 60 * 1000,
   });
 }

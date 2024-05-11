@@ -3,30 +3,13 @@ import { User } from "@supabase/supabase-js";
 
 import { createClient } from "../../../supabase/client";
 
-export function useGetNotes(
-  user: User | null,
-  username: string | null,
-  notesFolderId: number | null,
-) {
+export function useGetNotes(user: User | null, notesFolderId: number | null) {
   const supabase = createClient();
 
-  const queryKey = ["notes", user?.id || username, notesFolderId];
+  const queryKey = ["notes", user?.id, notesFolderId];
 
   const queryFn = async ({ pageParam = -1 }) => {
-    let userId = user?.id;
-
-    if (!userId && username) {
-      const response = await supabase
-        .from("profiles")
-        .select("user_id")
-        .eq("name", username)
-        .single()
-        .throwOnError();
-
-      if (response.data) {
-        userId = response.data.user_id;
-      }
-    }
+    const userId = user?.id;
 
     if (!userId || !notesFolderId) {
       return { data: [], nextPage: null };
@@ -61,7 +44,7 @@ export function useGetNotes(
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: Boolean((username === "me" ? user : true) && notesFolderId),
+    enabled: Boolean(user && notesFolderId),
     staleTime: 60 * 60 * 1000,
   });
 }

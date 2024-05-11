@@ -29,8 +29,8 @@ export default function SubdomainContextProvider({
     }
 
     // If "me" is in the pathname and a user is logged in, return the user's username
-    if (pathnameUsername === "me" && user) {
-      return user;
+    if (pathnameUsername === "me") {
+      return user ? user : null;
     }
 
     // Fallback to the username from the pathname

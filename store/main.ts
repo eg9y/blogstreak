@@ -1,5 +1,6 @@
-import { Database } from "@/schema";
 import { create } from "zustand";
+
+import { Database } from "@/schema";
 
 interface BearState {
   posts: Database["public"]["Tables"]["posts"]["Row"][];
