@@ -1,20 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createClient } from "../../supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
-export function useCreateBlog() {
+export function useCreateNotesFolder() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  async function mutationFn({
-    title,
-    content,
-    isPublished,
-  }: {
-    title: string;
-    content: string;
-    isPublished: boolean;
-  }) {
+  async function mutationFn({ name }: { name: string }) {
     const {
       data: { user },
       error,
@@ -25,13 +17,11 @@ export function useCreateBlog() {
       return;
     }
 
-    const { data, error: blogInsertError } = await supabase
-      .from("blogs")
+    const { data, error: notesFolderInsertError } = await supabase
+      .from("notes_folders")
       .insert({
-        title,
-        text: content,
+        name,
         user_id: user?.id,
-        is_published: isPublished,
       })
       .select()
       .single();
@@ -40,8 +30,8 @@ export function useCreateBlog() {
       return;
     }
 
-    if (blogInsertError) {
-      console.error("blogInsertError", blogInsertError);
+    if (notesFolderInsertError) {
+      console.error("error", notesFolderInsertError);
     }
   }
 
@@ -49,7 +39,7 @@ export function useCreateBlog() {
     mutationFn,
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ["blogs"],
+        queryKey: ["notes_folders"],
       });
     },
   });

@@ -4,7 +4,7 @@ import { Fragment, ReactNode, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { MagnifyingGlassIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { LockClosedIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -136,18 +136,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               </Menu>
             </div>
           </div>
-          <div className="hidden items-center gap-1 md:flex">
-            <Button href="/me/write" color="dark">
-              <Pencil1Icon />
-              Write Journal
-            </Button>
-            <Button href="/me/blog/write" color="dark">
-              <Pencil1Icon />
-              Write Blog
-            </Button>
-            <DarkmodeToggle />
-          </div>
-          <div className="flex items-center gap-1 md:hidden">
+          <div className="flex items-center gap-1">
             <Dropdown>
               <DropdownButton outline>
                 Write
@@ -156,18 +145,20 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               <DropdownMenu>
                 <DropdownItem href="/me/write">Journal</DropdownItem>
                 <DropdownItem href="/me/blog/write">Blog</DropdownItem>
+                <DropdownItem href="/me/notes/write">Note</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="flex cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start"
-              onClick={() => setIsOpenSearch(true)}
-            >
-              <MagnifyingGlassIcon
-                className="pointer-events-none h-full  w-4 dark:text-slate-300 md:hidden"
-                aria-hidden="true"
-              />
-            </Button>
+            <DarkmodeToggle />
           </div>
+          <Button
+            className="flex cursor-pointer items-center !justify-start gap-x-0 bg-zinc-300/20 text-start dark:bg-zinc-900/20 md:hidden"
+            onClick={() => setIsOpenSearch(true)}
+          >
+            <MagnifyingGlassIcon
+              className="pointer-events-none h-full  w-4 dark:text-slate-300"
+              aria-hidden="true"
+            />
+          </Button>
         </div>
 
         <main className="min-h-screen">
@@ -176,7 +167,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               isOpen={isOpenChangeUsername}
               setIsOpen={setIsOpenChangeUsername}
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-4">
               <div className="hidden h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:flex md:px-6">
                 <div
                   className={cn(
@@ -196,7 +187,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                           "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
                         )}
                       >
-                        🏠 Home
+                        Home
                       </button>
                     </Link>
                     <Link
@@ -224,7 +215,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                         className={cn(
                           pathName.split("/")[
                             pathName.split("/").length - 1
-                          ] === "journal" && !searchParams.get("private")
+                          ] === "journal"
                             ? "border-b-slate-400"
                             : "border-b-transparent",
                           "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
@@ -234,23 +225,27 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                       </button>
                     </Link>
                     <Link
-                      href={`${baseUrl}/me/journal?private=true`}
+                      href={`${baseUrl}/me/notes`}
                       className="flex h-full items-end"
                     >
                       <button
                         className={cn(
                           pathName.split("/")[
                             pathName.split("/").length - 1
-                          ] === "journal" && searchParams.get("private")
+                          ] === "notes"
                             ? "border-b-slate-400"
                             : "border-b-transparent",
-                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
+                          "flex items-baseline gap-1 border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
                         )}
                       >
-                        Private Journal
+                        <span>
+                          <LockClosedIcon />
+                        </span>{" "}
+                        Notes
                       </button>
                     </Link>
-                    <Link
+
+                    {/* <Link
                       href={`${baseUrl}/me/chat`}
                       className="flex h-full items-end"
                     >
@@ -266,25 +261,10 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                       >
                         Chat
                       </button>
-                    </Link>
-                    {/* <Link
-                href={`/${isMe && "me/"}blog`}
-                className="flex h-full items-end"
-              >
-                <button
-                  className={cn(
-                    pathName.split("/")[pathName.split("/").length -1] === "blog"
-                      ? "border-b-slate-400"
-                      : "border-b-transparent",
-                    "border-b-2 pb-1 text-sm font-medium sm:text-lg dark:text-slate-100",
-                  )}
-                >
-                  Chat with GPT
-                </button>
-              </Link> */}
+                    </Link> */}
                   </div>
                   <Button
-                    className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-900/20 text-start md:w-72"
+                    className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-300/20 text-start dark:bg-zinc-900/20 md:w-72"
                     outline
                     onClick={() => setIsOpenSearch(true)}
                   >
@@ -292,8 +272,8 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                       className="pointer-events-none  h-full w-4 dark:text-slate-300"
                       aria-hidden="true"
                     />
-                    <p className="text-xs font-light text-slate-300">
-                      Search blog...
+                    <p className="text-xs font-light text-slate-600 dark:text-slate-300">
+                      Search...
                     </p>
                     <div className="flex grow justify-end">
                       <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
@@ -303,6 +283,47 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                   </Button>
                 </div>
               </div>
+
+              {pathName.split("/")[pathName.split("/").length - 1] ===
+                "journal" && (
+                <div className="mx-6 flex gap-4 border-b border-slate-300">
+                  <Link
+                    href={`${baseUrl}/me/journal`}
+                    className="flex h-full items-end"
+                  >
+                    <button
+                      className={cn(
+                        pathName.split("/")[pathName.split("/").length - 1] ===
+                          "journal" && !searchParams.get("private")
+                          ? "border-b-slate-400"
+                          : "border-b-transparent",
+                        "border-b-2 pb-1 text-xs font-medium dark:text-slate-100 sm:text-sm",
+                      )}
+                    >
+                      Public
+                    </button>
+                  </Link>
+                  <Link
+                    href={`${baseUrl}/me/journal?private=true`}
+                    className="flex h-full items-end"
+                  >
+                    <button
+                      className={cn(
+                        pathName.split("/")[pathName.split("/").length - 1] ===
+                          "journal" && searchParams.get("private")
+                          ? "border-b-slate-400"
+                          : "border-b-transparent",
+                        "flex items-center border-b-2 pb-1 text-xs font-medium dark:text-slate-100 sm:text-sm",
+                      )}
+                    >
+                      <span>
+                        <LockClosedIcon />
+                      </span>{" "}
+                      Private
+                    </button>
+                  </Link>
+                </div>
+              )}
 
               <div className="">{children}</div>
             </div>

@@ -79,6 +79,83 @@ export type Database = {
           },
         ]
       }
+      notes: {
+        Row: {
+          content: string
+          created_at: string
+          id: number
+          notes_folders_id: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          id?: number
+          notes_folders_id: number
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: number
+          notes_folders_id?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_folders_id_fkey"
+            columns: ["notes_folders_id"]
+            isOneToOne: false
+            referencedRelation: "notes_folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notes_folders: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_folders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_topics: {
         Row: {
           created_at: string
@@ -240,6 +317,32 @@ export type Database = {
           title: string
         }[]
       }
+      get_notes:
+        | {
+            Args: {
+              user_id_param: string
+              earliest_note_id_param?: number
+            }
+            Returns: {
+              created_at: string
+              id: number
+              content: string
+              title: string
+            }[]
+          }
+        | {
+            Args: {
+              user_id_param: string
+              notes_folder_id_param: number
+              earliest_note_id_param?: number
+            }
+            Returns: {
+              created_at: string
+              id: number
+              content: string
+              title: string
+            }[]
+          }
       get_posts_by_topics: {
         Args: {
           topic_names_arr?: string[]

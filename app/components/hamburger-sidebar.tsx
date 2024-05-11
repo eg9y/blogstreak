@@ -110,7 +110,7 @@ export default function HamburgerSidebar() {
           >
             Private Journal
           </button>
-          <button
+          {/* <button
             onClick={() => navigateAndCloseSheet(`${baseUrl}/me/chat`)}
             className={cn(
               pathName.split("/")[pathName.split("/").length - 1] === "chat"
@@ -120,7 +120,7 @@ export default function HamburgerSidebar() {
             )}
           >
             Chat
-          </button>
+          </button> */}
         </SheetDescription>
       </SheetContent>
     </Sheet>
