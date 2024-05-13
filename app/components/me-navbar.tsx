@@ -74,7 +74,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               href="/me"
               className="flex items-center text-base font-bold tracking-tight dark:text-slate-50"
             >
-              <p className="text-sm">BlogStreak</p>
+              <p className="text-sm">TypeMemo</p>
             </Link>
           </div>
 

@@ -10,7 +10,7 @@ import { Options } from "../options";
 
 export default function Home() {
   return (
-    <div className="tw-flex tw-flex-col tw-gap-2">
+    <div className="tw-flex tw-flex-col tw-gap-2 w-full">
       <main className="mx-auto flex flex-col gap-4 p-4 sm:min-w-[400px]">
         <Cal />
 

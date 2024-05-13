@@ -12,9 +12,9 @@ import ThemeProvider from "./components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const APP_NAME = "BlogStreak";
-const APP_DEFAULT_TITLE = "BlogStreak";
-const APP_TITLE_TEMPLATE = "%s - Blogstreak";
+const APP_NAME = "TypeMemo";
+const APP_DEFAULT_TITLE = "TypeMemo";
+const APP_TITLE_TEMPLATE = "%s - TypeMemo";
 const APP_DESCRIPTION = "";
 
 export const metadata: Metadata = {

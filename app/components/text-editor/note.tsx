@@ -3,6 +3,8 @@
 import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { Scrollbar } from "react-scrollbars-custom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { extensions } from "@/utils/textEditor";
 import { useUser } from "@/utils/getUser";
@@ -17,7 +19,7 @@ const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
       class:
-        "prose dark:prose-invert prose-sm m-5 focus:outline-none max-w-full",
+        "prose dark:prose-invert prose-sm m-5 prose-p:!text-xs  focus:outline-none max-w-full",
     },
   },
   editable: true,
@@ -26,6 +28,7 @@ const editorOptions: Partial<EditorOptions> = {
 export const NoteEditor = () => {
   const [loadingEdit, setLoadingEdit] = useState(false);
   const editorContainerRef = useRef(null);
+  const queryClient = useQueryClient();
 
   const editor = useEditor({ extensions, content: "", ...editorOptions });
   const { loggedInUser } = useUser();
@@ -88,6 +91,9 @@ export const NoteEditor = () => {
       },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ["notes", notesStore.selectedFolder?.id],
+          });
           toast.success("Your note has been edited!", {
             position: "top-center",
           });
@@ -104,7 +110,7 @@ export const NoteEditor = () => {
   }
 
   return (
-    <div className="flex grow flex-col rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-transparent dark:ring-slate-700 ">
+    <div className=" flex grow flex-col border border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent ">
       <Toolbar editor={editor} />
       <div
         className="grow cursor-text"
@@ -112,7 +118,9 @@ export const NoteEditor = () => {
         // Make the div focusable
         tabIndex={0}
       >
-        <EditorContent editor={editor} />
+        <Scrollbar height="65vh">
+          <EditorContent editor={editor} />
+        </Scrollbar>
       </div>
       <div className="flex items-center justify-between">
         <Button

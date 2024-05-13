@@ -265,7 +265,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().chain().focus().undo().run()}
             className={cn(
-              "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+              "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400 md:hidden",
             )}
           >
             <Image
@@ -279,7 +279,7 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().chain().focus().redo().run()}
             className={cn(
-              "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+              "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400 md:hidden",
             )}
           >
             <Image

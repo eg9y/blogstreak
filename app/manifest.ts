@@ -2,8 +2,8 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BlogStreak",
-    short_name: "BlogStreak",
+    name: "TypeMemo",
+    short_name: "TypeMemo",
     lang: "en",
     icons: [
       {

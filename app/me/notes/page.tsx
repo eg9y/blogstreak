@@ -28,6 +28,8 @@ import {
 } from "@/app/components/ui/resizable";
 import { cn } from "@/utils/utils";
 import { NoteEditor } from "@/app/components/text-editor/note";
+import { NotesOptions } from "@/app/components/notes/notes-options";
+import { NotesFolderOptions } from "@/app/components/notes/notes-folders-options";
 
 export default function Notes() {
   const createNotesFolderMutation = useCreateNotesFolder();
@@ -123,7 +125,7 @@ export default function Notes() {
         >
           <ResizablePanel
             defaultSize={defaultLayout[0]}
-            collapsedSize={4}
+            collapsedSize={2}
             collapsible={true}
             minSize={14}
             maxSize={24}
@@ -141,19 +143,16 @@ export default function Notes() {
                 : "gap-1 px-2 ",
             )}
           >
-            <div className="flex items-center gap-1">
-              <Button
-                outline
-                className={" cursor-pointer !p-1"}
-                onClick={() => collapsePanel()}
-              >
-                {isCollapseFolderTab ? (
-                  <SidebarOpenIcon size={14} />
-                ) : (
+            {!isCollapseFolderTab && (
+              <div className="flex w-full items-center gap-1">
+                <Button
+                  outline
+                  className={" cursor-pointer !p-1"}
+                  onClick={() => collapsePanel()}
+                >
                   <SidebarCloseIcon size={14} />
-                )}
-              </Button>
-              {!isCollapseFolderTab && (
+                </Button>
+
                 <Button
                   className={cn("grow cursor-pointer")}
                   outline
@@ -161,8 +160,8 @@ export default function Notes() {
                 >
                   <FolderPlusIcon size={14} />
                 </Button>
-              )}
-            </div>
+              </div>
+            )}
             {!isCollapseFolderTab && (
               <div className={cn("flex h-full flex-col gap-1 overflow-auto")}>
                 {getNotesFoldersQuery.isSuccess &&
@@ -172,7 +171,7 @@ export default function Notes() {
                       <div className="" key={folder.id}>
                         <Button
                           className={cn(
-                            "w-full !justify-start p-2 text-xs ",
+                            "w-full !justify-between ",
                             notesStore.selectedFolder?.id === folder.id
                               ? "bg-slate-300 hover:!bg-slate-300 dark:bg-slate-700 dark:hover:!bg-slate-700"
                               : "font-medium",
@@ -185,9 +184,10 @@ export default function Notes() {
                             });
                           }}
                         >
-                          <span className="min-w-40 text-start text-xs tracking-tight">
+                          <span className="truncate text-start text-xs tracking-tight">
                             {folder.name}
                           </span>
+                          <NotesFolderOptions noteFolder={folder} />
                         </Button>
                       </div>
                     );
@@ -196,7 +196,7 @@ export default function Notes() {
             )}
             {isCollapseFolderTab && (
               <button
-                className="flex size-full items-center justify-center transition-all hover:bg-slate-100 dark:bg-slate-900"
+                className="flex size-full items-center justify-center transition-all hover:bg-slate-100 dark:bg-slate-800"
                 onClick={() => {
                   collapsePanel();
                 }}
@@ -211,7 +211,7 @@ export default function Notes() {
             defaultSize={20}
             minSize={20}
             maxSize={40}
-            className="flex flex-col items-start gap-1 px-2"
+            className="mx-2 flex flex-col items-start gap-1"
           >
             <div className="flex w-full items-center">
               <Button
@@ -222,7 +222,7 @@ export default function Notes() {
                 <FilePlusIcon size={14} />
               </Button>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex w-full flex-col gap-1">
               {getNotesQuery.data?.pages.map((page) => {
                 return page.data.map((note) => {
                   return (
@@ -230,7 +230,7 @@ export default function Notes() {
                       key={note.id}
                       plain
                       className={cn(
-                        "!justify-start text-ellipsis",
+                        "w-full !justify-between ",
                         notesStore.selectedNote?.id === note.id
                           ? "bg-slate-100 hover:!bg-slate-100 dark:bg-slate-800 dark:hover:!bg-slate-800"
                           : "font-medium",
@@ -242,9 +242,10 @@ export default function Notes() {
                         });
                       }}
                     >
-                      <span className="min-w-40 text-start text-xs tracking-tight ">
+                      <span className="truncate text-start text-xs tracking-tight">
                         {note.title}
                       </span>
+                      <NotesOptions note={note} />
                     </Button>
                   );
                 });

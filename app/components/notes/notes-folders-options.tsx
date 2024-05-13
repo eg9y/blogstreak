@@ -5,7 +5,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
-import { useDeleteNotes } from "@/utils/hooks/mutation/notes/use-delete-notes";
+import { useDeleteNotesFolder } from "@/utils/hooks/mutation/notes/use-delete-notes-folder";
 
 import {
   Dropdown,
@@ -21,13 +21,13 @@ import {
 } from "../dialog";
 import { Button } from "../button";
 
-export function NotesOptions({
-  note,
+export function NotesFolderOptions({
+  noteFolder,
 }: {
-  note: Database["public"]["Functions"]["get_notes"]["Returns"][number];
+  noteFolder: Database["public"]["Tables"]["notes_folders"]["Row"];
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const submitPostMutation = useDeleteNotes();
+  const deleteNotesFolderMutation = useDeleteNotesFolder();
   const queryClient = useQueryClient();
 
   return (
@@ -53,7 +53,7 @@ export function NotesOptions({
       </Dropdown>
 
       <Dialog open={isOpenDelete} onClose={setIsOpenDelete} className="z-[52]">
-        <DialogTitle>Delete note?</DialogTitle>
+        <DialogTitle>Delete folder?</DialogTitle>
         <DialogDescription>
           This can’t be undone and it will be removed from your profile, the
           timeline of any accounts that follow you, and from search results.
@@ -65,11 +65,14 @@ export function NotesOptions({
           <Button
             color="red"
             onClick={() => {
-              submitPostMutation.mutate(note.id, {
-                onSuccess() {
+              deleteNotesFolderMutation.mutate(noteFolder.id, {
+                onSuccess: async () => {
                   setIsOpenDelete(false);
+                  await queryClient.invalidateQueries({
+                    queryKey: ["notes-folder"],
+                  });
                   return queryClient.invalidateQueries({
-                    queryKey: ["notes"],
+                    queryKey: ["notes", noteFolder.id],
                   });
                 },
               });

@@ -17,6 +17,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const subdomain = getSubdomain(host);
 
   const { data, error } = await supabase.auth.getUser();
+  // console.log("data", data);
+  // console.log("error", error);
   if (!data.user || error) {
     redirect("/");
   }

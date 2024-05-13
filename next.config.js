@@ -7,7 +7,7 @@ const {
 module.exports = async (phase) => {
   /** @type {import("next").NextConfig} */
   const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
 
     webpack: (config, { isServer }) => {
       // Fixes npm packages that depend on `fs` module

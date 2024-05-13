@@ -2,7 +2,7 @@
 
 import { generateHTML } from "@tiptap/react";
 import { useMemo } from "react";
-import Scrollbar from "react-scrollbars-custom";
+import { Scrollbar } from "react-scrollbars-custom";
 import { usePathname } from "next/navigation";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";

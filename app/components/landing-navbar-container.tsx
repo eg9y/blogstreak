@@ -36,7 +36,7 @@ export const LandingNavbarContainer = ({
                   </Disclosure.Button>
                 </div>
                 <Link href="/" className="flex flex-shrink-0 items-center">
-                  <p className="font-bold">Blogstreak</p>
+                  <p className="font-bold">TypeMemo</p>
                 </Link>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
