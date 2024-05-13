@@ -5,17 +5,38 @@ import { Database } from "@/schema";
 
 interface BearState {
   posts: Database["public"]["Tables"]["posts"]["Row"][];
-  selectedFolderId: number | null;
-  setSelectedFolderId: (folderId: number) => number;
+  selectedFolder: {
+    id: number;
+    name: string;
+  } | null;
+  selectedNote: {
+    id: number;
+    name: string;
+  } | null;
+  setSelectedFolder: (folder: { id: number; name: string }) => {
+    id: number;
+    name: string;
+  };
+  setSelectedNote: (note: { id: number; name: string }) => {
+    id: number;
+    name: string;
+  };
 }
 
 export const useNotesStore = create<BearState>()((set) => ({
   posts: [],
-  selectedFolderId: null,
-  setSelectedFolderId: (folderId) => {
+  selectedFolder: null,
+  selectedNote: null,
+  setSelectedFolder: (selectedFolder: { id: number; name: string }) => {
     set({
-      selectedFolderId: folderId,
+      selectedFolder,
     });
-    return folderId;
+    return selectedFolder;
+  },
+  setSelectedNote: (selectedNote: { id: number; name: string }) => {
+    set({
+      selectedNote,
+    });
+    return selectedNote;
   },
 }));

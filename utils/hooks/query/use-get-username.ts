@@ -26,6 +26,6 @@ export function useGetUsernameQuery(user: User | null) {
     queryKey,
     queryFn,
     enabled: Boolean(user),
-    staleTime: 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
 }

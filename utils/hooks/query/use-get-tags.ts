@@ -63,6 +63,6 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
     queryKey,
     queryFn,
     enabled: Boolean(user),
-    staleTime: 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
 }

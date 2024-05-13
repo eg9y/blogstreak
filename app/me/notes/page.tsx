@@ -1,7 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  FilePlusIcon,
+  FolderPlusIcon,
+  SidebarCloseIcon,
+  SidebarOpenIcon,
+} from "lucide-react";
+import { ImperativePanelHandle } from "react-resizable-panels";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/app/components/button";
 import { useUsername } from "@/app/components/subdomain-context";
@@ -13,6 +21,13 @@ import { useGetNotes } from "@/utils/hooks/query/notes/use-get-notes";
 import { CreateFolderDialog } from "@/app/components/notes/create-folder-dialog";
 import { CreateNotesDialog } from "@/app/components/notes/create-notes-dialog";
 import { useCreateNotes } from "@/utils/hooks/mutation/notes/use-create-notes";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/app/components/ui/resizable";
+import { cn } from "@/utils/utils";
+import { NoteEditor } from "@/app/components/text-editor/note";
 
 export default function Notes() {
   const createNotesFolderMutation = useCreateNotesFolder();
@@ -25,8 +40,15 @@ export default function Notes() {
   const getNotesFoldersQuery = useGetNotesFolders(loggedInUser, username);
   const queryClient = useQueryClient();
   const notesStore = useNotesStore();
-  const getNotesQuery = useGetNotes(loggedInUser, notesStore.selectedFolderId);
-  const createNotesMutation = useCreateNotes(username);
+  const getNotesQuery = useGetNotes(
+    loggedInUser,
+    notesStore.selectedFolder ? notesStore.selectedFolder.id : null,
+  );
+  const createNotesMutation = useCreateNotes(
+    notesStore.selectedFolder ? notesStore.selectedFolder.id : null,
+  );
+
+  const [isCollapseFolderTab, setIsCollapseFolderTab] = useState(false);
 
   function createFolder() {
     createNotesFolderMutation.mutate(
@@ -49,14 +71,13 @@ export default function Notes() {
     createNotesMutation.mutate(
       {
         title: notesName,
-        notesFolderId: notesStore.selectedFolderId,
       },
       {
         onSuccess() {
           setIsOpenCreateNotes(false);
           setNotesName("");
           return queryClient.invalidateQueries({
-            queryKey: ["notes", username],
+            queryKey: ["notes", notesStore.selectedFolder?.id],
           });
         },
       },
@@ -70,59 +91,172 @@ export default function Notes() {
     ) {
       return;
     }
-    notesStore.setSelectedFolderId(getNotesFoldersQuery.data.data[0].id);
+    notesStore.setSelectedFolder({
+      id: getNotesFoldersQuery.data.data[0].id,
+      name: getNotesFoldersQuery.data.data[0].name,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getNotesFoldersQuery.isSuccess, getNotesFoldersQuery.data]);
 
+  const defaultLayout = [265, 440, 655];
+
+  const folderCollapsePanelRef = useRef<ImperativePanelHandle>(null);
+
+  const collapsePanel = () => {
+    const panel = folderCollapsePanelRef.current;
+    if (panel) {
+      if (panel.isCollapsed()) {
+        panel.expand();
+      } else {
+        panel.collapse();
+      }
+    }
+  };
+
   return (
     <>
-      <div className="flex h-screen flex-col">
-        <div className="flex grow">
-          <div className="flex w-40 flex-col gap-2 border-r border-slate-300 px-2">
-            <Button
-              className="w-full cursor-pointer"
-              outline
-              onClick={() => setIsOpenCreateFolder(true)}
-            >
-              +
-            </Button>
-            {getNotesFoldersQuery.isSuccess &&
-              getNotesFoldersQuery.data &&
-              getNotesFoldersQuery.data.data.map((folder) => {
-                return (
-                  <div className="" key={folder.id}>
+      <div className="flex grow flex-col gap-2 ">
+        <ResizablePanelGroup
+          direction="horizontal"
+          autoSaveId="persistence"
+          className="grow"
+        >
+          <ResizablePanel
+            defaultSize={defaultLayout[0]}
+            collapsedSize={4}
+            collapsible={true}
+            minSize={14}
+            maxSize={24}
+            ref={folderCollapsePanelRef}
+            onCollapse={() => {
+              setIsCollapseFolderTab(true);
+            }}
+            onExpand={() => {
+              setIsCollapseFolderTab(false);
+            }}
+            className={cn(
+              "flex flex-col",
+              isCollapseFolderTab
+                ? "transition-all duration-300 ease-in-out"
+                : "gap-1 px-2 ",
+            )}
+          >
+            <div className="flex items-center gap-1">
+              <Button
+                outline
+                className={" cursor-pointer !p-1"}
+                onClick={() => collapsePanel()}
+              >
+                {isCollapseFolderTab ? (
+                  <SidebarOpenIcon size={14} />
+                ) : (
+                  <SidebarCloseIcon size={14} />
+                )}
+              </Button>
+              {!isCollapseFolderTab && (
+                <Button
+                  className={cn("grow cursor-pointer")}
+                  outline
+                  onClick={() => setIsOpenCreateFolder(true)}
+                >
+                  <FolderPlusIcon size={14} />
+                </Button>
+              )}
+            </div>
+            {!isCollapseFolderTab && (
+              <div className={cn("flex h-full flex-col gap-1 overflow-auto")}>
+                {getNotesFoldersQuery.isSuccess &&
+                  getNotesFoldersQuery.data &&
+                  getNotesFoldersQuery.data.data.map((folder) => {
+                    return (
+                      <div className="" key={folder.id}>
+                        <Button
+                          className={cn(
+                            "w-full !justify-start p-2 text-xs ",
+                            notesStore.selectedFolder?.id === folder.id
+                              ? "bg-slate-300 hover:!bg-slate-300 dark:bg-slate-700 dark:hover:!bg-slate-700"
+                              : "font-medium",
+                          )}
+                          plain
+                          onClick={() => {
+                            notesStore.setSelectedFolder({
+                              id: folder.id,
+                              name: folder.name,
+                            });
+                          }}
+                        >
+                          <span className="min-w-40 text-start text-xs tracking-tight">
+                            {folder.name}
+                          </span>
+                        </Button>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+            {isCollapseFolderTab && (
+              <button
+                className="flex size-full items-center justify-center transition-all hover:bg-slate-100 dark:bg-slate-900"
+                onClick={() => {
+                  collapsePanel();
+                }}
+              >
+                <DotsVerticalIcon scale={2} />
+              </button>
+            )}
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+
+          <ResizablePanel
+            defaultSize={20}
+            minSize={20}
+            maxSize={40}
+            className="flex flex-col items-start gap-1 px-2"
+          >
+            <div className="flex w-full items-center">
+              <Button
+                className="grow cursor-pointer"
+                outline
+                onClick={() => setIsOpenCreateNotes(true)}
+              >
+                <FilePlusIcon size={14} />
+              </Button>
+            </div>
+            <div className="flex flex-col gap-1">
+              {getNotesQuery.data?.pages.map((page) => {
+                return page.data.map((note) => {
+                  return (
                     <Button
-                      className="w-full cursor-pointer"
+                      key={note.id}
+                      plain
+                      className={cn(
+                        "!justify-start text-ellipsis",
+                        notesStore.selectedNote?.id === note.id
+                          ? "bg-slate-100 hover:!bg-slate-100 dark:bg-slate-800 dark:hover:!bg-slate-800"
+                          : "font-medium",
+                      )}
                       onClick={() => {
-                        notesStore.setSelectedFolderId(folder.id);
+                        notesStore.setSelectedNote({
+                          id: note.id,
+                          name: note.title,
+                        });
                       }}
-                      {...(notesStore.selectedFolderId === folder.id
-                        ? {
-                            color: "dark/white",
-                          }
-                        : { plain: true })}
                     >
-                      {folder.name}
+                      <span className="min-w-40 text-start text-xs tracking-tight ">
+                        {note.title}
+                      </span>
                     </Button>
-                  </div>
-                );
+                  );
+                });
               })}
-          </div>
-          <div className="grow px-2">
-            <Button
-              className="w-full cursor-pointer"
-              outline
-              onClick={() => setIsOpenCreateNotes(true)}
-            >
-              +
-            </Button>
-            {getNotesQuery.data?.pages.map((page) => {
-              return page.data.map((note) => {
-                return <div key={note.id}>{note.title}</div>;
-              });
-            })}
-          </div>
-        </div>
+            </div>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+
+          <ResizablePanel className="relative flex grow flex-col">
+            {notesStore.selectedNote && <NoteEditor />}
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
 
       <CreateFolderDialog

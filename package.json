@@ -42,6 +42,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
     "react-markdown": "9.0.1",
+    "react-resizable-panels": "^2.0.19",
     "react-responsive": "^10.0.0",
     "react-scrollbars-custom": "^4.1.1",
     "react-sticky-el": "^2.1.0",

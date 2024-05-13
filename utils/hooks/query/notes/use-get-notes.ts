@@ -6,7 +6,7 @@ import { createClient } from "../../../supabase/client";
 export function useGetNotes(user: User | null, notesFolderId: number | null) {
   const supabase = createClient();
 
-  const queryKey = ["notes", user?.id, notesFolderId];
+  const queryKey = ["notes", notesFolderId];
 
   const queryFn = async ({ pageParam = -1 }) => {
     const userId = user?.id;

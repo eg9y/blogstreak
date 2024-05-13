@@ -22,6 +22,6 @@ export function useGetBlogQuery(blogId?: number) {
     queryKey,
     queryFn,
     enabled: Boolean(blogId),
-    staleTime: 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
 }

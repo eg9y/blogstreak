@@ -21,6 +21,6 @@ export function useGetBioQuery(userName?: string | null) {
     queryKey,
     queryFn,
     enabled: Boolean(userName),
-    staleTime: 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
 }
