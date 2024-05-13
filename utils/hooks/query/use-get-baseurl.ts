@@ -13,14 +13,14 @@ export function useBaseUrl() {
   useEffect(() => {
     let url =
       process.env.NODE_ENV === "production"
-        ? "https://TypeMemo.com"
+        ? "https://blogstreak.com"
         : "http://localhost:3000";
 
     if (
       process.env.NODE_ENV === "production" &&
       pathName.split("/")[1] !== "me"
     ) {
-      url = `https://${subdomainUsername}.TypeMemo.com`;
+      url = `https://${subdomainUsername}.blogstreak.com`;
     }
 
     setBaseUrl(url);

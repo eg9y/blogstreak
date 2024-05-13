@@ -10,7 +10,7 @@ export const signUpWithGoogle = async () => {
   const supabase = createClient(cookieStore);
   const baseUrl =
     process.env.NODE_ENV === "production"
-      ? "https://TypeMemo.com"
+      ? "https://blogstreak.com"
       : "http://localhost:3000";
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

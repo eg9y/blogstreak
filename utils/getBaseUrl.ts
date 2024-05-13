@@ -2,7 +2,7 @@
 export function getBaseUrl(requestPath: string) {
   let baseUrl =
     process.env.NODE_ENV === "production"
-      ? "https://TypeMemo.com"
+      ? "https://blogstreak.com"
       : "http://localhost:3000";
 
   // Check if the first segment of the path is not "me"
@@ -13,7 +13,7 @@ export function getBaseUrl(requestPath: string) {
   ) {
     // Example: Extract subdomain from path or some other logic
     const subdomainUsername = pathSegments[1];
-    baseUrl = `https://${subdomainUsername}.TypeMemo.com`;
+    baseUrl = `https://${subdomainUsername}.blogstreak.com`;
   }
 
   return baseUrl;

@@ -11,7 +11,7 @@ export default function Home() {
       <LandingNavbar />
       <main className="mx-auto flex min-h-screen w-1/2 min-w-[400px] flex-col gap-4 p-24">
         <div className="flex flex-col gap-2 dark:text-slate-50">
-          <h1 className="text-xl font-bold">TypeMemo</h1>
+          <h1 className="text-xl font-bold">BlogStreak</h1>
           <p>
             Blogging and Journaling personal website with built-in
             habit-tracking features

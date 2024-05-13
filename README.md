@@ -1,9 +1,9 @@
-# TypeMemo
+# BlogStreak
 
 Deployment steps:
 
 - ssh
-- cd TypeMemo
+- cd BlogStreak
 - pull
 - build
 - restart pm2

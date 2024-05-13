@@ -107,9 +107,9 @@ export default function Chat() {
   }, []);
 
   const status = isLoading
-    ? "TypeMemo is searching..."
+    ? "BlogStreak is searching..."
     : isResponding
-      ? "TypeMemo is responding..."
+      ? "BlogStreak is responding..."
       : undefined;
 
   return (
@@ -124,7 +124,7 @@ export default function Chat() {
                   key={message.message}
                 >
                   <p className="font-bold">
-                    {message.role === "assistant" ? "TypeMemo" : "You"}
+                    {message.role === "assistant" ? "BlogStreak" : "You"}
                   </p>
                   <div className="prose dark:prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
