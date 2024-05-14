@@ -3,8 +3,16 @@ import { create } from "zustand";
 
 import { Database } from "@/schema";
 
-interface BearState {
-  posts: Database["public"]["Tables"]["posts"]["Row"][];
+interface NotesState {
+  notes: Database["public"]["Tables"]["notes"]["Row"][];
+  // openedFolders: {
+  //   [key: string]: {
+  //     folder: Database["public"]["Tables"]["notes_folders"]["Row"];
+  //     notes: Database["public"]["Tables"]["notes"]["Row"][];
+  //   };
+  // };
+  openedFolderIds: number[];
+  setOpenedFolderIds: (folderIds: number[]) => number[];
   selectedFolder: {
     id: number;
     name: string;
@@ -23,8 +31,17 @@ interface BearState {
   };
 }
 
-export const useNotesStore = create<BearState>()((set) => ({
-  posts: [],
+export const useNotesStore = create<NotesState>()((set) => ({
+  notes: [],
+  // openedFolders: {},
+  openedFolderIds: [],
+  setOpenedFolderIds: (folderIds) => {
+    set({
+      openedFolderIds: folderIds,
+    });
+
+    return folderIds;
+  },
   selectedFolder: null,
   selectedNote: null,
   setSelectedFolder: (selectedFolder: { id: number; name: string }) => {

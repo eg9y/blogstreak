@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  CornerDownRightIcon,
   FilePlusIcon,
   FolderPlusIcon,
   SidebarCloseIcon,
-  SidebarOpenIcon,
 } from "lucide-react";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
@@ -17,7 +17,6 @@ import { useUser } from "@/utils/getUser";
 import { useCreateNotesFolder } from "@/utils/hooks/mutation/notes/use-create-notes-folder";
 import { useGetNotesFolders } from "@/utils/hooks/query/notes/use-get-notes-folders";
 import { useNotesStore } from "@/store/notes";
-import { useGetNotes } from "@/utils/hooks/query/notes/use-get-notes";
 import { CreateFolderDialog } from "@/app/components/notes/create-folder-dialog";
 import { CreateNotesDialog } from "@/app/components/notes/create-notes-dialog";
 import { useCreateNotes } from "@/utils/hooks/mutation/notes/use-create-notes";
@@ -42,10 +41,6 @@ export default function Notes() {
   const getNotesFoldersQuery = useGetNotesFolders(loggedInUser, username);
   const queryClient = useQueryClient();
   const notesStore = useNotesStore();
-  const getNotesQuery = useGetNotes(
-    loggedInUser,
-    notesStore.selectedFolder ? notesStore.selectedFolder.id : null,
-  );
   const createNotesMutation = useCreateNotes(
     notesStore.selectedFolder ? notesStore.selectedFolder.id : null,
   );
@@ -85,20 +80,6 @@ export default function Notes() {
       },
     );
   }
-
-  useEffect(() => {
-    if (
-      !getNotesFoldersQuery.data ||
-      getNotesFoldersQuery.data.data.length === 0
-    ) {
-      return;
-    }
-    notesStore.setSelectedFolder({
-      id: getNotesFoldersQuery.data.data[0].id,
-      name: getNotesFoldersQuery.data.data[0].name,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getNotesFoldersQuery.isSuccess, getNotesFoldersQuery.data]);
 
   const defaultLayout = [265, 440, 655];
 
@@ -160,35 +141,90 @@ export default function Notes() {
                 >
                   <FolderPlusIcon size={14} />
                 </Button>
+                <Button
+                  className="grow cursor-pointer"
+                  outline
+                  onClick={() => setIsOpenCreateNotes(true)}
+                >
+                  <FilePlusIcon size={14} />
+                </Button>
               </div>
             )}
             {!isCollapseFolderTab && (
               <div className={cn("flex h-full flex-col gap-1 overflow-auto")}>
                 {getNotesFoldersQuery.isSuccess &&
                   getNotesFoldersQuery.data &&
-                  getNotesFoldersQuery.data.data.map((folder) => {
+                  getNotesFoldersQuery.data.foldersAndFiles?.map((folder) => {
                     return (
                       <div className="" key={folder.id}>
-                        <Button
+                        <div
                           className={cn(
-                            "w-full !justify-between ",
+                            "flex w-full justify-between rounded-md border border-slate-700",
                             notesStore.selectedFolder?.id === folder.id
                               ? "bg-slate-300 hover:!bg-slate-300 dark:bg-slate-700 dark:hover:!bg-slate-700"
                               : "font-medium",
                           )}
-                          plain
-                          onClick={() => {
-                            notesStore.setSelectedFolder({
-                              id: folder.id,
-                              name: folder.name,
-                            });
-                          }}
                         >
-                          <span className="truncate text-start text-xs tracking-tight">
-                            {folder.name}
-                          </span>
+                          <Button
+                            plain
+                            className={"grow cursor-pointer !justify-start"}
+                            onClick={() => {
+                              notesStore.setSelectedFolder({
+                                id: folder.id,
+                                name: folder.name,
+                              });
+                              const existing = new Set(
+                                notesStore.openedFolderIds,
+                              );
+                              if (existing.has(folder.id)) {
+                                existing.delete(folder.id);
+                              } else {
+                                existing.add(folder.id);
+                              }
+                              notesStore.setOpenedFolderIds(
+                                Array.from(existing),
+                              );
+                            }}
+                          >
+                            <span className="truncate text-start text-xs tracking-tight">
+                              {folder.name}
+                            </span>
+                          </Button>
                           <NotesFolderOptions noteFolder={folder} />
-                        </Button>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          {folder.files.map((file) => {
+                            return (
+                              <div
+                                key={file.id}
+                                className="flex items-center pl-4"
+                              >
+                                <button
+                                  className={cn(
+                                    "flex grow items-center py-1",
+                                    notesStore.selectedNote?.id === file.id &&
+                                      "dark:bg-slate-800",
+                                  )}
+                                  onClick={() => {
+                                    notesStore.setSelectedNote({
+                                      id: file.id,
+                                      name: file.title,
+                                    });
+                                  }}
+                                >
+                                  <span>
+                                    <CornerDownRightIcon
+                                      size={14}
+                                      className="mb-1"
+                                    />
+                                  </span>
+                                  <span className="text-xs">{file.title}</span>
+                                </button>
+                                <NotesOptions note={file} />
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })}
@@ -204,53 +240,6 @@ export default function Notes() {
                 <DotsVerticalIcon scale={2} />
               </button>
             )}
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-
-          <ResizablePanel
-            defaultSize={20}
-            minSize={20}
-            maxSize={40}
-            className="mx-2 flex flex-col items-start gap-1"
-          >
-            <div className="flex w-full items-center">
-              <Button
-                className="grow cursor-pointer"
-                outline
-                onClick={() => setIsOpenCreateNotes(true)}
-              >
-                <FilePlusIcon size={14} />
-              </Button>
-            </div>
-            <div className="flex w-full flex-col gap-1">
-              {getNotesQuery.data?.pages.map((page) => {
-                return page.data.map((note) => {
-                  return (
-                    <Button
-                      key={note.id}
-                      plain
-                      className={cn(
-                        "w-full !justify-between ",
-                        notesStore.selectedNote?.id === note.id
-                          ? "bg-slate-100 hover:!bg-slate-100 dark:bg-slate-800 dark:hover:!bg-slate-800"
-                          : "font-medium",
-                      )}
-                      onClick={() => {
-                        notesStore.setSelectedNote({
-                          id: note.id,
-                          name: note.title,
-                        });
-                      }}
-                    >
-                      <span className="truncate text-start text-xs tracking-tight">
-                        {note.title}
-                      </span>
-                      <NotesOptions note={note} />
-                    </Button>
-                  );
-                });
-              })}
-            </div>
           </ResizablePanel>
           <ResizableHandle withHandle />
 
