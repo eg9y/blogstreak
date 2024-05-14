@@ -110,6 +110,17 @@ export default function HamburgerSidebar() {
           >
             Private Journal
           </button>
+          <button
+            onClick={() => navigateAndCloseSheet(`${baseUrl}/me/notes`)}
+            className={cn(
+              pathName.split("/")[pathName.split("/").length - 1] === "notes"
+                ? "font-bold text-slate-900 dark:text-slate-300"
+                : "font-normal text-slate-700 dark:text-slate-100",
+              "text-left text-lg sm:text-lg",
+            )}
+          >
+            Notes
+          </button>
           {/* <button
             onClick={() => navigateAndCloseSheet(`${baseUrl}/me/chat`)}
             className={cn(
