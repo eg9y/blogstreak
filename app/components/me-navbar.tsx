@@ -281,7 +281,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
 
           {pathName.split("/")[pathName.split("/").length - 1] ===
             "journal" && (
-            <div className="mx-6 flex gap-4 border-b border-slate-300">
+            <div className="mx-6 flex gap-4 border-b border-slate-300 dark:border-slate-800">
               <Link
                 href={`${baseUrl}/me/journal`}
                 className="flex h-full items-end"

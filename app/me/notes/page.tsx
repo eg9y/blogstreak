@@ -227,6 +227,13 @@ export default function Notes() {
                               <button
                                 className={cn("flex h-full grow items-center")}
                                 onClick={() => {
+                                  queryClient.invalidateQueries({
+                                    queryKey: [
+                                      "notes",
+                                      loggedInUser?.id,
+                                      notesStore.selectedNote?.id,
+                                    ],
+                                  });
                                   notesStore.setSelectedNote({
                                     id: file.id,
                                     name: file.title,

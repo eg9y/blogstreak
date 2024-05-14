@@ -1,10 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/client";
 
 export function useEditNotes(user: User | null, notesId: number | null) {
-  const queryClient = useQueryClient();
   const supabase = createClient();
 
   async function mutationFn({
@@ -46,10 +45,6 @@ export function useEditNotes(user: User | null, notesId: number | null) {
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {
-      return queryClient.invalidateQueries({
-        queryKey: ["notes", user?.id, notesId],
-      });
-    },
+    onSuccess: () => {},
   });
 }
