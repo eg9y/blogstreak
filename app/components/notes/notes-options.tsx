@@ -69,7 +69,7 @@ export function NotesOptions({
                 onSuccess() {
                   setIsOpenDelete(false);
                   return queryClient.invalidateQueries({
-                    queryKey: ["notes"],
+                    queryKey: ["notes-folders"],
                   });
                 },
               });

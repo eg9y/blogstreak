@@ -1,20 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/client";
-import { useNotesStore } from "@/store/notes";
 
 export function useGetNotesFolders(user: User | null, username: string | null) {
-  const { openedFolderIds } = useNotesStore();
   const supabase = createClient();
 
-  const queryKey = [
-    "notes-folders",
-    username,
-    {
-      openedFolderIds,
-    },
-  ];
+  const queryKey = ["notes-folders", username];
 
   const queryFn = async () => {
     let userId = user?.id;
@@ -33,54 +25,28 @@ export function useGetNotesFolders(user: User | null, username: string | null) {
     }
 
     if (!userId) {
-      return { data: [] };
+      return { folders: [] };
     }
 
     const { data, error } = await supabase
       .from("notes_folders")
       .select("*")
       .eq("user_id", userId)
-      .order("updated_at", {
-        ascending: false,
-      });
+      .order("updated_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching folders:", error.message);
       throw new Error("Error fetching folders");
     }
 
-    console.log("data", data);
-    const { data: notes, error: notesError } = await supabase
-      .from("notes")
-      .select("*")
-      .eq("user_id", userId)
-      .in("notes_folders_id", openedFolderIds)
-      .order("updated_at", {
-        ascending: false,
-      });
-
-    if (notesError) {
-      console.error("Error fetching notes:", notesError.message);
-      throw new Error("Error fetching notes");
-    }
-
-    const foldersAndFiles = data.map((folder) => {
-      const correspondingFiles = notes.filter((note) => {
-        return note.notes_folders_id === folder.id;
-      });
-
-      return { ...folder, files: correspondingFiles };
-    });
-
-    return {
-      foldersAndFiles,
-    };
+    return { folders: data };
   };
 
   return useQuery({
     queryKey,
     queryFn,
     enabled: Boolean(username && (username === "me" ? user : true)),
-    staleTime: 60 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    placeholderData: keepPreviousData,
   });
 }

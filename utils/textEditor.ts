@@ -3,6 +3,7 @@ import Color from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 
 export const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -31,5 +32,8 @@ export const extensions = [
     // },
     openOnClick: false,
     autolink: true,
+  }),
+  Placeholder.configure({
+    emptyEditorClass: "is-editor-empty",
   }),
 ];

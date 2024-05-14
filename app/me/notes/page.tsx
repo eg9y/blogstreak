@@ -6,6 +6,7 @@ import {
   CornerDownRightIcon,
   FilePlusIcon,
   FolderPlusIcon,
+  LoaderIcon,
   SidebarCloseIcon,
 } from "lucide-react";
 import { ImperativePanelHandle } from "react-resizable-panels";
@@ -29,6 +30,7 @@ import { cn } from "@/utils/utils";
 import { NoteEditor } from "@/app/components/text-editor/note";
 import { NotesOptions } from "@/app/components/notes/notes-options";
 import { NotesFolderOptions } from "@/app/components/notes/notes-folders-options";
+import { useGetNotesInFolder } from "@/utils/hooks/query/notes/use-get-notes-in-folder";
 
 export default function Notes() {
   const createNotesFolderMutation = useCreateNotesFolder();
@@ -38,11 +40,14 @@ export default function Notes() {
   const [folderName, setFolderName] = useState("");
   const { loggedInUser } = useUser();
   const username = useUsername();
-  const getNotesFoldersQuery = useGetNotesFolders(loggedInUser, username);
   const queryClient = useQueryClient();
   const notesStore = useNotesStore();
   const createNotesMutation = useCreateNotes(
     notesStore.selectedFolder ? notesStore.selectedFolder.id : null,
+  );
+  const getNotesFoldersQuery = useGetNotesFolders(loggedInUser, username);
+  const getNotesInFolderQuery = useGetNotesInFolder(
+    notesStore.selectedFolder?.id || null,
   );
 
   const [isCollapseFolderTab, setIsCollapseFolderTab] = useState(false);
@@ -74,7 +79,7 @@ export default function Notes() {
           setIsOpenCreateNotes(false);
           setNotesName("");
           return queryClient.invalidateQueries({
-            queryKey: ["notes", notesStore.selectedFolder?.id],
+            queryKey: ["notes-in-folder", notesStore.selectedFolder?.id],
           });
         },
       },
@@ -152,82 +157,98 @@ export default function Notes() {
             )}
             {!isCollapseFolderTab && (
               <div className={cn("flex h-full flex-col gap-1 overflow-auto")}>
+                {(getNotesFoldersQuery.isLoading ||
+                  getNotesFoldersQuery.isFetching) &&
+                  !notesStore.selectedFolder && (
+                    <div className="flex w-full items-center justify-center">
+                      <LoaderIcon size={20} className="animate-spin" />
+                    </div>
+                  )}
+
                 {getNotesFoldersQuery.isSuccess &&
                   getNotesFoldersQuery.data &&
-                  getNotesFoldersQuery.data.foldersAndFiles?.map((folder) => {
-                    return (
-                      <div className="" key={folder.id}>
-                        <div
-                          className={cn(
-                            "flex w-full justify-between rounded-md border border-slate-700",
-                            notesStore.selectedFolder?.id === folder.id
-                              ? "bg-slate-300 hover:!bg-slate-300 dark:bg-slate-700 dark:hover:!bg-slate-700"
-                              : "font-medium",
-                          )}
+                  getNotesFoldersQuery.data.folders.map((folder) => (
+                    <div className="flex flex-col gap-1" key={folder.id}>
+                      <div
+                        className={cn(
+                          "flex w-full justify-between rounded-md border border-slate-700",
+                          notesStore.selectedFolder?.id === folder.id
+                            ? "bg-slate-300  dark:bg-slate-900"
+                            : "font-medium",
+                        )}
+                      >
+                        <button
+                          className={"flex grow items-center justify-start p-2"}
+                          onClick={() => {
+                            notesStore.setSelectedFolder({
+                              id: folder.id,
+                              name: folder.name,
+                            });
+                            const existing = new Set(
+                              notesStore.openedFolderIds,
+                            );
+                            if (existing.has(folder.id)) {
+                              existing.delete(folder.id);
+                            } else {
+                              existing.add(folder.id);
+                            }
+                            notesStore.setOpenedFolderIds(Array.from(existing));
+                          }}
                         >
-                          <Button
-                            plain
-                            className={"grow cursor-pointer !justify-start"}
-                            onClick={() => {
-                              notesStore.setSelectedFolder({
-                                id: folder.id,
-                                name: folder.name,
-                              });
-                              const existing = new Set(
-                                notesStore.openedFolderIds,
-                              );
-                              if (existing.has(folder.id)) {
-                                existing.delete(folder.id);
-                              } else {
-                                existing.add(folder.id);
-                              }
-                              notesStore.setOpenedFolderIds(
-                                Array.from(existing),
-                              );
-                            }}
-                          >
-                            <span className="truncate text-start text-xs tracking-tight">
+                          <div className="flex items-center gap-1">
+                            <span className="truncate text-start text-sm tracking-tight">
                               {folder.name}
                             </span>
-                          </Button>
-                          <NotesFolderOptions noteFolder={folder} />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          {folder.files.map((file) => {
-                            return (
-                              <div
-                                key={file.id}
-                                className="flex items-center pl-4"
-                              >
-                                <button
-                                  className={cn(
-                                    "flex grow items-center py-1",
-                                    notesStore.selectedNote?.id === file.id &&
-                                      "dark:bg-slate-800",
-                                  )}
-                                  onClick={() => {
-                                    notesStore.setSelectedNote({
-                                      id: file.id,
-                                      name: file.title,
-                                    });
-                                  }}
-                                >
-                                  <span>
-                                    <CornerDownRightIcon
-                                      size={14}
-                                      className="mb-1"
-                                    />
-                                  </span>
-                                  <span className="text-xs">{file.title}</span>
-                                </button>
-                                <NotesOptions note={file} />
-                              </div>
-                            );
-                          })}
-                        </div>
+                            {(getNotesInFolderQuery.isLoading ||
+                              getNotesInFolderQuery.isFetching) &&
+                              notesStore.selectedFolder?.id === folder.id && (
+                                <div className="flex items-center justify-center">
+                                  <LoaderIcon
+                                    size={12}
+                                    className="animate-spin text-slate-400"
+                                  />
+                                </div>
+                              )}
+                          </div>
+                        </button>
+                        <NotesFolderOptions noteFolder={folder} />
                       </div>
-                    );
-                  })}
+                      <div className="flex flex-col">
+                        {folder.id === notesStore.selectedFolder?.id &&
+                          getNotesInFolderQuery.data?.notes.map((file) => (
+                            <div
+                              key={file.id}
+                              className={cn(
+                                "ml-4 flex items-center rounded-md",
+                                notesStore.selectedNote?.id === file.id &&
+                                  "dark:bg-slate-800",
+                              )}
+                            >
+                              <button
+                                className={cn("flex h-full grow items-center")}
+                                onClick={() => {
+                                  notesStore.setSelectedNote({
+                                    id: file.id,
+                                    name: file.title,
+                                  });
+                                }}
+                              >
+                                <span>
+                                  <CornerDownRightIcon
+                                    size={14}
+                                    className="mb-1"
+                                  />
+                                </span>
+                                <span className="text-start text-xs">
+                                  {file.title}
+                                </span>
+                              </button>
+                              <NotesOptions note={file} />
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
               </div>
             )}
             {isCollapseFolderTab && (
