@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const searchParams = new URLSearchParams(requestUrl.search);
 
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
 
   if (code) {
     const cookieStore = cookies();
@@ -45,6 +46,10 @@ export async function GET(request: Request) {
 
       redirectUrl.searchParams.append("code", code);
 
+      if (state) {
+        redirectUrl.searchParams.append("state", state);
+      }
+
       //   redirectUrl.searchParams.append(
       //     "access_token",
       //     responsePayload.access_token,
@@ -59,7 +64,9 @@ export async function GET(request: Request) {
       //     responsePayload.expires_in.toString(),
       //   );
 
-      return NextResponse.redirect(redirectUrl.toString());
+      console.log("KANGJAI", redirectUrl);
+
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
