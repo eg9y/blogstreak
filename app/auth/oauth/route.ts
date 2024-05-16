@@ -34,5 +34,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return data.url;
+  return Response.redirect(data.url!);
 }
