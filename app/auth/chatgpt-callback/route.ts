@@ -35,11 +35,14 @@ export async function GET(request: Request) {
     );
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-    console.log("error chatgpt", error);
+
     if (!error) {
-      console.log("dater", data);
-      console.log("redirect url:", `${chatgptUrl}`);
-      return NextResponse.redirect(`${chatgptUrl}`);
+      return NextResponse.json({
+        access_token: data.session.access_token,
+        token_type: data.session.token_type,
+        refresh_token: data.session.refresh_token,
+        expires_in: data.session.expires_in,
+      });
     }
   }
 
