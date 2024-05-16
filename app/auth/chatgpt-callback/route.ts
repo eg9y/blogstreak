@@ -37,12 +37,29 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      return NextResponse.json({
+      const responsePayload = {
         access_token: data.session.access_token,
         token_type: data.session.token_type,
         refresh_token: data.session.refresh_token,
         expires_in: data.session.expires_in,
-      });
+      };
+
+      // Append tokens to the chatgptUrl
+      chatgptUrl.searchParams.append(
+        "access_token",
+        responsePayload.access_token,
+      );
+      chatgptUrl.searchParams.append("token_type", responsePayload.token_type);
+      chatgptUrl.searchParams.append(
+        "refresh_token",
+        responsePayload.refresh_token,
+      );
+      chatgptUrl.searchParams.append(
+        "expires_in",
+        responsePayload.expires_in.toString(),
+      );
+
+      return NextResponse.redirect(chatgptUrl.toString());
     }
   }
 
