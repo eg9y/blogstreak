@@ -10,11 +10,13 @@ export function useEditBlog() {
     blogId,
     title,
     content,
+    rawText,
     isPublished,
   }: {
     blogId: number;
     title: string;
     content: string;
+    rawText: string;
     isPublished: boolean;
   }) {
     const {
@@ -32,6 +34,7 @@ export function useEditBlog() {
       .update({
         title,
         text: content,
+        raw_text: rawText,
         user_id: user?.id,
         is_published: isPublished,
       })

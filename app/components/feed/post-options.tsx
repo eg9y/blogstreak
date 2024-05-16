@@ -73,8 +73,11 @@ export function PostOptions({
             color="red"
             onClick={() => {
               submitPostMutation.mutate(post.post_id, {
-                onSuccess() {
+                async onSuccess() {
                   setIsOpenDelete(false);
+                  await queryClient.invalidateQueries({
+                    queryKey: ["streaks"],
+                  });
                   return queryClient.invalidateQueries({
                     queryKey: ["journal"],
                   });

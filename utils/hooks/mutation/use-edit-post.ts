@@ -11,11 +11,13 @@ export function useEditPost() {
   async function mutationFn({
     journalId,
     content,
+    rawText,
     tags,
     isPublic,
   }: {
     journalId: number;
     content: string;
+    rawText: string;
     tags: Database["public"]["Tables"]["topics"]["Row"][];
     isPublic: boolean;
   }) {
@@ -33,6 +35,7 @@ export function useEditPost() {
       .from("posts")
       .update({
         text: content,
+        raw_text: rawText,
         user_id: user?.id,
         is_public: isPublic,
       })
@@ -58,6 +61,9 @@ export function useEditPost() {
     mutationFn,
     onSuccess: () => {
       return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["streaks"],
+        }),
         queryClient.invalidateQueries({
           queryKey: ["journal"],
         }),

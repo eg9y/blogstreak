@@ -73,9 +73,11 @@ export const CreateTextEditor = () => {
   function submitPost() {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
+    const rawText = editor?.getText() || "";
     submitPostMutation.mutate(
       {
         content,
+        rawText,
         tagIds: tags.map((tag) => tag.id),
         isPublic,
       },

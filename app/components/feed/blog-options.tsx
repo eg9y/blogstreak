@@ -69,8 +69,11 @@ export function BlogOptions({
             color="red"
             onClick={() => {
               submitPostMutation.mutate(blog.id, {
-                onSuccess() {
+                async onSuccess() {
                   setIsOpenDelete(false);
+                  await queryClient.invalidateQueries({
+                    queryKey: ["streaks"],
+                  });
                   return queryClient.invalidateQueries({
                     queryKey: ["journal"],
                   });

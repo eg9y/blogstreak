@@ -43,14 +43,15 @@ export const NoteEditor = () => {
     if (!noteData?.data) {
       return;
     }
-    console.log("testerino", noteData);
 
     const content = JSON.stringify(editor.getJSON());
+    const rawText = editor.getText() || "";
 
     const { error: notesUpdateError } = await supabase
       .from("notes")
       .update({
         content,
+        raw_text: rawText,
       })
       .eq("user_id", loggedInUser.id)
       .eq("id", noteData?.data.id)

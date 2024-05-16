@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Sticky from "react-sticky-el";
 import { useMediaQuery } from "react-responsive";
-import debounce from "lodash.debounce";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { useUser } from "@/utils/getUser";
@@ -101,10 +100,12 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
   function editPost() {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
+    const rawText = editor?.getText() || "";
     editPostMutation.mutate(
       {
         journalId,
         content,
+        rawText,
         tags,
         isPublic,
       },
@@ -139,27 +140,6 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)",
   });
-
-  const debouncedSave = debounce(() => {
-    if (!loggedInUser) {
-      toast.error("Current User not loaded");
-      return;
-    }
-
-    editPost();
-  }, 1000);
-
-  useEffect(() => {
-    if (editor) {
-      editor.on("update", debouncedSave);
-    }
-    return () => {
-      if (editor) {
-        editor.off("update", debouncedSave);
-      }
-      debouncedSave.cancel();
-    };
-  }, [editor, debouncedSave]);
 
   return (
     <>

@@ -13,9 +13,12 @@ export function useDeletePost() {
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Your post has been deleted!", {
         position: "top-center",
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["streaks"],
       });
       return queryClient.invalidateQueries({
         queryKey: ["journal"],

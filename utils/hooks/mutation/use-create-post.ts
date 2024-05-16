@@ -8,10 +8,12 @@ export function useCreatePost() {
 
   async function mutationFn({
     content,
+    rawText,
     tagIds,
     isPublic,
   }: {
     content: string;
+    rawText: string;
     tagIds: number[];
     isPublic: boolean;
   }) {
@@ -29,6 +31,7 @@ export function useCreatePost() {
       .from("posts")
       .insert({
         text: content,
+        raw_text: rawText,
         user_id: user?.id,
         is_public: isPublic,
       })
@@ -60,7 +63,10 @@ export function useCreatePost() {
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["streaks"],
+      });
       return queryClient.invalidateQueries({
         queryKey: ["journal"],
       });

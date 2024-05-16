@@ -33,6 +33,17 @@ export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
 
   return (
     <div className="flex flex-col gap-2">
+      <div className="p-2 text-center">
+        {postData?.data?.created_at && (
+          <h1 className="font-bold underline">
+            {new Date(postData.data.created_at).toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </h1>
+        )}
+      </div>
       <div className=" w-full  p-2 ">
         <div
           className="h-full cursor-text"

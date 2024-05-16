@@ -71,9 +71,11 @@ export const CreateBlogEditor = () => {
     console.log("submitting post");
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
+    const rawText = editor?.getText() || "";
     submitBlogMutation.mutate(
       {
         content,
+        rawText,
         title,
         isPublished,
       },

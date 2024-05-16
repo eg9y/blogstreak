@@ -9,10 +9,12 @@ export function useCreateBlog() {
   async function mutationFn({
     title,
     content,
+    rawText,
     isPublished,
   }: {
     title: string;
     content: string;
+    rawText: string;
     isPublished: boolean;
   }) {
     const {
@@ -30,6 +32,7 @@ export function useCreateBlog() {
       .insert({
         title,
         text: content,
+        raw_text: rawText,
         user_id: user?.id,
         is_published: isPublished,
       })

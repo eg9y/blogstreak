@@ -88,8 +88,9 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
   const onSubmit = ({ title }: { title: string }) => {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
+    const rawText = editor?.getText() || "";
     editBlogMutation.mutate(
-      { title, blogId, content, isPublished },
+      { title, blogId, content, rawText, isPublished },
       {
         onSuccess: () => {
           toast.success("Your post has been edited!", {

@@ -109,7 +109,9 @@ export function useStreaksQuery(
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean((username === "me" ? user : true) && searchParams),
+    enabled: Boolean(
+      (username === "me" ? user : true) && searchParams && username,
+    ),
     staleTime: 60 * 60 * 1000,
   });
 }
