@@ -4,11 +4,9 @@ import { redirect, useSearchParams } from "next/navigation";
 
 import { Button } from "@/app/components/button";
 import { createClient } from "@/utils/supabase/client";
-import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 
 export default function ChatgptLogin() {
   const searchParams = useSearchParams();
-  const baseUrl = useBaseUrl();
 
   const signUpWithGoogleChatgpt = async () => {
     if (!searchParams) {
@@ -17,7 +15,7 @@ export default function ChatgptLogin() {
 
     const supabase = createClient();
 
-    const redirectUrl = new URL(`${baseUrl}/auth/chatgpt-callback`);
+    const redirectUrl = new URL(`https://blogstreak.com/auth/chatgpt-callback`);
     redirectUrl.searchParams.append(
       "state-x",
       searchParams.get("state") as string,
