@@ -43,19 +43,21 @@ export async function GET(request: Request) {
         "https://chatgpt.com/aip/g-3RXxeUIZQ-blogstreak-gpt/oauth/callback",
       );
 
-      redirectUrl.searchParams.append(
-        "access_token",
-        responsePayload.access_token,
-      );
-      redirectUrl.searchParams.append("token_type", responsePayload.token_type);
-      redirectUrl.searchParams.append(
-        "refresh_token",
-        responsePayload.refresh_token,
-      );
-      redirectUrl.searchParams.append(
-        "expires_in",
-        responsePayload.expires_in.toString(),
-      );
+      redirectUrl.searchParams.append("code", code);
+
+      //   redirectUrl.searchParams.append(
+      //     "access_token",
+      //     responsePayload.access_token,
+      //   );
+      //   redirectUrl.searchParams.append("token_type", responsePayload.token_type);
+      //   redirectUrl.searchParams.append(
+      //     "refresh_token",
+      //     responsePayload.refresh_token,
+      //   );
+      //   redirectUrl.searchParams.append(
+      //     "expires_in",
+      //     responsePayload.expires_in.toString(),
+      //   );
 
       return NextResponse.redirect(redirectUrl.toString());
     }
