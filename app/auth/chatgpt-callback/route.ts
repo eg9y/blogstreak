@@ -39,7 +39,10 @@ export async function GET(request: Request) {
       };
 
       // Redirect back to the ChatGPT platform with the tokens as query parameters
-      const redirectUrl = new URL("https://chat.openai.com/oauth/callback");
+      const redirectUrl = new URL(
+        "https://chatgpt.com/aip/g-3RXxeUIZQ-blogstreak-gpt/oauth/callback",
+      );
+
       redirectUrl.searchParams.append(
         "access_token",
         responsePayload.access_token,
