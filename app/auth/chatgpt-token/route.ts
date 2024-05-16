@@ -6,7 +6,10 @@ export function POST(request: Request) {
   console.log("REQUESTURL", requestUrl);
 
   const response = NextResponse.json({
-    url: requestUrl.toString(),
+    accessToken: requestUrl.toString(),
+    access_token: requestUrl.toString(),
+    type: "Bearer",
+    expiresIn: 3600,
   });
 
   response.headers.set("Content-Type", "application/json");
