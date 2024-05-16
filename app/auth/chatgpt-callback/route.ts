@@ -8,6 +8,7 @@ export async function GET(request: Request) {
 
   const code = searchParams.get("code");
   const state = searchParams.get("state-x");
+  const redirectUri = searchParams.get("redirect_uri") as string;
 
   console.log("requestUrl", requestUrl);
 
@@ -42,9 +43,7 @@ export async function GET(request: Request) {
       //   };
 
       // Redirect back to the ChatGPT platform with the tokens as query parameters
-      const redirectUrl = new URL(
-        "https://chatgpt.com/aip/g-3RXxeUIZQ-blogstreak-gpt/oauth/callback",
-      );
+      const redirectUrl = new URL(redirectUri);
 
       redirectUrl.searchParams.append("code", code);
 
