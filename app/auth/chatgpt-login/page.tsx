@@ -15,12 +15,16 @@ export default function ChatgptLogin() {
 
     const supabase = createClient();
 
-    localStorage.setItem("state", searchParams.get("state") as string);
+    const redirectUrl = new URL(searchParams.get("redirect_uri") as string);
+    redirectUrl.searchParams.append(
+      "state",
+      searchParams.get("state") as string,
+    );
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: searchParams.get("redirect_uri") as string,
+        redirectTo: redirectUrl.toString(),
         queryParams: {
           access_type: "offline",
           prompt: "consent",
