@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 
-export function GET(request: Request) {
+export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
 
-  console.log("HMMM", requestUrl);
+  const body = await request.json();
+
+  console.log("REQUESTURL", requestUrl);
+  console.log("BODY", body);
 
   const response = NextResponse.json({
     url: requestUrl.toString(),
