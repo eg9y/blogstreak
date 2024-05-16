@@ -1,12 +1,8 @@
-"use client";
-
 import { redirect } from "next/navigation";
 
 import { createClient } from "./supabase/client";
 
 export const signUpWithGoogleChatgpt = async () => {
-  "use server";
-
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/app/components/button";
 import { signUpWithGoogleChatgpt } from "@/utils/signUpWithGoogleChatgpt";
 
