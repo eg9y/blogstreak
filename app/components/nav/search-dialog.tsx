@@ -100,19 +100,23 @@ export const SearchDialog = ({
               >
                 <Link
                   href={`${baseUrl}/me/journal/${result.journal_id}`}
-                  className="flex cursor-pointer items-center justify-between"
+                  className="flex cursor-pointer items-start gap-2"
                 >
-                  <p className="text-xs">{result.content}</p>
-                  <p>
-                    {new Date(result.posts.created_at).toLocaleDateString(
-                      "en-US",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "2-digit",
-                      },
-                    )}
-                  </p>
+                  <div className="w-52 text-end">
+                    <p className="font-semibold tracking-tight">
+                      {new Date(result.posts.created_at).toLocaleDateString(
+                        "en-US",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "2-digit",
+                        },
+                      )}
+                    </p>
+                  </div>
+                  <div className="grow">
+                    <p className="text-xs">{result.content}</p>
+                  </div>
                 </Link>
               </CommandItem>
             );
