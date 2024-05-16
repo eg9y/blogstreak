@@ -1,15 +1,13 @@
 "use client";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { createClient } from "./supabase/server";
+import { createClient } from "./supabase/client";
 
 export const signUpWithGoogleChatgpt = async () => {
   "use server";
 
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
