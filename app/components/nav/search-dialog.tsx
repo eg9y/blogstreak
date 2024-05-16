@@ -56,7 +56,6 @@ export const SearchDialog = ({
 
   useEffect(() => {
     (async () => {
-      console.log("cuq", debouncedSearch);
       const { data, error } = await supabase.functions.invoke("search", {
         body: {
           search: debouncedSearch,
