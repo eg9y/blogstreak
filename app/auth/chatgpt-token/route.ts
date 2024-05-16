@@ -5,7 +5,11 @@ export function GET(request: Request) {
 
   console.log("HMMM", requestUrl);
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     url: requestUrl.toString(),
   });
+
+  response.headers.set("Content-Type", "application/json");
+
+  return response;
 }
