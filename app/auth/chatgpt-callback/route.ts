@@ -6,12 +6,6 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const searchParams = new URLSearchParams(requestUrl.search);
 
-  const chatgptUrl = new URL(
-    "https://chatgpt.com/aip/g-3RXxeUIZQ-blogstreak-gpt/oauth/callback",
-  );
-
-  chatgptUrl.search = searchParams.toString();
-
   const code = searchParams.get("code");
 
   if (code) {
@@ -44,22 +38,23 @@ export async function GET(request: Request) {
         expires_in: data.session.expires_in,
       };
 
-      // Append tokens to the chatgptUrl
-      chatgptUrl.searchParams.append(
+      // Redirect back to the ChatGPT platform with the tokens as query parameters
+      const redirectUrl = new URL("https://chat.openai.com/oauth/callback");
+      redirectUrl.searchParams.append(
         "access_token",
         responsePayload.access_token,
       );
-      chatgptUrl.searchParams.append("token_type", responsePayload.token_type);
-      chatgptUrl.searchParams.append(
+      redirectUrl.searchParams.append("token_type", responsePayload.token_type);
+      redirectUrl.searchParams.append(
         "refresh_token",
         responsePayload.refresh_token,
       );
-      chatgptUrl.searchParams.append(
+      redirectUrl.searchParams.append(
         "expires_in",
         responsePayload.expires_in.toString(),
       );
 
-      return NextResponse.redirect(chatgptUrl.toString());
+      return NextResponse.redirect(redirectUrl.toString());
     }
   }
 
