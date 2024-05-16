@@ -1,7 +1,7 @@
 import { CookieOptions, createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   console.log("reqquest url", await request.url);
   console.log("kangjai", await request.json());
   const cookieStore = cookies();
