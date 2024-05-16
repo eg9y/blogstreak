@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const searchParams = new URLSearchParams(requestUrl.search);
 
   const code = searchParams.get("code");
-  const state = searchParams.get("state");
+  const state = searchParams.get("state-x");
 
   console.log("requestUrl", requestUrl);
 

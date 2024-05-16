@@ -17,7 +17,7 @@ export default function ChatgptLogin() {
 
     const redirectUrl = new URL(searchParams.get("redirect_uri") as string);
     redirectUrl.searchParams.append(
-      "state",
+      "state-x",
       searchParams.get("state") as string,
     );
 
