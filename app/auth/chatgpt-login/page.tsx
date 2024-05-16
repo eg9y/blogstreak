@@ -15,6 +15,8 @@ export default function ChatgptLogin() {
 
     const supabase = createClient();
 
+    localStorage.setItem("state", searchParams.get("state") as string);
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -22,7 +24,6 @@ export default function ChatgptLogin() {
         queryParams: {
           access_type: "offline",
           prompt: "consent",
-          state: searchParams.get("state") as string,
         },
       },
     });
