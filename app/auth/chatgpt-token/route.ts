@@ -7,6 +7,10 @@ export async function POST(request: Request) {
   const cookieStore = cookies();
 
   const formData = await request.formData();
+  formData.forEach((value, key) => {
+    console.log(`form entry::: ${key}: ${value}`);
+  });
+
   const grantType = formData.get("grant_type") as string | undefined;
   // const clientId = formData.get("client_id") as string | undefined;
   // const redirectUri = formData.get("redirect_uri") as string | undefined;
