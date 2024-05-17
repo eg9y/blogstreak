@@ -30,20 +30,20 @@ export async function GET(request: Request) {
       },
     );
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      //   const responsePayload = {
-      //     access_token: data.session.access_token,
-      //     token_type: data.session.token_type,
-      //     refresh_token: data.session.refresh_token,
-      //     expires_in: data.session.expires_in,
-      //   };
+      const responsePayload = {
+        access_token: data.session.access_token,
+        token_type: data.session.token_type,
+        refresh_token: data.session.refresh_token,
+        expires_in: data.session.expires_in,
+      };
 
       // Redirect back to the ChatGPT platform with the tokens as query parameters
       const redirectUrl = new URL(redirectUri);
 
-      redirectUrl.searchParams.append("code", code);
+      redirectUrl.searchParams.append("code", JSON.stringify(responsePayload));
 
       if (state) {
         redirectUrl.searchParams.append("state", state);
