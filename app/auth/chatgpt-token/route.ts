@@ -35,8 +35,10 @@ export async function POST(request: Request) {
   );
 
   if (grantType === "authorization_code") {
+    console.log("CODE:", code);
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      console.log("error exchanging code: ", error);
       const response = NextResponse.json({
         access_token: data.session.access_token,
         // refresh_token: data.session.refresh_token,

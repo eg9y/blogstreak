@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { CookieOptions, createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-export function GET(request: Request) {
+export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const searchParams = new URLSearchParams(requestUrl.search);
 
@@ -8,28 +10,63 @@ export function GET(request: Request) {
   const state = searchParams.get("state-x");
   const redirectUri = searchParams.get("redirect_uri") as string;
 
-  console.log("requestUrl", requestUrl);
-
   if (code) {
-    //   const responsePayload = {
-    //     access_token: data.session.access_token,
-    //     token_type: data.session.token_type,
-    //     refresh_token: data.session.refresh_token,
-    //     expires_in: data.session.expires_in,
-    //   };
+    const cookieStore = cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            cookieStore.set({ name, value, ...options });
+          },
+          remove(name: string, options: CookieOptions) {
+            cookieStore.delete({ name, ...options });
+          },
+        },
+      },
+    );
 
-    // Redirect back to the ChatGPT platform with the tokens as query parameters
-    const redirectUrl = new URL(redirectUri);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    redirectUrl.searchParams.append("code", code);
+    if (!error) {
+      //   const responsePayload = {
+      //     access_token: data.session.access_token,
+      //     token_type: data.session.token_type,
+      //     refresh_token: data.session.refresh_token,
+      //     expires_in: data.session.expires_in,
+      //   };
 
-    if (state) {
-      redirectUrl.searchParams.append("state", state);
+      // Redirect back to the ChatGPT platform with the tokens as query parameters
+      const redirectUrl = new URL(redirectUri);
+
+      redirectUrl.searchParams.append("code", code);
+
+      if (state) {
+        redirectUrl.searchParams.append("state", state);
+      }
+
+      //   redirectUrl.searchParams.append(
+      //     "access_token",
+      //     responsePayload.access_token,
+      //   );
+      //   redirectUrl.searchParams.append("token_type", responsePayload.token_type);
+      //   redirectUrl.searchParams.append(
+      //     "refresh_token",
+      //     responsePayload.refresh_token,
+      //   );
+      //   redirectUrl.searchParams.append(
+      //     "expires_in",
+      //     responsePayload.expires_in.toString(),
+      //   );
+
+      console.log("KANGJAI", redirectUrl);
+
+      return NextResponse.redirect(redirectUrl);
     }
-
-    console.log("KANGJAI", redirectUrl);
-
-    return NextResponse.redirect(redirectUrl);
   }
 
   return NextResponse.redirect(`https://google.com`);
