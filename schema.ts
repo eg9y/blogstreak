@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export type Json =
   | string
   | number
@@ -381,14 +380,14 @@ export type Database = {
       };
       query_embeddings: {
         Args: {
-          embedding: string;
+          content_embedding: string;
           match_threshold: number;
         };
         Returns: {
-          content: string;
-          embedding: string | null;
           id: number;
+          content: string;
           journal_id: number;
+          created_at: string;
         }[];
       };
     };

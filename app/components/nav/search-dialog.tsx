@@ -29,16 +29,17 @@ export const SearchDialog = ({
   const baseUrl = useBaseUrl();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [debouncedSearch] = useDebounce(search, 1000);
-  const [searchResults, setSearchResults] = useState<
-    {
+  const [debouncedSearch] = useDebounce(search, 500);
+  const [searchResults, setSearchResults] = useState<{
+    result: {
+      id: number;
+      similarity: number;
       content: string;
       journal_id: string;
-      posts: {
-        created_at: string;
-      };
-    }[]
-  >([]);
+      created_at: string;
+    }[];
+    search: string;
+  }>({ result: [], search: "" });
   const supabase = createClient();
 
   useEffect(() => {
@@ -56,9 +57,12 @@ export const SearchDialog = ({
 
   useEffect(() => {
     (async () => {
+      if (!debouncedSearch) {
+        return;
+      }
       const { data, error } = await supabase.functions.invoke("search", {
         body: {
-          search: debouncedSearch,
+          search: debouncedSearch.trim().toLowerCase(),
         },
       });
       setIsLoading(false);
@@ -68,13 +72,16 @@ export const SearchDialog = ({
         return;
       }
 
-      setSearchResults(data.result || []);
+      console.log("data", data);
+
+      setSearchResults(
+        data || {
+          result: [],
+          search: "",
+        },
+      );
     })();
   }, [debouncedSearch, supabase]);
-
-  useEffect(() => {
-    console.log("searchResults", searchResults);
-  }, [searchResults]);
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -90,20 +97,19 @@ export const SearchDialog = ({
         <CommandEmpty>No results found.</CommandEmpty>
         {isLoading && <CommandLoading>Fetching results...</CommandLoading>}
         <CommandGroup heading="Journal">
-          {searchResults.map((result) => {
+          {searchResults.result.map((snippet) => {
             return (
               <CommandItem
-                key={result.content}
+                key={snippet.id}
                 className="!pointer-events-auto flex !select-auto justify-between"
-                value={result.content}
               >
                 <Link
-                  href={`${baseUrl}/me/journal/${result.journal_id}`}
+                  href={`${baseUrl}/me/journal/${snippet.journal_id}`}
                   className="flex cursor-pointer items-start gap-2"
                 >
                   <div className="w-52 text-end">
                     <p className="font-semibold tracking-tight">
-                      {new Date(result.posts.created_at).toLocaleDateString(
+                      {new Date(snippet.created_at).toLocaleDateString(
                         "en-US",
                         {
                           day: "2-digit",
@@ -114,7 +120,7 @@ export const SearchDialog = ({
                     </p>
                   </div>
                   <div className="grow">
-                    <p className="text-xs">{result.content}</p>
+                    <p className="text-xs">{snippet.content}</p>
                   </div>
                 </Link>
               </CommandItem>
