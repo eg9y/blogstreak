@@ -6,20 +6,19 @@ import { useEffect, useRef, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Sticky from "react-sticky-el";
 import { useMediaQuery } from "react-responsive";
+import { UseMutationResult } from "@tanstack/react-query";
 
 import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
 import { useUser } from "@/utils/getUser";
-import { useEditPost } from "@/utils/hooks/mutation/use-edit-post";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { Database } from "@/schema";
 import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
 
-import { BadgeButton } from "../badge";
-
-import { IsPublicSwitch } from "./is-public-switch";
-import { Toolbar } from "./toolbar";
-import { AddTagDialog } from "./dialog/add-tag-dialog";
+import { BadgeButton } from "../../badge";
+import { IsPublicSwitch } from "../is-public-switch";
+import { Toolbar } from "../toolbar";
+import { AddTagDialog } from "../dialog/add-tag-dialog";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -31,7 +30,13 @@ const editorOptions: Partial<EditorOptions> = {
   editable: false,
 };
 
-export const EditTextEditor = ({ journalId }: { journalId: number }) => {
+export const JournalTextForm = ({
+  journalId,
+  mutation,
+}: {
+  journalId?: number;
+  mutation: UseMutationResult<void, Error, any, unknown>;
+}) => {
   const [tags, setTags] = useState(
     [] as Database["public"]["Tables"]["topics"]["Row"][],
   );
@@ -49,7 +54,6 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
   );
   const { data: postData } = useGetPostQuery(loggedInUser, journalId);
   const editor = useEditor({ extensions, ...editorOptions });
-  const editPostMutation = useEditPost();
 
   useEffect(() => {
     if (!isSuccess) {
@@ -64,6 +68,9 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
 
   useEffect(() => {
     if (!postData?.data?.text || !editor) {
+      if (editor) {
+        editor.setEditable(true);
+      }
       return;
     }
 
@@ -101,29 +108,39 @@ export const EditTextEditor = ({ journalId }: { journalId: number }) => {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
     const rawText = editor?.getText() || "";
-    editPostMutation.mutate(
-      {
-        journalId,
-        content,
-        rawText,
-        tags,
-        isPublic,
+    const payload: {
+      journalId?: number;
+      content: string;
+      rawText: string;
+      tags: number[];
+      isPublic: boolean;
+    } = {
+      content,
+      rawText,
+      tags: tags.map((tag) => tag.id),
+      isPublic,
+    };
+
+    if (journalId) {
+      payload.journalId = journalId;
+    }
+
+    console.log("payload", payload);
+    mutation.mutate(payload, {
+      onSuccess: () => {
+        toast.success("Your post has been saved!", {
+          position: "top-center",
+        });
+        setLoadingEdit(false);
       },
-      {
-        onSuccess: () => {
-          toast.success("Your post has been edited!", {
-            position: "top-center",
-          });
-          setLoadingEdit(false);
-        },
-        onError: () => {
-          toast.error("Error editing your post", {
-            position: "top-center",
-          });
-          setLoadingEdit(false);
-        },
+      onError: (error) => {
+        console.log("error!", error);
+        toast.error("Error saving your post", {
+          position: "top-center",
+        });
+        setLoadingEdit(false);
       },
-    );
+    });
   }
 
   function tagClick(tag: Database["public"]["Tables"]["topics"]["Row"]) {

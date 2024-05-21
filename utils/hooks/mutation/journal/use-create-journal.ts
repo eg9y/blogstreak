@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createClient } from "../../supabase/client";
+import { createClient } from "../../../supabase/client";
 
 export function useCreatePost() {
   const queryClient = useQueryClient();
@@ -9,12 +9,12 @@ export function useCreatePost() {
   async function mutationFn({
     content,
     rawText,
-    tagIds,
+    tags,
     isPublic,
   }: {
     content: string;
     rawText: string;
-    tagIds: number[];
+    tags: number[];
     isPublic: boolean;
   }) {
     const {
@@ -46,9 +46,9 @@ export function useCreatePost() {
       return;
     }
 
-    if (tagIds.length > 0) {
+    if (tags.length > 0) {
       await supabase.from("post_topics").insert(
-        tagIds.map((tag) => {
+        tags.map((tag) => {
           return {
             post_id: data.id,
             topic_id: tag,

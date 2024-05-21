@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Database } from "@/schema";
-
-import { createClient } from "../../supabase/client";
+import { createClient } from "../../../supabase/client";
 
 export function useEditPost() {
   const queryClient = useQueryClient();
@@ -18,7 +16,7 @@ export function useEditPost() {
     journalId: number;
     content: string;
     rawText: string;
-    tags: Database["public"]["Tables"]["topics"]["Row"][];
+    tags: number[];
     isPublic: boolean;
   }) {
     const {
@@ -49,7 +47,7 @@ export function useEditPost() {
         .eq("user_id", user.id);
       await supabase.from("post_topics").insert(
         tags.map((tag) => ({
-          topic_id: tag.id,
+          topic_id: tag,
           post_id: journalId,
           user_id: user?.id,
         })),

@@ -1,4 +1,4 @@
-import { CreateTextEditor } from "@/app/components/text-editor/create";
+import { CreateTextEditor } from "@/app/components/text-editor/journal/create";
 
 export default function Home() {
   return (

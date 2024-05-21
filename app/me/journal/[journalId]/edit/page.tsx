@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
 
-import { EditTextEditor } from "@/app/components/text-editor/edit";
+import { EditTextEditor } from "@/app/components/text-editor/journal/edit";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function PostDetail({

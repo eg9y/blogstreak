@@ -9,6 +9,9 @@ export function useGetPostQuery(user: User | null, journalId?: number) {
   const queryKey = ["journal", journalId];
 
   const queryFn = async () => {
+    if (!journalId) {
+      return null;
+    }
     const res = await supabase
       .from("posts")
       .select("*")
@@ -21,7 +24,6 @@ export function useGetPostQuery(user: User | null, journalId?: number) {
   return useQuery({
     queryKey,
     queryFn,
-    enabled: Boolean(journalId),
     staleTime: 60 * 60 * 1000,
   });
 }
