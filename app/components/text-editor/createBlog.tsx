@@ -28,7 +28,7 @@ const editorOptions: Partial<EditorOptions> = {
 
 export const CreateBlogEditor = () => {
   const [loadingEdit, setLoadingEdit] = useState(false);
-  const [isPublished, setIsPublished] = useState(true);
+  const [isPublic, setIsPublic] = useState(true);
   const submitBlogMutation = useCreateBlog();
   const editorContainerRef = useRef(null);
   const editor = useEditor({ extensions, content: "", ...editorOptions });
@@ -68,7 +68,6 @@ export const CreateBlogEditor = () => {
   }, [editor]);
 
   function submitPost({ title }: { title: string }) {
-    console.log("submitting post");
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
     const rawText = editor?.getText() || "";
@@ -77,7 +76,7 @@ export const CreateBlogEditor = () => {
         content,
         rawText,
         title,
-        isPublished,
+        isPublic,
       },
       {
         onSuccess: () => {
@@ -145,8 +144,8 @@ export const CreateBlogEditor = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex gap-4">
                     <IsPublicSwitch
-                      isPublic={isPublished}
-                      setIsPublic={setIsPublished}
+                      isPublic={isPublic}
+                      setIsPublic={setIsPublic}
                     />
                   </div>
                   <Button

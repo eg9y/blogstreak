@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export type Json =
   | string
   | number
@@ -13,7 +14,7 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          is_published: boolean;
+          is_public: boolean;
           raw_text: string | null;
           text: string;
           title: string;
@@ -22,7 +23,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          is_published?: boolean;
+          is_public?: boolean;
           raw_text?: string | null;
           text: string;
           title: string;
@@ -31,7 +32,7 @@ export type Database = {
         Update: {
           created_at?: string;
           id?: number;
-          is_published?: boolean;
+          is_public?: boolean;
           raw_text?: string | null;
           text?: string;
           title?: string;
@@ -309,13 +310,13 @@ export type Database = {
       get_blogs: {
         Args: {
           user_id_param: string;
-          is_published_param?: boolean;
+          is_public_param?: boolean;
           earliest_blog_id_param?: number;
         };
         Returns: {
           created_at: string;
           id: number;
-          is_published: boolean;
+          is_public: boolean;
           text: string;
           title: string;
         }[];
@@ -388,6 +389,7 @@ export type Database = {
           content: string;
           journal_id: number;
           created_at: string;
+          similarity: number;
         }[];
       };
     };

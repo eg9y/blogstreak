@@ -10,12 +10,12 @@ export function useCreateBlog() {
     title,
     content,
     rawText,
-    isPublished,
+    isPublic,
   }: {
     title: string;
     content: string;
     rawText: string;
-    isPublished: boolean;
+    isPublic: boolean;
   }) {
     const {
       data: { user },
@@ -34,7 +34,7 @@ export function useCreateBlog() {
         text: content,
         raw_text: rawText,
         user_id: user?.id,
-        is_published: isPublished,
+        is_public: isPublic,
       })
       .select()
       .single();

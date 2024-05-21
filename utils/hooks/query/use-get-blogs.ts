@@ -15,16 +15,15 @@ export function useGetBlogs(
     "infinite-blogs",
     user?.id || username,
     {
-      isPublished:
-        username === "me" ? searchParams.get("is_published") : "true",
+      isPublic: username === "me" ? searchParams.get("is_public") : "true",
     },
   ];
-  let isPublishedBlogs = searchParams.has("is_published")
-    ? searchParams.get("is_published") === "true"
+  let isPublicParam = searchParams.has("is_public")
+    ? searchParams.get("is_public") === "true"
     : undefined;
 
   if (username !== "me") {
-    isPublishedBlogs = undefined;
+    isPublicParam = undefined;
   }
 
   const queryFn = async ({ pageParam = -1 }) => {
@@ -49,7 +48,7 @@ export function useGetBlogs(
 
     const { data, error } = await supabase.rpc("get_blogs", {
       earliest_blog_id_param: pageParam,
-      is_published_param: isPublishedBlogs,
+      is_public_param: isPublicParam,
       user_id_param: userId,
     });
 
