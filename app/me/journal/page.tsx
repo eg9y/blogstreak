@@ -1,6 +1,7 @@
 "use client";
 
 import { Pencil1Icon } from "@radix-ui/react-icons";
+import { Scrollbar } from "react-scrollbars-custom";
 
 import { Posts } from "@/app/components/feed/posts";
 import { Button } from "@/app/components/button";
@@ -10,7 +11,7 @@ import { Options } from "../options";
 
 export default function Home() {
   return (
-    <div className="tw-flex tw-flex-col tw-gap-2 w-full">
+    <Scrollbar className="tw-flex tw-flex-col tw-gap-2 w-full">
       <main className="mx-auto flex flex-col gap-4 p-4 sm:min-w-[400px]">
         <Cal />
 
@@ -32,6 +33,6 @@ export default function Home() {
           <Posts />
         </div>
       </main>
-    </div>
+    </Scrollbar>
   );
 }
