@@ -35,7 +35,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <SubdomainContextProvider subdomain={subdomain}>
-      <div className="mx-auto flex min-h-screen flex-col md:w-[1000px]">
+      <div className="mx-auto flex h-screen flex-col md:w-[1000px]">
         {!userProfile?.name && <ForceChangeUsernameDialog />}
         <MeNavbar>{children}</MeNavbar>
       </div>

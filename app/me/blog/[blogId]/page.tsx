@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
 
-import { ViewBlogComponent } from "@/app/components/text-editor/viewBlog";
+import { ViewBlogComponent } from "@/app/components/text-editor/blog/view";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function BlogDetail({
@@ -38,11 +38,9 @@ export default async function BlogDetail({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="min-h-full">
-        <main className="mx-auto flex w-full flex-col gap-4 pb-16 md:pt-12">
-          <ViewBlogComponent blogId={params.blogId} />
-        </main>
-      </div>
+      <main className="mx-auto flex w-full grow flex-col gap-4 pb-16 md:pt-12">
+        <ViewBlogComponent blogId={params.blogId} />
+      </main>
     </HydrationBoundary>
   );
 }

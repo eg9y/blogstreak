@@ -5,17 +5,16 @@ import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Sticky from "react-sticky-el";
+import { UseMutationResult } from "@tanstack/react-query";
 
 import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
-import { useEditBlog } from "@/utils/hooks/mutation/use-edit-blog";
 
-import { Field, FieldGroup, Fieldset, Label } from "../fieldset";
-import { Input } from "../input";
-
-import { Toolbar } from "./toolbar";
-import { IsPublicSwitch } from "./is-public-switch";
+import { Field, FieldGroup, Fieldset, Label } from "../../fieldset";
+import { Input } from "../../input";
+import { Toolbar } from "../toolbar";
+import { IsPublicSwitch } from "../is-public-switch";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
@@ -27,15 +26,20 @@ const editorOptions: Partial<EditorOptions> = {
   editable: false,
 };
 
-export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
+export const BlogTextForm = ({
+  blogId,
+  mutation,
+}: {
+  blogId?: number;
+  mutation: UseMutationResult<void, Error, any, unknown>;
+}) => {
   const [loadingEdit, setLoadingEdit] = useState(false);
-  const [isPublished, setIsPublished] = useState(true);
+  const [isPublic, setIsPublic] = useState(true);
 
   const editorContainerRef = useRef(null);
 
   const { data: blogData, isLoading } = useGetBlogQuery(blogId);
   const editor = useEditor({ extensions, ...editorOptions });
-  const editBlogMutation = useEditBlog();
   const {
     control,
     handleSubmit,
@@ -53,7 +57,7 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
     reset({
       title: blogData.data.title,
     });
-    setIsPublished(blogData.data.is_published);
+    setIsPublic(blogData.data.is_public);
     editor.commands.setContent(JSON.parse(blogData.data.text));
     editor.setEditable(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,21 +93,30 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
     setLoadingEdit(true);
     const content = JSON.stringify(editor?.getJSON());
     const rawText = editor?.getText() || "";
-    editBlogMutation.mutate(
-      { title, blogId, content, rawText, isPublished },
-      {
-        onSuccess: () => {
-          toast.success("Your post has been edited!", {
-            position: "top-center",
-          });
-          setLoadingEdit(false);
-        },
-        onError: () => {
-          toast.error("Error editing your post", { position: "top-center" });
-          setLoadingEdit(false);
-        },
+    const payload: {
+      blogId?: number;
+      title: string;
+      content: string;
+      rawText: string;
+      isPublic: boolean;
+    } = { title, content, rawText, isPublic };
+
+    if (blogId) {
+      payload.blogId = blogId;
+    }
+
+    mutation.mutate(payload, {
+      onSuccess: () => {
+        toast.success("Your blog has been saved!", {
+          position: "top-center",
+        });
+        setLoadingEdit(false);
       },
-    );
+      onError: () => {
+        toast.error("Error saving your blog", { position: "top-center" });
+        setLoadingEdit(false);
+      },
+    });
   };
   return (
     <div className="flex flex-col gap-2">
@@ -149,17 +162,14 @@ export const EditBlogTextEditorComponent = ({ blogId }: { blogId: number }) => {
         </div>
         <Sticky mode="bottom" stickyClassName="z-[100]">
           <div className="flex justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
-            <IsPublicSwitch
-              isPublic={isPublished}
-              setIsPublic={setIsPublished}
-            />
+            <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
             <Button
               color="orange"
               className="w-40 cursor-pointer self-end"
               onClick={handleSubmit(onSubmit)}
               disabled={loadingEdit}
             >
-              Submit Edit
+              Save
             </Button>
           </div>
         </Sticky>

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { createClient } from "../../supabase/client";
+import { createClient } from "../../../supabase/client";
 
-export function useDeletePost() {
+export function useDeleteJournal() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 

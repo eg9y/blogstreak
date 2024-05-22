@@ -10,10 +10,9 @@ import { useUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { extensions } from "@/utils/textEditor";
 
-import { Badge } from "../badge";
-import { Button } from "../button";
-
-import { IsPublicSwitch } from "./is-public-switch";
+import { Badge } from "../../badge";
+import { Button } from "../../button";
+import { IsPublicSwitch } from "../is-public-switch";
 
 export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
   const { loggedInUser } = useUser();

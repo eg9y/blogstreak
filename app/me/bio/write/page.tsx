@@ -1,4 +1,4 @@
-import { CreateBioEditor } from "@/app/components/text-editor/createBio";
+import { CreateBioEditor } from "@/app/components/text-editor/create-bio";
 
 export default function Home() {
   return (

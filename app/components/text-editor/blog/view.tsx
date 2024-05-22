@@ -9,9 +9,8 @@ import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
 import { useUser } from "@/utils/getUser";
 
-import { Button } from "../button";
-
-import { IsPublicSwitch } from "./is-public-switch";
+import { Button } from "../../button";
+import { IsPublicSwitch } from "../is-public-switch";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   const { loggedInUser } = useUser();

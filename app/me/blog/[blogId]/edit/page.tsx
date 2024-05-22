@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
 
-import { EditBlogTextEditorComponent } from "@/app/components/text-editor/editBlog";
+import { EditBlogTextEditorComponent } from "@/app/components/text-editor/blog/edit";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function EditBlogComponent({
@@ -38,11 +38,9 @@ export default async function EditBlogComponent({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="min-h-full">
-        <main className="mx-auto flex min-w-[400px] flex-col gap-4 px-2">
-          <EditBlogTextEditorComponent blogId={params.blogId} />
-        </main>
-      </div>
+      <main className="mx-auto flex min-w-[400px] grow flex-col gap-4 px-2">
+        <EditBlogTextEditorComponent blogId={params.blogId} />
+      </main>
     </HydrationBoundary>
   );
 }

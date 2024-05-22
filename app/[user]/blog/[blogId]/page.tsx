@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { cookies } from "next/headers";
 
-import { ViewBlogComponent } from "@/app/components/text-editor/viewBlog";
+import { ViewBlogComponent } from "@/app/components/text-editor/blog/view";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function BlogDetail({

@@ -228,7 +228,7 @@ export const JournalTextForm = ({
               onClick={editPost}
               disabled={loadingEdit}
             >
-              Edit
+              Save
             </Button>
           </div>
         </div>

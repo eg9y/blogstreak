@@ -81,7 +81,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-x-1 md:gap-x-2">
             <button
               type="button"
-              className="-m-2.5 p-2.5 text-slate-400 hover:text-slate-500"
+              className="-m-2.5 hidden p-2.5 text-slate-400 hover:text-slate-500 sm:block"
             >
               <span className="sr-only">View notifications</span>
               <BellIcon className="h-6 w-6" aria-hidden="true" />

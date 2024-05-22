@@ -5,7 +5,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
-import { useDeletePost } from "@/utils/hooks/mutation/use-delete-post";
+import { useDeleteJournal } from "@/utils/hooks/mutation/journal/use-delete-journal";
 
 import {
   Dropdown,
@@ -28,7 +28,7 @@ export function BlogOptions({
   blog: Database["public"]["Functions"]["get_blogs"]["Returns"][number];
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const submitPostMutation = useDeletePost();
+  const submitPostMutation = useDeleteJournal();
   const queryClient = useQueryClient();
 
   return (

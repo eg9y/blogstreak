@@ -1,23 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createClient } from "../../supabase/client";
+import { createClient } from "../../../supabase/client";
 
-export function useEditBlog() {
+export function useCreateBlog() {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
   async function mutationFn({
-    blogId,
     title,
     content,
     rawText,
-    isPublished,
+    isPublic,
   }: {
-    blogId: number;
     title: string;
     content: string;
     rawText: string;
-    isPublished: boolean;
+    isPublic: boolean;
   }) {
     const {
       data: { user },
@@ -29,26 +27,33 @@ export function useEditBlog() {
       return;
     }
 
-    await supabase
+    const { data, error: blogInsertError } = await supabase
       .from("blogs")
-      .update({
+      .insert({
         title,
         text: content,
         raw_text: rawText,
         user_id: user?.id,
-        is_published: isPublished,
+        is_public: isPublic,
       })
-      .eq("id", blogId);
+      .select()
+      .single();
+
+    if (!data) {
+      return;
+    }
+
+    if (blogInsertError) {
+      console.error("blogInsertError", blogInsertError);
+    }
   }
 
   return useMutation({
     mutationFn,
     onSuccess: () => {
-      return Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ["blogs"],
-        }),
-      ]);
+      return queryClient.invalidateQueries({
+        queryKey: ["blogs"],
+      });
     },
   });
 }
