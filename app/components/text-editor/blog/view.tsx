@@ -48,7 +48,7 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
             <div className="flex items-center gap-1">
               <div className="pointer-events-none">
                 <IsPublicSwitch
-                  isPublic={blogData?.data?.is_published!!}
+                  isPublic={blogData?.data?.is_public!!}
                   setIsPublic={() => {}}
                 />
               </div>
