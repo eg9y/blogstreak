@@ -38,7 +38,7 @@ export default async function EditBlogComponent({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <main className="mx-auto flex min-w-[400px] grow flex-col gap-4 px-2">
+      <main className="mx-auto flex  w-full grow  flex-col gap-4 px-2 sm:min-w-[400px]">
         <EditBlogTextEditorComponent blogId={params.blogId} />
       </main>
     </HydrationBoundary>

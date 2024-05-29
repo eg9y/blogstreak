@@ -8,7 +8,6 @@ import { getSubdomain } from "@/utils/getSubdomain";
 import MeNavbar from "../components/me-navbar";
 import { ForceChangeUsernameDialog } from "../components/nav/force-change-username-dialog";
 import SubdomainContextProvider from "../components/subdomain-context";
-import VisualHeightContext from "../components/visual-height-context";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
@@ -36,12 +35,10 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <SubdomainContextProvider subdomain={subdomain}>
-      <VisualHeightContext>
-        <div className="mx-auto flex h-full flex-col md:w-[1000px]">
-          {!userProfile?.name && <ForceChangeUsernameDialog />}
-          <MeNavbar>{children}</MeNavbar>
-        </div>
-      </VisualHeightContext>
+      <div className="mx-auto flex h-dvh flex-col md:w-[1000px]">
+        {!userProfile?.name && <ForceChangeUsernameDialog />}
+        <MeNavbar>{children}</MeNavbar>
+      </div>
     </SubdomainContextProvider>
   );
 }

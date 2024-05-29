@@ -4,8 +4,6 @@ import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
-import Sticky from "react-sticky-el";
-import { useMediaQuery } from "react-responsive";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Scrollbar } from "react-scrollbars-custom";
 
@@ -126,7 +124,6 @@ export const JournalTextForm = ({
       payload.journalId = journalId;
     }
 
-    console.log("payload", payload);
     mutation.mutate(payload, {
       onSuccess: () => {
         toast.success("Your post has been saved!", {
@@ -155,32 +152,30 @@ export const JournalTextForm = ({
     }
   }
 
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
-
   return (
     <>
-      <div className="flex grow flex-col py-4">
-        <div className="w-full grow border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:rounded-md md:border-x md:border-b ">
-          {isDesktopOrLaptop && (
-            <Sticky stickyClassName="z-[100]">
-              <Toolbar editor={editor} />
-            </Sticky>
-          )}
+      <div className="flex grow flex-col pt-4">
+        <div className="flex w-full grow flex-col border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:rounded-md md:border-x md:border-b ">
+          <Toolbar editor={editor} />
 
-          <Scrollbar
-            className="relative flex h-full cursor-text flex-col pb-[200px] md:pb-[100px]"
-            height="100%"
+          <div
+            className="grow cursor-text"
+            ref={editorContainerRef}
             // Make the div focusable
+            tabIndex={0}
           >
-            <EditorContent editor={editor} />
-          </Scrollbar>
+            <Scrollbar
+              className=""
+              height="100%"
+              // Make the div focusable
+            >
+              <EditorContent editor={editor} />
+            </Scrollbar>
+          </div>
         </div>
       </div>
       <div className="z-[100]">
-        <div className="flex h-[200px] flex-col justify-evenly gap-1 border-t border-t-slate-300 bg-[hsl(0_0%_100%)] p-4 dark:border-slate-700 dark:bg-[hsl(240_10%_3.9%)] md:h-[100px] md:border-t-0">
-          {!isDesktopOrLaptop && <Toolbar editor={editor} />}
+        <div className="flex flex-col justify-evenly gap-1 border-t border-t-slate-300 bg-[hsl(0_0%_100%)] p-4 dark:border-slate-700 dark:bg-[hsl(240_10%_3.9%)] md:h-[100px] md:border-t-0">
           <div className="flex  justify-between">
             <div className="flex flex-wrap items-center gap-1">
               <BadgeButton
@@ -199,7 +194,7 @@ export const JournalTextForm = ({
               )}
               {isSuccess && (
                 <>
-                  {data?.map((topic) => {
+                  {data?.map((topic: any) => {
                     return (
                       <BadgeButton
                         key={topic.name}

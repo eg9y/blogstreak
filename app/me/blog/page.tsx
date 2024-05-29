@@ -7,6 +7,7 @@ import { Button } from "@/app/components/button";
 import { useUser } from "@/utils/getUser";
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
 import { BlogOptions } from "@/app/components/feed/blog-options";
+import { Badge } from "@/app/components/badge";
 
 export default function Blog() {
   const { loggedInUser } = useUser();
@@ -37,9 +38,13 @@ export default function Blog() {
                   className="flex w-full flex-col md:flex-row md:justify-between"
                   key={blog.id}
                 >
-                  <p className="text-lg font-medium  dark:text-slate-100">
-                    {blog.title}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-lg font-medium  dark:text-slate-100">
+                      {blog.title}
+                    </p>
+                    {blog.is_public && <Badge color="blue">Published</Badge>}
+                    {!blog.is_public && <Badge color="zinc">Draft</Badge>}
+                  </div>
                   <div className="flex w-full items-center justify-between gap-2 md:w-auto md:justify-start">
                     <p className="text-sm text-slate-600 dark:text-slate-300">
                       {new Date(blog.created_at).toLocaleDateString("en-US", {

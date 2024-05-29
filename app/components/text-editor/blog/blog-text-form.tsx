@@ -4,8 +4,8 @@ import { EditorContent, EditorOptions, useEditor } from "@tiptap/react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import Sticky from "react-sticky-el";
 import { UseMutationResult } from "@tanstack/react-query";
+import Scrollbar from "react-scrollbars-custom";
 
 import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
@@ -52,8 +52,12 @@ export const BlogTextForm = ({
   });
   useEffect(() => {
     if (!blogData?.data?.text || !editor) {
+      if (editor) {
+        editor.setEditable(true);
+      }
       return;
     }
+
     reset({
       title: blogData.data.title,
     });
@@ -119,7 +123,7 @@ export const BlogTextForm = ({
     });
   };
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex grow flex-col gap-2">
       <Fieldset>
         <FieldGroup>
           <Field>
@@ -150,29 +154,33 @@ export const BlogTextForm = ({
           </Field>
         </FieldGroup>
       </Fieldset>
-      <div className="w-full rounded-md bg-white p-2 ring-1 ring-slate-300 dark:bg-transparent dark:ring-slate-700 ">
+      <div className="flex w-full grow flex-col border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:rounded-md md:border-x md:border-b ">
         <Toolbar editor={editor} />
         <div
-          className="h-full cursor-text"
+          className="grow cursor-text"
           ref={editorContainerRef}
           // Make the div focusable
           tabIndex={0}
         >
-          <EditorContent editor={editor} />
+          <Scrollbar
+            className=""
+            height="100%"
+            // Make the div focusable
+          >
+            <EditorContent editor={editor} />
+          </Scrollbar>
         </div>
-        <Sticky mode="bottom" stickyClassName="z-[100]">
-          <div className="flex justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
-            <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
-            <Button
-              color="orange"
-              className="w-40 cursor-pointer self-end"
-              onClick={handleSubmit(onSubmit)}
-              disabled={loadingEdit}
-            >
-              Save
-            </Button>
-          </div>
-        </Sticky>
+      </div>
+      <div className="flex justify-between bg-[hsl(0_0%_100%)] p-4 dark:bg-[hsl(240_10%_3.9%)]">
+        <IsPublicSwitch isPublic={isPublic} setIsPublic={setIsPublic} />
+        <Button
+          color="orange"
+          className="w-40 cursor-pointer self-end"
+          onClick={handleSubmit(onSubmit)}
+          disabled={loadingEdit}
+        >
+          Save
+        </Button>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export default function Home() {
             <div className="flex items-center justify-between gap-2">
               <Options />
               <Button
-                href="/me/write"
+                href="/me/journal/write"
                 className="hidden max-w-20 sm:inline-flex"
                 color="dark"
               >

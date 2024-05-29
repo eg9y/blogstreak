@@ -142,7 +142,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
               <ChevronDownIcon />
             </DropdownButton>
             <DropdownMenu>
-              <DropdownItem href="/me/write">Journal</DropdownItem>
+              <DropdownItem href="/me/journal/write">Journal</DropdownItem>
               <DropdownItem href="/me/blog/write">Blog</DropdownItem>
               <DropdownItem href="/me/notes/write">Note</DropdownItem>
             </DropdownMenu>
