@@ -80,10 +80,10 @@ export const NoteEditor = () => {
   });
 
   useEffect(() => {
-    if (!editor) {
-      return;
-    } else if (!noteData?.data?.content) {
-      editor.commands.clearContent();
+    if (!noteData?.data?.content || !editor) {
+      if (editor) {
+        editor.setEditable(true);
+      }
       return;
     }
     if (editor && noteData?.data?.content) {
@@ -96,7 +96,7 @@ export const NoteEditor = () => {
     <div className="flex grow flex-col border border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent">
       <Toolbar editor={editor} />
       <div className="grow cursor-text" tabIndex={0}>
-        <Scrollbar height="65vh">
+        <Scrollbar height="100%">
           <EditorContent editor={editor} />
         </Scrollbar>
       </div>
