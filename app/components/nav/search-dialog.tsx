@@ -2,11 +2,11 @@
 
 import { Dispatch, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import { toast } from "sonner";
 import { CommandLoading } from "cmdk";
 
 import { createClient } from "@/utils/supabase/client";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
+import { getMeilisearchClient } from "@/utils/meilisearch";
 
 import {
   CommandInput,
@@ -26,17 +26,17 @@ export const SearchDialog = ({
   isOpen: boolean;
   setIsOpen: Dispatch<boolean>;
 }) => {
+  const meilisearchClient = getMeilisearchClient();
   const baseUrl = useBaseUrl();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [debouncedSearch] = useDebounce(search, 500);
   const [searchResults, setSearchResults] = useState<{
     result: {
-      id: number;
-      similarity: number;
-      content: string;
-      journal_id: string;
       created_at: string;
+      id: number;
+      raw_text: string;
+      topics: string[];
     }[];
     search: string;
   }>({ result: [], search: "" });
@@ -60,28 +60,41 @@ export const SearchDialog = ({
       if (!debouncedSearch) {
         return;
       }
-      const { data, error } = await supabase.functions.invoke("search", {
-        body: {
-          search: debouncedSearch.trim().toLowerCase(),
-        },
+      const { results } = await meilisearchClient.multiSearch({
+        queries: [
+          {
+            indexUid: "journals",
+            q: debouncedSearch.trim().toLowerCase(),
+            attributesToSearchOn: ["raw_text"],
+            limit: 5,
+            attributesToHighlight: ["raw_text"],
+            highlightPreTag: "<mark className='bg-yellow-800'>",
+            highlightPostTag: "</mark>",
+            // hybrid: {
+            //   embedder: "default",
+            //   semanticRatio: 0.5,
+            // },
+          },
+        ],
       });
+
       setIsLoading(false);
 
-      if (error) {
-        toast.error("Error searching :(");
-        return;
-      }
+      console.log("results", results);
 
-      console.log("data", data);
+      const data = {
+        result: results[0].hits.map((hit) => hit._formatted),
+        search: results[0].query,
+      };
 
       setSearchResults(
-        data || {
+        (data as any) || {
           result: [],
           search: "",
         },
       );
     })();
-  }, [debouncedSearch, supabase]);
+  }, [debouncedSearch, meilisearchClient, supabase]);
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -104,7 +117,7 @@ export const SearchDialog = ({
                 className="!pointer-events-auto flex !select-auto justify-between"
               >
                 <Link
-                  href={`${baseUrl}/me/journal/${snippet.journal_id}`}
+                  href={`${baseUrl}/me/journal/${snippet.id}`}
                   className="flex cursor-pointer items-start gap-2"
                 >
                   <div className="w-52 text-end">
@@ -120,7 +133,12 @@ export const SearchDialog = ({
                     </p>
                   </div>
                   <div className="grow">
-                    <p className="text-xs">{snippet.content}</p>
+                    <p
+                      className="text-xs"
+                      dangerouslySetInnerHTML={{
+                        __html: snippet.raw_text,
+                      }}
+                    />
                   </div>
                 </Link>
               </CommandItem>
