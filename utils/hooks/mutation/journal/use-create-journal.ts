@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { getMeilisearchClient } from "@/utils/meilisearch";
+
 import { createClient } from "../../../supabase/client";
 
 export function useCreatePost() {
   const queryClient = useQueryClient();
   const supabase = createClient();
+  const meilisearch = getMeilisearchClient();
 
   async function mutationFn({
     content,
@@ -14,7 +17,10 @@ export function useCreatePost() {
   }: {
     content: string;
     rawText: string;
-    tags: number[];
+    tags: {
+      id: number;
+      name: string;
+    }[];
     isPublic: boolean;
   }) {
     const {
@@ -46,12 +52,21 @@ export function useCreatePost() {
       return;
     }
 
+    await meilisearch.index("journals").updateDocuments([
+      {
+        raw_text: rawText,
+        user_id: user?.id,
+        is_public: isPublic,
+        topics: tags.map((tag) => tag.name),
+      },
+    ]);
+
     if (tags.length > 0) {
       await supabase.from("post_topics").insert(
         tags.map((tag) => {
           return {
             post_id: data.id,
-            topic_id: tag,
+            topic_id: tag.id,
             user_id: user.id,
           };
         }),

@@ -111,12 +111,18 @@ export const JournalTextForm = ({
       journalId?: number;
       content: string;
       rawText: string;
-      tags: number[];
+      tags: {
+        id: number;
+        name: string;
+      }[];
       isPublic: boolean;
     } = {
       content,
       rawText,
-      tags: tags.map((tag) => tag.id),
+      tags: tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
       isPublic,
     };
 

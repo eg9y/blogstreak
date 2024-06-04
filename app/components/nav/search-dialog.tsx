@@ -94,7 +94,8 @@ export const SearchDialog = ({
         },
       );
     })();
-  }, [debouncedSearch, meilisearchClient, supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, supabase]);
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
