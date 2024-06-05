@@ -52,8 +52,10 @@ export function useCreatePost() {
       return;
     }
 
-    await meilisearch.index("journals").updateDocuments([
+    await meilisearch.index("journals").addDocuments([
       {
+        id: data.id,
+        created_at: new Date(),
         raw_text: rawText,
         user_id: user?.id,
         is_public: isPublic,
