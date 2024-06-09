@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getMeilisearchClient } from "@/utils/meilisearch";
+import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
 
@@ -82,10 +83,10 @@ export function useCreatePost() {
     mutationFn,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["streaks"],
+        queryKey: [STREAKS_QUERY_KEY],
       });
       return queryClient.invalidateQueries({
-        queryKey: ["journal"],
+        queryKey: [JOURNALS_QUERY_KEY],
       });
     },
   });

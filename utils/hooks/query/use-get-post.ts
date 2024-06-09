@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
+import { JOURNALS_QUERY_KEY } from "@/constants/query-keys";
+
 import { createClient } from "../../supabase/client";
 
 export function useGetPostQuery(user: User | null, journalId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["journal", journalId];
+  const queryKey = [JOURNALS_QUERY_KEY, journalId];
 
   const queryFn = async () => {
     if (!journalId) {

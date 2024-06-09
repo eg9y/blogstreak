@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
+
 import { createClient } from "../../supabase/client";
 
 export function useGetBlogQuery(blogId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["blog", blogId];
+  const queryKey = [BLOGS_QUERY_KEY, blogId];
 
   const queryFn = async () => {
     const res = await supabase

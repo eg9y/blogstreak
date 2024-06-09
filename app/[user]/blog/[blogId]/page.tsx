@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 
 import { ViewBlogComponent } from "@/app/components/text-editor/blog/view";
 import { createClient } from "@/utils/supabase/server";
+import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
 
 export default async function BlogDetail({
   params,
@@ -28,7 +29,7 @@ export default async function BlogDetail({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["blogs", params.user, params.blogId],
+    queryKey: [BLOGS_QUERY_KEY, params.user, params.blogId],
     queryFn,
   });
 

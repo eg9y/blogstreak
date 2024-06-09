@@ -63,6 +63,7 @@ export const SearchDialog = ({
       const { results } = await meilisearchClient.multiSearch({
         queries: [
           {
+            attributesToCrop: ["raw_text"],
             indexUid: "journals",
             q: debouncedSearch.trim().toLowerCase(),
             attributesToSearchOn: ["raw_text"],
@@ -121,7 +122,7 @@ export const SearchDialog = ({
                   href={`${baseUrl}/me/journal/${snippet.id}`}
                   className="flex cursor-pointer items-start gap-2"
                 >
-                  <div className="w-52 text-end">
+                  <div className="flex-shrink text-end">
                     <p className="font-semibold tracking-tight">
                       {new Date(snippet.created_at).toLocaleDateString(
                         "en-US",
@@ -133,7 +134,7 @@ export const SearchDialog = ({
                       )}
                     </p>
                   </div>
-                  <div className="grow">
+                  <div className="flex-1">
                     <p
                       className="text-xs"
                       dangerouslySetInnerHTML={{

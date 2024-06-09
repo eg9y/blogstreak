@@ -2,11 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/client";
+import { NOTES_QUERY_KEY } from "@/constants/query-keys";
 
 export function useGetNoteQuery(user?: User | null, noteId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["notes", user?.id, noteId];
+  const queryKey = [NOTES_QUERY_KEY, user?.id, noteId];
 
   const queryFn = async () => {
     const res = await supabase

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { createClient } from "@/utils/supabase/client";
+import { NOTES_FOLDERS_QUERY_KEY } from "@/constants/query-keys";
 
 export function useDeleteNotesFolder() {
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export function useDeleteNotesFolder() {
         position: "top-center",
       });
       return queryClient.invalidateQueries({
-        queryKey: ["notes-folders"],
+        queryKey: [NOTES_FOLDERS_QUERY_KEY],
       });
     },
     onError: () => {

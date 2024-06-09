@@ -6,6 +6,10 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
 import { useDeleteNotesFolder } from "@/utils/hooks/mutation/notes/use-delete-notes-folder";
+import {
+  NOTES_FOLDERS_QUERY_KEY,
+  NOTES_QUERY_KEY,
+} from "@/constants/query-keys";
 
 import {
   Dropdown,
@@ -69,10 +73,10 @@ export function NotesFolderOptions({
                 onSuccess: async () => {
                   setIsOpenDelete(false);
                   await queryClient.invalidateQueries({
-                    queryKey: ["notes-folder"],
+                    queryKey: [NOTES_FOLDERS_QUERY_KEY],
                   });
                   return queryClient.invalidateQueries({
-                    queryKey: ["notes", noteFolder.id],
+                    queryKey: [NOTES_QUERY_KEY, noteFolder.id],
                   });
                 },
               });

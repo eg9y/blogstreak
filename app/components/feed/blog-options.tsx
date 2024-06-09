@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
 import { useDeleteJournal } from "@/utils/hooks/mutation/journal/use-delete-journal";
+import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
 
 import {
   Dropdown,
@@ -72,10 +73,10 @@ export function BlogOptions({
                 async onSuccess() {
                   setIsOpenDelete(false);
                   await queryClient.invalidateQueries({
-                    queryKey: ["streaks"],
+                    queryKey: [STREAKS_QUERY_KEY],
                   });
                   return queryClient.invalidateQueries({
-                    queryKey: ["journal"],
+                    queryKey: [JOURNALS_QUERY_KEY],
                   });
                 },
               });

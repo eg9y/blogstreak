@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 
 import { EditBlogTextEditorComponent } from "@/app/components/text-editor/blog/edit";
 import { createClient } from "@/utils/supabase/server";
+import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
 
 export default async function EditBlogComponent({
   params,
@@ -32,7 +33,7 @@ export default async function EditBlogComponent({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["blogs", params.blogId],
+    queryKey: [BLOGS_QUERY_KEY, params.blogId],
     queryFn,
   });
 

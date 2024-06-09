@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createClient } from "@/utils/supabase/client";
+import { NOTES_FOLDERS_QUERY_KEY } from "@/constants/query-keys";
 
 export function useCreateNotesFolder() {
   const queryClient = useQueryClient();
@@ -39,7 +40,7 @@ export function useCreateNotesFolder() {
     mutationFn,
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ["notes_folders"],
+        queryKey: [NOTES_FOLDERS_QUERY_KEY],
       });
     },
   });

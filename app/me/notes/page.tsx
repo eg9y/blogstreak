@@ -31,6 +31,10 @@ import { NoteEditor } from "@/app/components/text-editor/note";
 import { NotesOptions } from "@/app/components/notes/notes-options";
 import { NotesFolderOptions } from "@/app/components/notes/notes-folders-options";
 import { useGetNotesInFolder } from "@/utils/hooks/query/notes/use-get-notes-in-folder";
+import {
+  NOTES_FOLDERS_QUERY_KEY,
+  NOTES_QUERY_KEY,
+} from "@/constants/query-keys";
 
 export default function Notes() {
   const createNotesFolderMutation = useCreateNotesFolder();
@@ -62,7 +66,7 @@ export default function Notes() {
           setIsOpenCreateFolder(false);
           setFolderName("");
           return queryClient.invalidateQueries({
-            queryKey: ["notes-folders", username],
+            queryKey: [NOTES_FOLDERS_QUERY_KEY, username],
           });
         },
       },
@@ -79,7 +83,7 @@ export default function Notes() {
           setIsOpenCreateNotes(false);
           setNotesName("");
           return queryClient.invalidateQueries({
-            queryKey: ["notes-in-folder", notesStore.selectedFolder?.id],
+            queryKey: [NOTES_QUERY_KEY, notesStore.selectedFolder?.id],
           });
         },
       },
@@ -229,7 +233,7 @@ export default function Notes() {
                                 onClick={() => {
                                   queryClient.invalidateQueries({
                                     queryKey: [
-                                      "notes",
+                                      NOTES_QUERY_KEY,
                                       loggedInUser?.id,
                                       notesStore.selectedNote?.id,
                                     ],

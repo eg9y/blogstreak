@@ -2,11 +2,12 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/client";
+import { NOTES_FOLDERS_QUERY_KEY } from "@/constants/query-keys";
 
 export function useGetNotesFolders(user: User | null, username: string | null) {
   const supabase = createClient();
 
-  const queryKey = ["notes-folders", username];
+  const queryKey = [NOTES_FOLDERS_QUERY_KEY, username];
 
   const queryFn = async () => {
     let userId = user?.id;

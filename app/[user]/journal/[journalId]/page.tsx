@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 
 import { createClient } from "@/utils/supabase/server";
 import { ViewTextEditor } from "@/app/components/text-editor/journal/view";
+import { JOURNALS_QUERY_KEY } from "@/constants/query-keys";
 
 export default async function PostDetail({
   params,
@@ -28,7 +29,7 @@ export default async function PostDetail({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["journal", params.journalId],
+    queryKey: [JOURNALS_QUERY_KEY, params.journalId],
     queryFn,
   });
 
