@@ -1,15 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { User } from "@supabase/supabase-js";
 
 import { getMeilisearchClient } from "@/utils/meilisearch";
-import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
+import {
+  INFINITE_JOURNALS_QUERY_KEY,
+  STREAKS_QUERY_KEY,
+} from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
 
-export function useDeleteJournal() {
+export function useDeleteJournal(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
   const meilisearch = getMeilisearchClient();
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
   async function mutationFn(postId: number) {
     await supabase.from("posts").delete().eq("id", postId);
@@ -26,7 +33,7 @@ export function useDeleteJournal() {
         queryKey: [STREAKS_QUERY_KEY],
       });
       return queryClient.invalidateQueries({
-        queryKey: [JOURNALS_QUERY_KEY],
+        queryKey: [INFINITE_JOURNALS_QUERY_KEY, loggedInUser?.id, year, month],
       });
     },
     onError: () => {

@@ -33,18 +33,20 @@ export default function Blog() {
           data.pages.map((page) => (
             <div key={page.nextPage} className="flex flex-col gap-8 md:gap-2">
               {page.data.map((blog) => (
-                <Link
-                  href={`blog/${blog.id}`}
+                <div
                   className="flex w-full flex-col md:flex-row md:justify-between"
                   key={blog.id}
                 >
-                  <div className="flex items-center gap-2">
+                  <Link
+                    href={`blog/${blog.id}`}
+                    className="flex items-center gap-2"
+                  >
                     <p className="text-lg font-medium  dark:text-slate-100">
                       {blog.title}
                     </p>
                     {blog.is_public && <Badge color="blue">Published</Badge>}
                     {!blog.is_public && <Badge color="zinc">Draft</Badge>}
-                  </div>
+                  </Link>
                   <div className="flex w-full items-center justify-between gap-2 md:w-auto md:justify-start">
                     <p className="text-sm text-slate-600 dark:text-slate-300">
                       {new Date(blog.created_at).toLocaleDateString("en-US", {
@@ -56,7 +58,7 @@ export default function Blog() {
                     </p>
                     <BlogOptions blog={blog} />
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           ))}

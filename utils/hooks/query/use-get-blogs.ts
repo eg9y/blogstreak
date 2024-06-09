@@ -2,6 +2,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
+import { INFINITE_BLOGS_QUERY_KEY } from "@/constants/query-keys";
+
 import { createClient } from "../../supabase/client";
 
 export function useGetBlogs(
@@ -12,7 +14,7 @@ export function useGetBlogs(
   const supabase = createClient();
 
   const queryKey = [
-    "infinite-blogs",
+    INFINITE_BLOGS_QUERY_KEY,
     user?.id || username,
     {
       isPublic: username === "me" ? searchParams.get("is_public") : "true",

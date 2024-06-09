@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/utils/supabase/client";
 import { NOTES_QUERY_KEY } from "@/constants/query-keys";
 
-export function useCreateNotes(notesFolderId: number | null) {
+export function useCreateNotes(folderId: number | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
@@ -14,7 +14,7 @@ export function useCreateNotes(notesFolderId: number | null) {
     title: string;
     content?: string;
   }) {
-    if (!notesFolderId) {
+    if (!folderId) {
       return;
     }
 
@@ -33,7 +33,7 @@ export function useCreateNotes(notesFolderId: number | null) {
       .insert({
         title,
         content,
-        notes_folders_id: notesFolderId,
+        notes_folders_id: folderId,
         user_id: user?.id,
       })
       .select()
@@ -52,7 +52,12 @@ export function useCreateNotes(notesFolderId: number | null) {
     mutationFn,
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: [NOTES_QUERY_KEY, notesFolderId],
+        queryKey: [
+          NOTES_QUERY_KEY,
+          {
+            folderId,
+          },
+        ],
       });
     },
   });

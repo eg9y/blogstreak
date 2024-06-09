@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { User } from "@supabase/supabase-js";
 
 import { getMeilisearchClient } from "@/utils/meilisearch";
 import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
 
-export function useEditBlog() {
+export function useEditBlog(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
   const meilisearch = getMeilisearchClient();
@@ -60,7 +61,7 @@ export function useEditBlog() {
     onSuccess: () => {
       return Promise.all([
         queryClient.invalidateQueries({
-          queryKey: [BLOGS_QUERY_KEY],
+          queryKey: [BLOGS_QUERY_KEY, loggedInUser?.id],
         }),
       ]);
     },

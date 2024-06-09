@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
-import { BlogOptions } from "@/app/components/feed/blog-options";
 import { useUsername } from "@/app/components/subdomain-context";
 
 export default function Blog() {
@@ -43,7 +42,6 @@ export default function Blog() {
                         day: "numeric",
                       })}
                     </p>
-                    <BlogOptions blog={blog} />
                   </div>
                 </Link>
               ))}

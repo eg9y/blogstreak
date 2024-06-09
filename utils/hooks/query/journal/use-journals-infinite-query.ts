@@ -2,7 +2,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
-import { createClient } from "../../supabase/client";
+import { INFINITE_JOURNALS_QUERY_KEY } from "@/constants/query-keys";
+
+import { createClient } from "../../../supabase/client";
 
 const areConsecutiveDays = (date1: Date, date2: Date) => {
   const difference = date2.getDate() - date1.getDate();
@@ -18,7 +20,7 @@ const areSameDays = (date1: Date, date2: Date) => {
   return difference === 0 && sameMonth && sameYear;
 };
 
-export function usePostsInfiniteQuery(
+export function useJournalsInfiniteQuery(
   user: User | null,
   searchParams: ReadonlyURLSearchParams,
   username: string | null,
@@ -35,15 +37,6 @@ export function usePostsInfiniteQuery(
 
   const supabase = createClient();
 
-  const queryKey = [
-    "infinite-posts",
-    user?.id,
-    {
-      tags: searchParams.get("tags"),
-      page: searchParams.get("page"),
-      private: username === "me" ? searchParams.get("private") : "true",
-    },
-  ];
   const tagNames = searchParams.get("tags")?.split(",") || undefined;
   const isPrivateJournals =
     username === "me" ? searchParams.get("private") === "true" : false;
@@ -101,11 +94,21 @@ export function usePostsInfiniteQuery(
   };
 
   return useInfiniteQuery({
-    queryKey,
+    queryKey: [
+      INFINITE_JOURNALS_QUERY_KEY,
+      user?.id,
+      year,
+      month,
+      searchParams.get("page"),
+      {
+        tags: searchParams.get("tags"),
+        private: username === "me" ? searchParams.get("private") : "true",
+      },
+    ],
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: Boolean((username === "me" ? user : true) && searchParams),
+    enabled: Boolean(user && searchParams),
     staleTime: 60 * 60 * 1000,
   });
 }

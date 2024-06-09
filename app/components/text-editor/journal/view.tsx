@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { Scrollbar } from "react-scrollbars-custom";
 import { usePathname } from "next/navigation";
 
-import { useGetPostQuery } from "@/utils/hooks/query/use-get-post";
+import { useGetJournalQuery } from "@/utils/hooks/query/journal/use-get-journal";
 import { useUser } from "@/utils/getUser";
 import { useGetTopicsQuery } from "@/utils/hooks/query/use-get-tags";
 import { extensions } from "@/utils/textEditor";
@@ -16,7 +16,7 @@ import { IsPublicSwitch } from "../is-public-switch";
 
 export const ViewTextEditor = ({ journalId }: { journalId: number }) => {
   const { loggedInUser } = useUser();
-  const { data: postData } = useGetPostQuery(loggedInUser, journalId);
+  const { data: postData } = useGetJournalQuery(loggedInUser, journalId);
   const { data, isLoading, isSuccess } = useGetTopicsQuery(
     loggedInUser,
     journalId,

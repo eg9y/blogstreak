@@ -3,12 +3,17 @@ import { User } from "@supabase/supabase-js";
 
 import { JOURNALS_QUERY_KEY } from "@/constants/query-keys";
 
-import { createClient } from "../../supabase/client";
+import { createClient } from "../../../supabase/client";
 
-export function useGetPostQuery(user: User | null, journalId?: number) {
+export function useGetJournalQuery(user: User | null, journalId?: number) {
   const supabase = createClient();
 
-  const queryKey = [JOURNALS_QUERY_KEY, journalId];
+  const queryKey = [
+    JOURNALS_QUERY_KEY,
+    {
+      id: journalId,
+    },
+  ];
 
   const queryFn = async () => {
     if (!journalId) {

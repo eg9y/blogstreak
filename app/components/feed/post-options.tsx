@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Database } from "@/schema";
 import { useDeleteJournal } from "@/utils/hooks/mutation/journal/use-delete-journal";
 import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
+import { useUser } from "@/utils/getUser";
 
 import {
   Dropdown,
@@ -31,7 +32,9 @@ export function PostOptions({
   };
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const submitPostMutation = useDeleteJournal();
+  const { loggedInUser } = useUser();
+  const submitPostMutation = useDeleteJournal(loggedInUser);
+
   const queryClient = useQueryClient();
 
   return (

@@ -5,8 +5,9 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Database } from "@/schema";
-import { useDeleteJournal } from "@/utils/hooks/mutation/journal/use-delete-journal";
-import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
+import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
+import { useUser } from "@/utils/getUser";
+import { useDeleteBlog } from "@/utils/hooks/mutation/blog/use-delete-blog";
 
 import {
   Dropdown,
@@ -29,7 +30,8 @@ export function BlogOptions({
   blog: Database["public"]["Functions"]["get_blogs"]["Returns"][number];
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const submitPostMutation = useDeleteJournal();
+  const { loggedInUser } = useUser();
+  const deleteBlogMutation = useDeleteBlog(loggedInUser);
   const queryClient = useQueryClient();
 
   return (
@@ -69,14 +71,11 @@ export function BlogOptions({
           <Button
             color="red"
             onClick={() => {
-              submitPostMutation.mutate(blog.id, {
-                async onSuccess() {
+              deleteBlogMutation.mutate(blog.id, {
+                onSuccess() {
                   setIsOpenDelete(false);
-                  await queryClient.invalidateQueries({
-                    queryKey: [STREAKS_QUERY_KEY],
-                  });
                   return queryClient.invalidateQueries({
-                    queryKey: [JOURNALS_QUERY_KEY],
+                    queryKey: [BLOGS_QUERY_KEY, loggedInUser?.id],
                   });
                 },
               });

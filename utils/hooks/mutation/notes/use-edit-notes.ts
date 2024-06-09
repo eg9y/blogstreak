@@ -1,10 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/client";
+import { NOTES_QUERY_KEY } from "@/constants/query-keys";
 
 export function useEditNotes(user: User | null, notesId: number | null) {
   const supabase = createClient();
+  const queryClient = useQueryClient();
 
   async function mutationFn({
     title,
@@ -45,6 +47,15 @@ export function useEditNotes(user: User | null, notesId: number | null) {
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {},
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [
+          NOTES_QUERY_KEY,
+          {
+            id: notesId,
+          },
+        ],
+      });
+    },
   });
 }

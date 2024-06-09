@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { useUser } from "@/utils/getUser";
-import { usePostsInfiniteQuery } from "@/utils/hooks/query/use-posts-infinite-query";
+import { useJournalsInfiniteQuery } from "@/utils/hooks/query/journal/use-journals-infinite-query";
 
 import { Button } from "../button";
 import { useUsername } from "../subdomain-context";
@@ -18,7 +18,7 @@ export function Posts() {
   const actualUsername = useUsername();
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    usePostsInfiniteQuery(
+    useJournalsInfiniteQuery(
       loggedInUser,
       searchParams,
       isMe ? "me" : actualUsername,

@@ -1,14 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { User } from "@supabase/supabase-js";
 
 import { getMeilisearchClient } from "@/utils/meilisearch";
-import { JOURNALS_QUERY_KEY, STREAKS_QUERY_KEY } from "@/constants/query-keys";
+import { INFINITE_JOURNALS_QUERY_KEY } from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
 
-export function useEditPost() {
+export function useEditPost(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
   const meilisearch = getMeilisearchClient();
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
   async function mutationFn({
     journalId,
@@ -78,10 +82,12 @@ export function useEditPost() {
     onSuccess: () => {
       return Promise.all([
         queryClient.invalidateQueries({
-          queryKey: [STREAKS_QUERY_KEY],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: [JOURNALS_QUERY_KEY],
+          queryKey: [
+            INFINITE_JOURNALS_QUERY_KEY,
+            loggedInUser?.id,
+            year,
+            month,
+          ],
         }),
         queryClient.invalidateQueries({
           queryKey: ["topics"],
