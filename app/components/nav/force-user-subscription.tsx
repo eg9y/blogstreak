@@ -2,7 +2,6 @@
 "use client";
 
 import { toast } from "sonner";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -17,22 +16,20 @@ import {
   DialogTitle,
 } from "../dialog";
 import { Loader2Icon } from "lucide-react";
-
-type setUsernameInputs = {
-  username: string;
-};
+import { useUser } from "@/utils/getUser";
 
 export function ForceUserSubscription() {
   const router = useRouter();
   const [isLoadingUrl, setIsLoadingUrl] = useState(false);
   const supabase = createClient();
+  const { loggedInUser } = useUser();
 
   const redirectToCheckout = async (variantId: string) => {
     setIsLoadingUrl(true);
     const { data, error } = await supabase.functions.invoke(
       "get-checkout-url-test-mode",
       {
-        body: { variantId },
+        body: { variantId, userId: loggedInUser!.id },
       },
     );
 
@@ -41,7 +38,10 @@ export function ForceUserSubscription() {
       setIsLoadingUrl(false);
       return;
     }
-    window.open(data, "_blank");
+    window.open(
+      `${data}?checkout[email]=${loggedInUser!.email}&checkout[custom][user_id]=${loggedInUser!.id}`,
+      "_blank",
+    );
     setIsLoadingUrl(false);
   };
 
@@ -76,7 +76,7 @@ export function ForceUserSubscription() {
           color="green"
           className={"grow cursor-pointer"}
           onClick={() => redirectToCheckout("418935")}
-          disabled={isLoadingUrl}
+          disabled={isLoadingUrl || !loggedInUser}
         >
           {isLoadingUrl ? (
             <Loader2Icon className="animate-spin" />
@@ -88,7 +88,7 @@ export function ForceUserSubscription() {
           color="green"
           className={"grow cursor-pointer"}
           onClick={() => redirectToCheckout("114467")}
-          disabled={isLoadingUrl}
+          disabled={isLoadingUrl || !loggedInUser}
         >
           {isLoadingUrl ? (
             <Loader2Icon className="animate-spin" />

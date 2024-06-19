@@ -108,7 +108,8 @@ export function useJournalsInfiniteQuery(
     queryFn,
     initialPageParam: -1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
-    enabled: Boolean(user && searchParams),
-    staleTime: 60 * 60 * 1000,
+    enabled: Boolean((username !== "me" || user) && searchParams),
+    staleTime: 0,
+    // staleTime: 60 * 60 * 1000,
   });
 }
