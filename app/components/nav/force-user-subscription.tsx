@@ -5,9 +5,14 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Loader2Icon } from "lucide-react";
+
 import { createClient } from "@/utils/supabase/client";
 
+import { useUser } from "@/utils/getUser";
+
 import { Button } from "../button";
+
 import {
   Dialog,
   DialogActions,
@@ -15,8 +20,6 @@ import {
   DialogDescription,
   DialogTitle,
 } from "../dialog";
-import { Loader2Icon } from "lucide-react";
-import { useUser } from "@/utils/getUser";
 
 export function ForceUserSubscription() {
   const router = useRouter();
