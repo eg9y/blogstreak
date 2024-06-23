@@ -3,7 +3,6 @@
 
 import { toast } from "sonner";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { Loader2Icon } from "lucide-react";
 
@@ -22,7 +21,6 @@ import {
 } from "../dialog";
 
 export function ForceUserSubscription() {
-  const router = useRouter();
   const [isLoadingUrl, setIsLoadingUrl] = useState(false);
   const supabase = createClient();
   const { loggedInUser } = useUser();
@@ -30,9 +28,13 @@ export function ForceUserSubscription() {
   const redirectToCheckout = async (variantId: string) => {
     setIsLoadingUrl(true);
     const { data, error } = await supabase.functions.invoke(
-      "get-checkout-url-test-mode",
+      "get-checkout-url",
       {
-        body: { variantId, userId: loggedInUser!.id },
+        body: {
+          variantId,
+          userId: loggedInUser!.id,
+          userEmail: loggedInUser!.email,
+        },
       },
     );
 
@@ -41,15 +43,13 @@ export function ForceUserSubscription() {
       setIsLoadingUrl(false);
       return;
     }
-    window.open(
-      `${data}?checkout[email]=${loggedInUser!.email}&checkout[custom][user_id]=${loggedInUser!.id}`,
-      "_blank",
-    );
+
+    window.open(data, "_blank");
     setIsLoadingUrl(false);
   };
 
   return (
-    <Dialog open={true} onClose={() => {}}>
+    <Dialog open={true} onClose={() => {}} className={""}>
       <DialogTitle>Subscribe to Blogstreak</DialogTitle>
       <DialogDescription>
         Subscribe to blogstreak to get started with your writing habit!
@@ -73,6 +73,9 @@ export function ForceUserSubscription() {
             <li>Newsletters functionality for your readers</li>
           </div>
         </div>
+        <Button color="orange" href="/me/subscription">
+          Go to Subscriptions
+        </Button>
       </DialogBody>
       <DialogActions className="flex">
         <Button

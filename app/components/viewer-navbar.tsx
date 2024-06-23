@@ -12,11 +12,14 @@ import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
 import { ChangeUsernameDialog } from "./nav/change-username-dialog";
 import { useUsername } from "./subdomain-context";
 import { DarkmodeToggle } from "./darkmode-toggle";
+import { SearchDialog } from "./nav/search-dialog";
+import { Button } from "./button";
 
 export default function ViewerNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
   const pathName = usePathname();
   const searchParams = useSearchParams();
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
 
   const baseUrl = useBaseUrl();
   const username = useUsername();
@@ -27,7 +30,12 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
-      <div className="flex h-full flex-col">
+      <SearchDialog
+        isOpen={isOpenSearch}
+        setIsOpen={setIsOpenSearch}
+        isPublic={true}
+      />
+      <div className="flex h-full flex-col pt-8">
         <Sticky stickyClassName="z-[1000] bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)] ">
           <div className="flex h-[37.84px] shrink-0 items-center gap-x-4 border-b border-slate-400 bg-transparent px-4 shadow-sm dark:border-slate-600 sm:gap-x-6 sm:px-6 md:px-6">
             <div
@@ -102,29 +110,36 @@ export default function ViewerNavbar({ children }: { children: ReactNode }) {
                 </button>
               </Link> */}
               </div>
-              <form
-                className="relative hidden flex-1  bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)] md:flex"
-                action="#"
-                method="GET"
-              >
-                <label htmlFor="search-field" className="sr-only">
-                  Search
-                </label>
-                <MagnifyingGlassIcon
-                  className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-slate-400"
-                  aria-hidden="true"
-                />
-                <input
-                  id="search-field"
-                  className="block h-full w-full border-0 bg-[hsl(0_0%_100%)] bg-transparent py-0 pl-8 pr-0 text-slate-900 placeholder:text-slate-400   focus:ring-0 dark:bg-[hsl(240_10%_3.9%)] dark:text-slate-300 sm:text-sm"
-                  placeholder="Search..."
-                  autoComplete="off"
-                  autoCorrect="off"
-                  type="search"
-                  name="search"
-                />
-              </form>
-              <DarkmodeToggle />
+              <div className="flex items-center gap-1">
+                <DarkmodeToggle />
+                <Button
+                  className="hidden !w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-300/20 !py-0 text-start dark:bg-zinc-900/20 md:flex md:w-72"
+                  outline
+                  onClick={() => setIsOpenSearch(true)}
+                >
+                  <MagnifyingGlassIcon
+                    className="pointer-events-none  h-full w-4 dark:text-slate-300"
+                    aria-hidden="true"
+                  />
+                  <p className="text-xs font-light text-slate-600 dark:text-slate-300">
+                    Search...
+                  </p>
+                  <div className="flex grow justify-end">
+                    <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                      <span className="text-xs">⌘</span>K
+                    </kbd>
+                  </div>
+                </Button>
+                <Button
+                  className="flex cursor-pointer items-center !justify-start gap-x-0 bg-zinc-300/20 text-start dark:bg-zinc-900/20 md:hidden"
+                  onClick={() => setIsOpenSearch(true)}
+                >
+                  <MagnifyingGlassIcon
+                    className="pointer-events-none h-full  w-4 dark:text-slate-300"
+                    aria-hidden="true"
+                  />
+                </Button>
+              </div>
             </div>
           </div>
         </Sticky>

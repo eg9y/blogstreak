@@ -25,6 +25,7 @@ import { useUsername } from "./subdomain-context";
 import HamburgerSidebar from "./hamburger-sidebar";
 import { DarkmodeToggle } from "./darkmode-toggle";
 import { SearchDialog } from "./nav/search-dialog";
+import { NavTest } from "./nav-test";
 
 export default function MeNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
@@ -50,6 +51,12 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
       },
     },
     {
+      name: "Subscription",
+      onClick: async () => {
+        router.push("/me/subscription");
+      },
+    },
+    {
       name: "Change Username",
       onClick: () => {
         setIsOpenChangeUsername(true);
@@ -63,7 +70,11 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
         isOpen={isOpenChangeUsername}
         setIsOpen={setIsOpenChangeUsername}
       />
-      <SearchDialog isOpen={isOpenSearch} setIsOpen={setIsOpenSearch} />
+      <SearchDialog
+        isOpen={isOpenSearch}
+        setIsOpen={setIsOpenSearch}
+        isPublic={false}
+      />
       <div className="flex h-[7vh] max-h-[52px] shrink-0 items-center gap-x-4 bg-transparent px-4 sm:gap-x-6 md:px-6">
         {/* Separator */}
 
@@ -144,7 +155,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
             <DropdownMenu>
               <DropdownItem href="/me/journal/write">Journal</DropdownItem>
               <DropdownItem href="/me/blog/write">Blog</DropdownItem>
-              <DropdownItem href="/me/notes/write">Note</DropdownItem>
+              {/* <DropdownItem href="/me/notes/write">Note</DropdownItem> */}
             </DropdownMenu>
           </Dropdown>
           <DarkmodeToggle />
@@ -220,45 +231,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
                     Journal
                   </button>
                 </Link>
-                <Link
-                  href={`${baseUrl}/me/notes`}
-                  className="flex h-full items-end"
-                >
-                  <button
-                    className={cn(
-                      pathName.split("/")[pathName.split("/").length - 1] ===
-                        "notes"
-                        ? "border-b-slate-400"
-                        : "border-b-transparent",
-                      "flex items-baseline gap-1 border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                    )}
-                  >
-                    <span>
-                      <LockClosedIcon />
-                    </span>{" "}
-                    Notes
-                  </button>
-                </Link>
-
-                {/* <Link
-                      href={`${baseUrl}/me/chat`}
-                      className="flex h-full items-end"
-                    >
-                      <button
-                        className={cn(
-                          pathName.split("/")[
-                            pathName.split("/").length - 1
-                          ] === "chat"
-                            ? "border-b-slate-400"
-                            : "border-b-transparent",
-                          "border-b-2 pb-1 text-sm font-medium dark:text-slate-100 sm:text-lg",
-                        )}
-                      >
-                        Chat
-                      </button>
-                    </Link> */}
               </div>
-
               <Button
                 className="mb-2 flex w-40 cursor-pointer items-center !justify-start gap-x-0 bg-zinc-300/20 text-start dark:bg-zinc-900/20 md:w-72"
                 outline

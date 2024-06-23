@@ -14,7 +14,7 @@ import {
   DropdownButton,
   DropdownItem,
   DropdownMenu,
-  DropdownSeparator,
+  DropdownDivider,
 } from "../dropdown";
 import {
   Dialog,
@@ -51,7 +51,7 @@ export function PostOptions({
           <DropdownItem href={`/me/journal/${post.post_id}/edit`}>
             Edit
           </DropdownItem>
-          <DropdownSeparator />
+          <DropdownDivider />
           <DropdownItem
             onClick={() => {
               setIsOpenDelete(true);

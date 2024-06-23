@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
-import { getMeilisearchClient } from "@/utils/meilisearch";
 import {
   INFINITE_JOURNALS_QUERY_KEY,
   STREAKS_QUERY_KEY,
@@ -12,7 +11,6 @@ import { createClient } from "../../../supabase/client";
 export function useCreateJournal(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
-  const meilisearch = getMeilisearchClient();
   const date = new Date();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
@@ -59,17 +57,22 @@ export function useCreateJournal(loggedInUser: User | null) {
     if (postInsertError) {
       return;
     }
-
-    await meilisearch.index("journals").addDocuments([
-      {
-        id: data.id,
-        created_at: new Date(),
-        raw_text: rawText,
-        user_id: user?.id,
-        is_public: isPublic,
-        topics: tags.map((tag) => tag.name),
+    await supabase.functions.invoke("meilisearch", {
+      body: {
+        op: "add",
+        data: {
+          index: "journals",
+          doc: {
+            id: data.id,
+            created_at: new Date(),
+            raw_text: rawText,
+            user_id: user?.id,
+            is_public: isPublic,
+            topics: tags.map((tag) => tag.name),
+          },
+        },
       },
-    ]);
+    });
 
     if (tags.length > 0) {
       await supabase.from("post_topics").insert(

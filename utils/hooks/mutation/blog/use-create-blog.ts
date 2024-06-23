@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
-import { getMeilisearchClient } from "@/utils/meilisearch";
 import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
@@ -9,7 +8,6 @@ import { createClient } from "../../../supabase/client";
 export function useCreateBlog(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
-  const meilisearch = getMeilisearchClient();
 
   async function mutationFn({
     title,
@@ -52,15 +50,21 @@ export function useCreateBlog(loggedInUser: User | null) {
       console.error("blogInsertError", blogInsertError);
     }
 
-    await meilisearch.index("blogs").addDocuments([
-      {
-        id: data.id,
-        created_at: new Date(),
-        raw_text: rawText,
-        user_id: user?.id,
-        is_public: isPublic,
+    await supabase.functions.invoke("meilisearch", {
+      body: {
+        op: "add",
+        data: {
+          index: "blogs",
+          doc: {
+            id: data.id,
+            created_at: new Date(),
+            raw_text: rawText,
+            user_id: user?.id,
+            is_public: isPublic,
+          },
+        },
       },
-    ]);
+    });
   }
 
   return useMutation({

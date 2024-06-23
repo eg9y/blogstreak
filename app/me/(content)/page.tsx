@@ -10,7 +10,7 @@ import { useGetBioQuery } from "@/utils/hooks/query/use-get-bio";
 import { useGetUsernameQuery } from "@/utils/hooks/query/use-get-username";
 import { extensions } from "@/utils/textEditor";
 
-import { Button } from "../components/button";
+import { Button } from "../../components/button";
 
 export default function Home() {
   const pathName = usePathname();

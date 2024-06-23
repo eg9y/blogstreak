@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
 
-import { getMeilisearchClient } from "@/utils/meilisearch";
 import { INFINITE_JOURNALS_QUERY_KEY } from "@/constants/query-keys";
 
 import { createClient } from "../../../supabase/client";
@@ -9,7 +8,6 @@ import { createClient } from "../../../supabase/client";
 export function useEditPost(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
-  const meilisearch = getMeilisearchClient();
   const date = new Date();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
@@ -50,16 +48,22 @@ export function useEditPost(loggedInUser: User | null) {
       })
       .eq("id", journalId);
 
-    await meilisearch.index("journals").updateDocuments([
-      {
-        id: journalId,
-        text: content,
-        raw_text: rawText,
-        user_id: user?.id,
-        is_public: isPublic,
-        topics: tags.map((tag) => tag.name),
+    await supabase.functions.invoke("meilisearch", {
+      body: {
+        op: "edit",
+        data: {
+          index: "journals",
+          doc: {
+            id: journalId,
+            text: content,
+            raw_text: rawText,
+            user_id: user?.id,
+            is_public: isPublic,
+            topics: tags.map((tag) => tag.name),
+          },
+        },
       },
-    ]);
+    });
 
     if (tags.length > 0) {
       await supabase

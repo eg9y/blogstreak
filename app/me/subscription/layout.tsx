@@ -5,10 +5,9 @@ import { ReactNode } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { getSubdomain } from "@/utils/getSubdomain";
 
-import MeNavbar from "../components/me-navbar";
-import { ForceChangeUsernameDialog } from "../components/nav/force-change-username-dialog";
-import SubdomainContextProvider from "../components/subdomain-context";
-// import { ForceUserSubscription } from "../components/nav/force-user-subscription";
+import MeNavbar from "../../components/me-navbar";
+import { ForceChangeUsernameDialog } from "../../components/nav/force-change-username-dialog";
+import SubdomainContextProvider from "../../components/subdomain-context";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
@@ -18,8 +17,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const subdomain = getSubdomain(host);
 
   const { data, error } = await supabase.auth.getUser();
-  // console.log("data", data);
-  // console.log("error", error);
+
   if (!data.user || error) {
     redirect("/");
   }
@@ -37,7 +35,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <SubdomainContextProvider subdomain={subdomain}>
       <div className="mx-auto flex h-dvh flex-col md:w-[1000px]">
-        {/* <ForceUserSubscription /> */}
         {!userProfile?.name && <ForceChangeUsernameDialog />}
         <MeNavbar>{children}</MeNavbar>
       </div>

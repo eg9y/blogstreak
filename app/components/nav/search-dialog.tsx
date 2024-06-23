@@ -6,7 +6,6 @@ import { CommandLoading } from "cmdk";
 
 import { createClient } from "@/utils/supabase/client";
 import { useBaseUrl } from "@/utils/hooks/query/use-get-baseurl";
-import { getMeilisearchClient } from "@/utils/meilisearch";
 
 import {
   CommandInput,
@@ -18,15 +17,17 @@ import {
   CommandDialog,
 } from "../ui/command";
 import { Link } from "../link";
+import { useUsername } from "../subdomain-context";
 
 export const SearchDialog = ({
   isOpen,
   setIsOpen,
+  isPublic,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<boolean>;
+  isPublic: boolean;
 }) => {
-  const meilisearchClient = getMeilisearchClient();
   const baseUrl = useBaseUrl();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,24 @@ export const SearchDialog = ({
     search: string;
   }>({ result: [], search: "" });
   const supabase = createClient();
+  const [userId, setUserId] = useState<string | null>(null);
+  const username = useUsername();
+
+  useEffect(() => {
+    (async () => {
+      if (isPublic && username) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("user_id")
+          .eq("name", username)
+          .single();
+        if (error && data === null) {
+          console.error("error", error);
+        }
+        setUserId(data!.user_id);
+      }
+    })();
+  }, [isPublic, username]);
 
   useEffect(() => {
     // eslint-disable-next-line @shopify/prefer-early-return
@@ -58,33 +77,37 @@ export const SearchDialog = ({
   useEffect(() => {
     (async () => {
       if (!debouncedSearch) {
+        setIsLoading(false);
         return;
       }
-      const { results } = await meilisearchClient.multiSearch({
-        queries: [
-          {
-            attributesToCrop: ["raw_text"],
-            indexUid: "journals",
-            q: debouncedSearch.trim().toLowerCase(),
-            attributesToSearchOn: ["raw_text"],
-            limit: 5,
-            attributesToHighlight: ["raw_text"],
-            highlightPreTag: "<mark className='bg-yellow-800'>",
-            highlightPostTag: "</mark>",
-            // hybrid: {
-            //   embedder: "default",
-            //   semanticRatio: 0.5,
-            // },
-          },
-        ],
-      });
+      let results: any = null;
+
+      if (isPublic) {
+        results = await (
+          await supabase.functions.invoke("meilisearch-public", {
+            body: {
+              query: debouncedSearch.trim(),
+              userId,
+            },
+          })
+        ).data;
+      } else {
+        results = await (
+          await supabase.functions.invoke("meilisearch", {
+            body: {
+              op: "search",
+              data: {
+                query: debouncedSearch.trim(),
+              },
+            },
+          })
+        ).data;
+      }
 
       setIsLoading(false);
 
-      console.log("results", results);
-
       const data = {
-        result: results[0].hits.map((hit) => hit._formatted),
+        result: results[0].hits.map((hit: any) => hit._formatted),
         search: results[0].query,
       };
 
@@ -96,10 +119,22 @@ export const SearchDialog = ({
       );
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, supabase]);
+  }, [debouncedSearch, supabase, isPublic, userId]);
 
   return (
-    <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+    <CommandDialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          setSearch("");
+          setSearchResults({
+            result: [],
+            search: "",
+          });
+        }
+        setIsOpen(open);
+      }}
+    >
       <CommandInput
         placeholder="Search..."
         value={search}
