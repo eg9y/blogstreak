@@ -1,18 +1,6 @@
-"use client";
-
-import {
-  Description as HeadlessDescription,
-  Dialog as HeadlessDialog,
-  DialogPanel as HeadlessDialogPanel,
-  DialogTitle as HeadlessDialogTitle,
-  Transition as HeadlessTransition,
-  TransitionChild as HeadlessTransitionChild,
-  type DialogProps as HeadlessDialogProps,
-} from "@headlessui/react";
+import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
-import { Fragment } from "react";
-
 import { Text } from "./text";
 
 const sizes = {
@@ -36,62 +24,43 @@ export function Alert({
   ...props
 }: {
   size?: keyof typeof sizes;
+  className?: string;
   children: React.ReactNode;
-} & HeadlessDialogProps) {
+} & Omit<Headless.DialogProps, "className">) {
   return (
-    <HeadlessTransition appear as={Fragment} show={open} {...props}>
-      <HeadlessDialog onClose={onClose}>
-        <HeadlessTransitionChild
-          as={Fragment}
-          enter="ease-out duration-100"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-100"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/15 px-2 py-2 focus:outline-0 dark:bg-zinc-950/50 sm:px-6 sm:py-8 lg:px-8 lg:py-16" />
-        </HeadlessTransitionChild>
+    <Headless.Transition show={open} {...props}>
+      <Headless.Dialog onClose={onClose}>
+        <Headless.DialogBackdrop
+          transition
+          className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/15 px-2 py-2 transition duration-100 focus:outline-0 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in dark:bg-zinc-950/50 sm:px-6 sm:py-8 lg:px-8 lg:py-16"
+        />
 
-        <HeadlessTransitionChild
-          className="fixed inset-0 overflow-y-auto pt-6 sm:pt-0"
-          enter="ease-out duration-100"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-100"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
+        <div className="fixed inset-0 w-screen overflow-y-auto pt-6 sm:pt-0">
           <div className="grid min-h-full grid-rows-[1fr_auto_1fr] justify-items-center p-8 sm:grid-rows-[1fr_auto_3fr] sm:p-4">
-            <HeadlessTransitionChild
-              as={HeadlessDialogPanel}
+            <Headless.DialogPanel
+              transition
               className={clsx(
                 className,
                 sizes[size],
                 "row-start-2 w-full rounded-2xl bg-white p-8 shadow-lg ring-1 ring-zinc-950/10 dark:bg-zinc-900 dark:ring-white/10 sm:rounded-2xl sm:p-6 forced-colors:outline",
+                "transition duration-100 data-[closed]:data-[enter]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in",
               )}
-              enter="ease-out duration-100"
-              enterFrom="scale-95"
-              enterTo="scale-100"
-              leave="ease-in duration-100"
-              leaveFrom="scale-100"
-              leaveTo="scale-100"
             >
               {children}
-            </HeadlessTransitionChild>
+            </Headless.DialogPanel>
           </div>
-        </HeadlessTransitionChild>
-      </HeadlessDialog>
-    </HeadlessTransition>
+        </div>
+      </Headless.Dialog>
+    </Headless.Transition>
   );
 }
 
 export function AlertTitle({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: { className?: string } & Omit<Headless.DialogTitleProps, "className">) {
   return (
-    <HeadlessDialogTitle
+    <Headless.DialogTitle
       {...props}
       className={clsx(
         className,
@@ -104,9 +73,12 @@ export function AlertTitle({
 export function AlertDescription({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: { className?: string } & Omit<
+  Headless.DescriptionProps<typeof Text>,
+  "className"
+>) {
   return (
-    <HeadlessDescription
+    <Headless.Description
       as={Text}
       {...props}
       className={clsx(className, "mt-2 text-pretty text-center sm:text-left")}

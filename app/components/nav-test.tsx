@@ -35,7 +35,7 @@ export function NavTest() {
           <NavbarLabel>Tailwind Labs</NavbarLabel>
           <ChevronDownIcon />
         </DropdownButton>
-        <DropdownMenu className="min-w-64" anchor={{ to: "bottom start" }}>
+        <DropdownMenu className="min-w-64" anchor="bottom start">
           <DropdownItem href="/teams/1/settings">
             <Cog8ToothIcon />
             <DropdownLabel>Settings</DropdownLabel>
@@ -80,7 +80,7 @@ export function NavTest() {
           <DropdownButton as={NavbarItem}>
             <Avatar src="/profile-photo.jpg" square />
           </DropdownButton>
-          <DropdownMenu className="min-w-64" anchor={{ to: "bottom end" }}>
+          <DropdownMenu className="min-w-64" anchor="bottom end">
             <DropdownItem href="/my-profile">
               <UserIcon />
               <DropdownLabel>My profile</DropdownLabel>

@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@headlessui/react": "2.0.0-alpha.4",
+    "@headlessui/react": "^2.1.0",
     "@heroicons/react": "latest",
     "@mlc-ai/web-llm": "0.2.35",
     "@radix-ui/react-dialog": "^1.0.5",

@@ -14,7 +14,7 @@ import {
   DropdownButton,
   DropdownItem,
   DropdownMenu,
-  DropdownSeparator,
+  DropdownDivider,
 } from "../dropdown";
 import {
   Dialog,
@@ -46,7 +46,7 @@ export function BlogOptions({
         </DropdownButton>
         <DropdownMenu>
           <DropdownItem href={`/me/blog/${blog.id}/edit`}>Edit</DropdownItem>
-          <DropdownSeparator />
+          <DropdownDivider />
           <DropdownItem
             onClick={() => {
               setIsOpenDelete(true);
