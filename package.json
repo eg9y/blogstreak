@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@babel/eslint-plugin": "^7.23.5",
-    "@shopify/eslint-plugin": "^44.0.0",
+    "@shopify/eslint-plugin": "45.0.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^20",

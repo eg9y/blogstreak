@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { User } from "@supabase/supabase-js";
+
+import { createClient } from "@/utils/supabase/client";
+
+import { Button } from "../button";
 import {
   Dialog,
   DialogActions,
   DialogDescription,
   DialogTitle,
 } from "../dialog";
-import { Button } from "../button";
-import { createClient } from "@/utils/supabase/client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { User } from "@supabase/supabase-js";
 
 export const ManageSubscription = ({
   notSubscribedYet,
@@ -99,8 +101,6 @@ export const ManageSubscription = ({
     });
   };
 
-  let checkoutError: string = "";
-
   const redirectToCheckout = async (variantId: string) => {
     const { data: checkoutUrl, error } = await supabase.functions.invoke(
       "get-checkout-url-test-mode",
@@ -114,7 +114,6 @@ export const ManageSubscription = ({
     );
 
     if (error) {
-      checkoutError = "Error getting checkout url";
       return;
     }
 
@@ -160,8 +159,8 @@ export const ManageSubscription = ({
             Cancel Subscription
           </Button>
           <p className="text-sm text-red-500">
-            P.S. You'll enter a “grace period” before your subscription expires
-            at the next scheduled renewal date
+            P.S. You&apos;ll enter a grace period before your subscription
+            expires at the next scheduled renewal date
           </p>
         </div>
       )}

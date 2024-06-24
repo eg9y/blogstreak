@@ -13,7 +13,6 @@ declare global {
   }
 }
 
-// eslint-disable-next-line no-undef
 declare const self: ServiceWorkerGlobalScope;
 
 const serwist = new Serwist({

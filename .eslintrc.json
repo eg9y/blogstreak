@@ -1,5 +1,5 @@
 {
-  // also extend plugin:@shopify/esnext 
+  // also extend plugin:@shopify/esnext
   "extends": [
     "plugin:@shopify/esnext",
     "plugin:@shopify/prettier",
@@ -7,7 +7,7 @@
     "plugin:import/typescript",
     "next/core-web-vitals"
   ],
-  "plugins": [ "import" ],
+  "plugins": ["import"],
   "rules": {
     "import/no-unresolved": 2,
     "import/named": 2,
@@ -18,7 +18,8 @@
     "@shopify/strict-component-boundaries": "off",
     "no-process-env": "off",
     "no-nested-ternary": "off",
-    "no-empty-function": "off"
+    "no-empty-function": "off",
+    "no-undef": "off"
   },
   "settings": {
     "import/parsers": {

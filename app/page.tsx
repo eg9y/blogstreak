@@ -1,5 +1,3 @@
-import { Fieldset } from "@headlessui/react";
-
 import { Button } from "@/app/components/button";
 import { signUpWithGoogle } from "@/utils/signUpWithGoogle";
 
@@ -49,7 +47,9 @@ export default function Home() {
             <li>
               Motivation Boost: Stay inspired with streak tracking and rewards
             </li>
-            <li>Guided Writing: Overcome writer's block with daily prompts</li>
+            <li>
+              Guided Writing: Overcome writer&apos;s block with daily prompts
+            </li>
             <li>
               Microblogging Support: Share quick thoughts and updates alongside
               full blog posts
@@ -118,7 +118,7 @@ export default function Home() {
               },
             ].map((testimonial, index) => (
               <div key={index} className="rounded bg-gray-800 p-4">
-                <p className="mb-2 italic">"{testimonial.quote}"</p>
+                <p className="mb-2 italic">&apos;{testimonial.quote}&apos;</p>
                 <p className="text-right">- {testimonial.author}</p>
               </div>
             ))}

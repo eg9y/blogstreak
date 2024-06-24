@@ -1,17 +1,13 @@
-/* eslint-disable no-unused-vars */
 "use client";
 
 import { toast } from "sonner";
 import { useState } from "react";
-
 import { Loader2Icon } from "lucide-react";
 
 import { createClient } from "@/utils/supabase/client";
-
 import { useUser } from "@/utils/getUser";
 
 import { Button } from "../button";
-
 import {
   Dialog,
   DialogActions,

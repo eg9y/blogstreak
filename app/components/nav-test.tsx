@@ -1,3 +1,14 @@
+import {
+  ArrowRightStartOnRectangleIcon,
+  ChevronDownIcon,
+  Cog8ToothIcon,
+  LightBulbIcon,
+  PlusIcon,
+  ShieldCheckIcon,
+  UserIcon,
+} from "@heroicons/react/16/solid";
+import { InboxIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+
 import { Avatar } from "./avatar";
 import {
   Dropdown,
@@ -15,16 +26,6 @@ import {
   NavbarSection,
   NavbarSpacer,
 } from "./navbar";
-import {
-  ArrowRightStartOnRectangleIcon,
-  ChevronDownIcon,
-  Cog8ToothIcon,
-  LightBulbIcon,
-  PlusIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from "@heroicons/react/16/solid";
-import { InboxIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 export function NavTest() {
   return (

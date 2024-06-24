@@ -47,19 +47,20 @@ export const SearchDialog = ({
 
   useEffect(() => {
     (async () => {
-      if (isPublic && username) {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("user_id")
-          .eq("name", username)
-          .single();
-        if (error && data === null) {
-          console.error("error", error);
-        }
-        setUserId(data!.user_id);
+      if (!isPublic || !username) {
+        return;
       }
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("user_id")
+        .eq("name", username)
+        .single();
+      if (error && data === null) {
+        console.error("error", error);
+      }
+      setUserId(data!.user_id);
     })();
-  }, [isPublic, username]);
+  }, [isPublic, username, supabase]);
 
   useEffect(() => {
     // eslint-disable-next-line @shopify/prefer-early-return
@@ -118,7 +119,6 @@ export const SearchDialog = ({
         },
       );
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, supabase, isPublic, userId]);
 
   return (

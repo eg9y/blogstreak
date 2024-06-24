@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
-import { Badge } from "@/app/components/badge";
 
+import { Badge } from "@/app/components/badge";
 import { createClient } from "@/utils/supabase/server";
 import { ManageSubscription } from "@/app/components/subscription/manage-subscription";
 
 export default async function Subscription() {
   const cookie = cookies();
   const supabase = createClient(cookie);
-  const { data, error } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
   const { data: userSubscriptions } = await supabase
     .from("user_subscriptions")

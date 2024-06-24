@@ -3,6 +3,7 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
+
 import { Button } from "./button";
 import { Link } from "./link";
 
@@ -57,7 +58,7 @@ export function DropdownItem({
   | Omit<React.ComponentPropsWithoutRef<typeof Link>, "className">
   | Omit<React.ComponentPropsWithoutRef<"button">, "className">
 )) {
-  let classes = clsx(
+  const classes = clsx(
     className,
     // Base styles
     "group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5",

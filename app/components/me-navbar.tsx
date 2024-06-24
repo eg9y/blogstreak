@@ -25,7 +25,6 @@ import { useUsername } from "./subdomain-context";
 import HamburgerSidebar from "./hamburger-sidebar";
 import { DarkmodeToggle } from "./darkmode-toggle";
 import { SearchDialog } from "./nav/search-dialog";
-import { NavTest } from "./nav-test";
 
 export default function MeNavbar({ children }: { children: ReactNode }) {
   const [isOpenChangeUsername, setIsOpenChangeUsername] = useState(false);
@@ -52,7 +51,7 @@ export default function MeNavbar({ children }: { children: ReactNode }) {
     },
     {
       name: "Subscription",
-      onClick: async () => {
+      onClick: () => {
         router.push("/me/subscription");
       },
     },
