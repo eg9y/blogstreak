@@ -77,7 +77,8 @@ export function ForceUserSubscription() {
         <Button
           color="green"
           className={"grow cursor-pointer"}
-          onClick={() => redirectToCheckout("418935")}
+          // onClick={() => redirectToCheckout("418935")}
+          onClick={() => redirectToCheckout("427582")}
           disabled={isLoadingUrl || !loggedInUser}
         >
           {isLoadingUrl ? (
@@ -89,7 +90,8 @@ export function ForceUserSubscription() {
         <Button
           color="green"
           className={"grow cursor-pointer"}
-          onClick={() => redirectToCheckout("114467")}
+          // onClick={() => redirectToCheckout("114467")}
+          onClick={() => redirectToCheckout("427581")}
           disabled={isLoadingUrl || !loggedInUser}
         >
           {isLoadingUrl ? (
