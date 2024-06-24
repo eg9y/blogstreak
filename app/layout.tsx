@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="" dir="ltr">
       <head />
-      <body className={cn(inter.className, "")}>
+      <body className={cn(inter.className, "dark:bg-black")}>
         <ReactQueryProvider>
           <ThemeProvider>{children}</ThemeProvider>
           <Toaster />

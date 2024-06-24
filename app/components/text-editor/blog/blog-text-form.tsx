@@ -20,7 +20,7 @@ const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
       class:
-        "prose prose-base grow break-words md:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal",
+        "prose prose-base grow break-words md:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal mx-auto",
     },
   },
   editable: false,

@@ -45,35 +45,92 @@ export function ForceUserSubscription() {
   };
 
   return (
-    <Dialog open={true} onClose={() => {}} className={""}>
+    <Dialog
+      open={true}
+      onClose={() => {}}
+      className={"!h-[90vh] w-[60vw] min-w-[1000px]"}
+    >
       <DialogTitle>Subscribe to Blogstreak</DialogTitle>
       <DialogDescription>
         Subscribe to blogstreak to get started with your writing habit!
       </DialogDescription>
       <DialogBody>
         <div className="flex flex-col gap-10">
-          <div className="">
-            <h2>Features</h2>
-            <li>write blogposts</li>
-            <li>customize your bio</li>
-            <li>write journals</li>
-            <li>you and your readers can search your writings with ease</li>
-            <li>toggle privacy of your writings</li>
-            <li>full markdown support</li>
-            <li>mobile support</li>
-            <li>streaks for your journaling habits</li>
+          <div className="mb-12">
+            <h3 className="mb-4 text-2xl font-semibold">Key Features</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {[
+                {
+                  title: "Streak Tracker",
+                  description: "Visualize your consistency and stay motivated",
+                  image: "/api/placeholder/300/200",
+                },
+                {
+                  title: "Distraction-Free Editor",
+                  description: "Focus solely on your writing",
+                  image: "/api/placeholder/300/200",
+                },
+                {
+                  title: "Mobile Support",
+                  description: "Write on-the-go and never miss a day",
+                  image: "/api/placeholder/300/200",
+                },
+                {
+                  title: "Personal Website",
+                  description:
+                    "Your own corner of the internet to share your thoughts",
+                  image: "/api/placeholder/300/200",
+                },
+                {
+                  title: "Blog & Microblog Publishing",
+                  description: "Share both long-form content and quick updates",
+                  image: "/api/placeholder/300/200",
+                },
+                {
+                  title: "Content Organization",
+                  description:
+                    "Tag and categorize your posts for easy navigation",
+                  image: "/api/placeholder/300/200",
+                },
+              ].map((feature, index) => (
+                <div key={index} className="rounded bg-gray-800 p-4">
+                  {/* <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="mb-4 rounded"
+                /> */}
+                  <h4 className="mb-2 font-semibold">{feature.title}</h4>
+                  <p>{feature.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="">
-            <h2>Future features</h2>
-            <li>Newsletters functionality for your readers</li>
+          {/* Coming Soon */}
+          <div className="mb-12">
+            <h3 className="mb-4 text-2xl font-semibold">Coming Soon...</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {[
+                "Daily Writing Reminders: Gentle nudges to keep you on track",
+                "Writing Prompts: Overcome blank page syndrome with tailored inspiration",
+                "Progress Analytics: Track your word count, frequency, and growth over time",
+                "Milestone Celebrations: Earn badges and rewards for hitting targets",
+                "Thought Capsules: Daily prompts to inspire your writing",
+                "Audience Insights: Understand your readers with built-in analytics",
+                "Customizable Themes: Make your personal site uniquely yours",
+              ].map((feature, index) => (
+                <div key={index} className="rounded bg-gray-800 p-4">
+                  <p>{feature}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <Button color="orange" href="/me/subscription">
-          Go to Subscriptions
-        </Button>
       </DialogBody>
       <DialogActions className="flex">
+        <Button color="blue" href="/me/subscription">
+          Manage your Subscription
+        </Button>
         <Button
           color="green"
           className={"grow cursor-pointer"}
