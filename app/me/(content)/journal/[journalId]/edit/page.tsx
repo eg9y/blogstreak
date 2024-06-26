@@ -41,7 +41,9 @@ export default async function PostDetail({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="mx-auto flex min-h-screen w-full  flex-col gap-4">
         <EditTextEditor
-          journalId={params.journalId ? parseInt(params.journalId) : undefined}
+          journalId={
+            params.journalId ? parseInt(params.journalId, 10) : undefined
+          }
         />
       </main>
     </HydrationBoundary>
