@@ -8,7 +8,7 @@ import { createClient } from "../../supabase/client";
 export function useGetTopicsQuery(user: User | null, postId?: number) {
   const supabase = createClient();
 
-  const queryKey = ["topics", user?.id];
+  const queryKey = ["topics", user?.id, postId];
 
   const queryFn = async () => {
     let associatedTagsData: Database["public"]["Tables"]["post_topics"]["Row"][] =
@@ -30,6 +30,8 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
       }
 
       associatedTagsData = data || [];
+
+      console.log("post_topics", data);
     }
 
     const { data: topicsData, error: topicsError } = await supabase
@@ -44,6 +46,8 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
     if (topicsError) {
       return [];
     }
+
+    console.log("topicsData", topicsData);
 
     const response = topicsData?.map((topic) => {
       return {

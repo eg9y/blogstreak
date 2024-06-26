@@ -12,7 +12,7 @@ import { JOURNALS_QUERY_KEY } from "@/constants/query-keys";
 export default async function PostDetail({
   params,
 }: {
-  params: { journalId: number };
+  params: { journalId: string };
 }) {
   const cookie = cookies();
   const supabase = createClient(cookie);
@@ -40,7 +40,9 @@ export default async function PostDetail({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="mx-auto flex min-h-screen w-full  flex-col gap-4">
-        <EditTextEditor journalId={params.journalId} />
+        <EditTextEditor
+          journalId={params.journalId ? parseInt(params.journalId) : undefined}
+        />
       </main>
     </HydrationBoundary>
   );

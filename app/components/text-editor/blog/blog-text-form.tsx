@@ -154,7 +154,7 @@ export const BlogTextForm = ({
           </Field>
         </FieldGroup>
       </Fieldset>
-      <div className="flex w-full grow flex-col border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:rounded-md md:border-x md:border-b ">
+      <div className="flex w-full grow flex-col border border-x-0 border-b-0 border-slate-300 bg-white p-2 dark:border-slate-700 dark:bg-transparent md:gap-4 md:rounded-md md:border-x md:border-b ">
         <Toolbar editor={editor} />
         <div
           className="grow cursor-text"
