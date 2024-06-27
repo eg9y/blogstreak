@@ -30,8 +30,6 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
       }
 
       associatedTagsData = data || [];
-
-      console.log("post_topics", data);
     }
 
     const { data: topicsData, error: topicsError } = await supabase
@@ -46,8 +44,6 @@ export function useGetTopicsQuery(user: User | null, postId?: number) {
     if (topicsError) {
       return [];
     }
-
-    console.log("topicsData", topicsData);
 
     const response = topicsData?.map((topic) => {
       return {

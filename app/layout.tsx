@@ -2,6 +2,7 @@ import { Toaster } from "sonner";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import { ViewTransitions } from "next-view-transitions";
 
 import "./globals.css";
 
@@ -61,19 +62,21 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="" dir="ltr">
-      <head />
-      <body
-        className={cn(
-          inter.className,
-          "bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)]",
-        )}
-      >
-        <ReactQueryProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-          <Toaster />
-        </ReactQueryProvider>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en" className="" dir="ltr">
+        <head />
+        <body
+          className={cn(
+            inter.className,
+            "bg-[hsl(0_0%_100%)] dark:bg-[hsl(240_10%_3.9%)]",
+          )}
+        >
+          <ReactQueryProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+            <Toaster />
+          </ReactQueryProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

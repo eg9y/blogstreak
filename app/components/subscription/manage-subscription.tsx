@@ -44,8 +44,6 @@ export const ManageSubscription = ({
       },
     );
 
-    console.log("data", data);
-
     if (error && !data) {
       console.log("error", error);
       toast.success("Error cancelling subscription");
@@ -77,8 +75,6 @@ export const ManageSubscription = ({
         },
       },
     );
-
-    console.log("data", data);
 
     if (error && !data) {
       console.log("error", error);

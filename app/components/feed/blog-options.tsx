@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "../dialog";
 import { Button } from "../button";
+import { Link } from "next-view-transitions";
 
 export function BlogOptions({
   blog,
@@ -45,7 +46,9 @@ export function BlogOptions({
           <DotsHorizontalIcon />
         </DropdownButton>
         <DropdownMenu>
-          <DropdownItem href={`/me/blog/${blog.id}/edit`}>Edit</DropdownItem>
+          <DropdownItem>
+            <Link href={`/me/blog/${blog.id}/edit`}>Edit</Link>
+          </DropdownItem>
           <DropdownDivider />
           <DropdownItem
             onClick={() => {

@@ -80,5 +80,8 @@
     content: attr(data-placeholder);
     float: left;
     height: 0;
-    pointer-events: none;
+    pointer-events: 
+    none;
   }
+
+  

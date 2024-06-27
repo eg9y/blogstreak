@@ -11,10 +11,11 @@ import { useUser } from "@/utils/getUser";
 
 import { Button } from "../../button";
 import { IsPublicSwitch } from "../is-public-switch";
+import { Link } from "next-view-transitions";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   const { loggedInUser } = useUser();
-  const { data: blogData } = useGetBlogQuery(blogId);
+  const { data: blogData } = useGetBlogQuery(blogId, loggedInUser || undefined);
   const pathname = usePathname();
 
   const output = useMemo(() => {
@@ -53,13 +54,11 @@ export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
                 />
               </div>
             </div>
-            <Button
-              color="orange"
-              className="w-40 cursor-pointer self-end"
-              href={`/me/blog/${blogId}/edit`}
-            >
-              Edit
-            </Button>
+            <Link href={`/me/blog/${blogId}/edit`}>
+              <Button color="orange" className="w-40 cursor-pointer self-end">
+                Edit
+              </Button>
+            </Link>
           </Sticky>
         )}
       </div>

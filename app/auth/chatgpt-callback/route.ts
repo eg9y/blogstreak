@@ -63,8 +63,6 @@ export async function GET(request: Request) {
       //     responsePayload.expires_in.toString(),
       //   );
 
-      console.log("KANGJAI", redirectUrl);
-
       return NextResponse.redirect(redirectUrl);
     }
   }

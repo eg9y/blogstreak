@@ -1,13 +1,13 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 import { Button } from "@/app/components/button";
 import { useUser } from "@/utils/getUser";
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
 import { BlogOptions } from "@/app/components/feed/blog-options";
 import { Badge } from "@/app/components/badge";
+import { Link } from "next-view-transitions";
 
 export default function Blog() {
   const { loggedInUser } = useUser();
@@ -23,9 +23,9 @@ export default function Blog() {
         <div>
           <p className="text-2xl font-bold dark:text-slate-100">Blog</p>
         </div>
-        <Button href="blog/write" color="dark">
-          Write Blog
-        </Button>
+        <Link href="blog/write">
+          <Button color="dark">Write Blog</Button>
+        </Link>
       </div>
 
       <div>

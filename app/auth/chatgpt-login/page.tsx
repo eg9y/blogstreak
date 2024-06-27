@@ -25,8 +25,6 @@ export default function ChatgptLogin() {
       searchParams.get("redirect_uri") as string,
     );
 
-    console.log("redirectUrl", redirectUrl);
-
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

@@ -18,7 +18,7 @@ export function useDeleteJournal(loggedInUser: User | null) {
 
   async function mutationFn(postId: number) {
     await supabase.from("posts").delete().eq("id", postId);
-    await supabase.functions.invoke("journals", {
+    await supabase.functions.invoke("meilisearch", {
       body: {
         op: "delete",
         data: {

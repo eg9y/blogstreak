@@ -15,12 +15,13 @@ import { Field, FieldGroup, Fieldset, Label } from "../../fieldset";
 import { Input } from "../../input";
 import { Toolbar } from "../toolbar";
 import { IsPublicSwitch } from "../is-public-switch";
+import { useUser } from "@/utils/getUser";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {
     attributes: {
       class:
-        "prose prose-base grow break-words md:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal mx-auto",
+        "prose prose-base grow break-words xl:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal mx-auto",
     },
   },
   editable: false,
@@ -35,10 +36,14 @@ export const BlogTextForm = ({
 }) => {
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
+  const { loggedInUser } = useUser();
 
   const editorContainerRef = useRef(null);
 
-  const { data: blogData, isLoading } = useGetBlogQuery(blogId);
+  const { data: blogData, isLoading } = useGetBlogQuery(
+    blogId,
+    loggedInUser || undefined,
+  );
   const editor = useEditor({ extensions, ...editorOptions });
   const {
     control,
@@ -127,7 +132,6 @@ export const BlogTextForm = ({
       <Fieldset>
         <FieldGroup>
           <Field>
-            <Label>Title</Label>
             <Controller
               name="title"
               control={control}
@@ -147,10 +151,6 @@ export const BlogTextForm = ({
                 {errors.title?.message}
               </p>
             )}
-          </Field>
-
-          <Field>
-            <Label>Body</Label>
           </Field>
         </FieldGroup>
       </Fieldset>
