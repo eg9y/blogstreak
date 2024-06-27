@@ -1,13 +1,13 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
+import { Link } from "next-view-transitions";
 
 import { Button } from "@/app/components/button";
 import { useUser } from "@/utils/getUser";
 import { useGetBlogs } from "@/utils/hooks/query/use-get-blogs";
 import { BlogOptions } from "@/app/components/feed/blog-options";
 import { Badge } from "@/app/components/badge";
-import { Link } from "next-view-transitions";
 
 export default function Blog() {
   const { loggedInUser } = useUser();

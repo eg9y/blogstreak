@@ -10,12 +10,12 @@ import Scrollbar from "react-scrollbars-custom";
 import { Button } from "@/app/components/button";
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
+import { useUser } from "@/utils/getUser";
 
-import { Field, FieldGroup, Fieldset, Label } from "../../fieldset";
+import { Field, FieldGroup, Fieldset } from "../../fieldset";
 import { Input } from "../../input";
 import { Toolbar } from "../toolbar";
 import { IsPublicSwitch } from "../is-public-switch";
-import { useUser } from "@/utils/getUser";
 
 const editorOptions: Partial<EditorOptions> = {
   editorProps: {

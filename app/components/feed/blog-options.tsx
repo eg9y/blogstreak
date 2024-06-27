@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "next-view-transitions";
 
 import { Database } from "@/schema";
 import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
@@ -23,7 +24,6 @@ import {
   DialogTitle,
 } from "../dialog";
 import { Button } from "../button";
-import { Link } from "next-view-transitions";
 
 export function BlogOptions({
   blog,

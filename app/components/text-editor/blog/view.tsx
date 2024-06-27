@@ -4,6 +4,7 @@ import { generateHTML } from "@tiptap/react";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Sticky from "react-sticky-el";
+import { Link } from "next-view-transitions";
 
 import { extensions } from "@/utils/textEditor";
 import { useGetBlogQuery } from "@/utils/hooks/query/use-get-blog";
@@ -11,7 +12,6 @@ import { useUser } from "@/utils/getUser";
 
 import { Button } from "../../button";
 import { IsPublicSwitch } from "../is-public-switch";
-import { Link } from "next-view-transitions";
 
 export const ViewBlogComponent = ({ blogId }: { blogId: number }) => {
   const { loggedInUser } = useUser();

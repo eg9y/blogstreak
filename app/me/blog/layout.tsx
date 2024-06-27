@@ -1,16 +1,16 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import { Link } from "next-view-transitions";
 
 import { createClient } from "@/utils/supabase/server";
 import { getSubdomain } from "@/utils/getSubdomain";
+import { Button } from "@/app/components/button";
+import { Heading } from "@/app/components/heading";
 
 import { ForceChangeUsernameDialog } from "../../components/nav/force-change-username-dialog";
 import SubdomainContextProvider from "../../components/subdomain-context";
 import { ForceUserSubscription } from "../../components/nav/force-user-subscription";
-import { Button } from "@/app/components/button";
-import { Heading } from "@/app/components/heading";
-import { Link } from "next-view-transitions";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
