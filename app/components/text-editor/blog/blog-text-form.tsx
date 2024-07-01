@@ -23,6 +23,21 @@ const editorOptions: Partial<EditorOptions> = {
       class:
         "prose prose-base grow break-words xl:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal mx-auto",
     },
+    handlePaste: (view, event, slice) => {
+      const pastedContent = event.clipboardData?.getData("text/plain");
+      if (
+        pastedContent &&
+        pastedContent.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)
+      ) {
+        view.dispatch(
+          view.state.tr.replaceSelectionWith(
+            view.state.schema.nodes.image.create({ src: pastedContent }),
+          ),
+        );
+        return true;
+      }
+      return false;
+    },
   },
   editable: false,
 };

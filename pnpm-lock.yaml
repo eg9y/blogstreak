@@ -25,10 +25,10 @@ dependencies:
     version: 9.0.2(next@14.0.4)(typescript@5.3.3)(webpack@5.91.0)
   '@supabase/ssr':
     specifier: latest
-    version: 0.4.0(@supabase/supabase-js@2.44.1)
+    version: 0.4.0(@supabase/supabase-js@2.44.2)
   '@supabase/supabase-js':
     specifier: latest
-    version: 2.44.1
+    version: 2.44.2
   '@tailwindcss/forms':
     specifier: ^0.5.7
     version: 0.5.7(tailwindcss@3.4.1)
@@ -44,6 +44,9 @@ dependencies:
   '@tiptap/extension-color':
     specifier: ^2.1.16
     version: 2.1.16(@tiptap/core@2.1.16)(@tiptap/extension-text-style@2.1.16)
+  '@tiptap/extension-image':
+    specifier: ^2.4.0
+    version: 2.4.0(@tiptap/core@2.1.16)
   '@tiptap/extension-link':
     specifier: 2.3.0
     version: 2.3.0(@tiptap/core@2.1.16)(@tiptap/pm@2.1.16)
@@ -1427,8 +1430,8 @@ packages:
       '@supabase/node-fetch': 2.6.15
     dev: false
 
-  /@supabase/realtime-js@2.10.1:
-    resolution: {integrity: sha512-SrrXxE8xgwWvjREQMkC9LIHIoCQde+OqkFPKP2s/O0ROjhmJ/iXeLvoWhAzXh9gwire4oaK14/ncL/iRiaVWQw==}
+  /@supabase/realtime-js@2.10.2:
+    resolution: {integrity: sha512-qyCQaNg90HmJstsvr2aJNxK2zgoKh9ZZA8oqb7UT2LCh3mj9zpa3Iwu167AuyNxsxrUE8eEJ2yH6wLCij4EApA==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
       '@types/phoenix': 1.6.4
@@ -1439,12 +1442,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@supabase/ssr@0.4.0(@supabase/supabase-js@2.44.1):
+  /@supabase/ssr@0.4.0(@supabase/supabase-js@2.44.2):
     resolution: {integrity: sha512-6WS3NUvHDhCPAFN2kJ79AQDO8+M9fJ7y2fYpxgZqIuJEpnnGsHDNnB5Xnv8CiaJIuRU+0pKboy62RVZBMfZ0Lg==}
     peerDependencies:
       '@supabase/supabase-js': ^2.43.4
     dependencies:
-      '@supabase/supabase-js': 2.44.1
+      '@supabase/supabase-js': 2.44.2
       cookie: 0.6.0
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu': 4.14.3
@@ -1456,14 +1459,14 @@ packages:
       '@supabase/node-fetch': 2.6.15
     dev: false
 
-  /@supabase/supabase-js@2.44.1:
-    resolution: {integrity: sha512-4vCOkefRoeacmMELIWlYPwsfd9y/stH4fCZ4GZZjiOCHeViIrZ8artdj61MwkjQKFuF1uZ87gCKjtMDKLJsDlA==}
+  /@supabase/supabase-js@2.44.2:
+    resolution: {integrity: sha512-fouCwL1OxqftOwLNgdDUPlNnFuCnt30nS4kLcnTpe6NYKn1PmjxRRBFmKscgHs6FjWyU+32ZG4uBJ29+/BWiDw==}
     dependencies:
       '@supabase/auth-js': 2.64.2
       '@supabase/functions-js': 2.4.1
       '@supabase/node-fetch': 2.6.15
       '@supabase/postgrest-js': 1.15.7
-      '@supabase/realtime-js': 2.10.1
+      '@supabase/realtime-js': 2.10.2
       '@supabase/storage-js': 2.6.0
     transitivePeerDependencies:
       - bufferutil
@@ -1684,6 +1687,14 @@ packages:
     dependencies:
       '@tiptap/core': 2.1.16(@tiptap/pm@2.1.16)
       '@tiptap/pm': 2.1.16
+    dev: false
+
+  /@tiptap/extension-image@2.4.0(@tiptap/core@2.1.16):
+    resolution: {integrity: sha512-NIVhRPMO/ONo8OywEd+8zh0Q6Q7EbFHtBxVsvfOKj9KtZkaXQfUO4MzONTyptkvAchTpj9pIzeaEY5fyU87gFA==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.16(@tiptap/pm@2.1.16)
     dev: false
 
   /@tiptap/extension-italic@2.1.16(@tiptap/core@2.1.16):

@@ -23,6 +23,7 @@
     "@tanstack/react-query-devtools": "^5.17.19",
     "@tiptap/core": "^2.0.0",
     "@tiptap/extension-color": "^2.1.16",
+    "@tiptap/extension-image": "^2.4.0",
     "@tiptap/extension-link": "2.3.0",
     "@tiptap/extension-list-item": "^2.1.16",
     "@tiptap/extension-placeholder": "^2.3.2",

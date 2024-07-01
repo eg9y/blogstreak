@@ -8,7 +8,7 @@ import { User } from "@supabase/supabase-js";
 export function useGetBlogQuery(blogId?: number, loggedInUser?: User) {
   const supabase = createClient();
 
-  const queryKey = [BLOGS_QUERY_KEY, loggedInUser, blogId];
+  const queryKey = [BLOGS_QUERY_KEY, loggedInUser?.id, blogId];
 
   const queryFn = async () => {
     const res = await supabase

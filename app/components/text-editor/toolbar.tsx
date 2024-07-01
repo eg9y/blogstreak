@@ -7,6 +7,7 @@ import {
   ListBulletIcon,
   StrikethroughIcon,
   Link1Icon,
+  ImageIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useCallback, useState } from "react";
@@ -21,6 +22,8 @@ import { Button } from "../button";
 export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   const [isLinkOptionOpen, setIsLinkOptionOpen] = useState(false);
   const [link, setLink] = useState("");
+  const [isImageOptionOpen, setIsImageOptionOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const createLink = useCallback(() => {
     if (!editor) {
@@ -47,6 +50,14 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
     setLink("");
   }, [editor, link]);
 
+  const insertImage = useCallback(() => {
+    if (editor && imageUrl) {
+      editor.chain().focus().setImage({ src: imageUrl }).run();
+      setIsImageOptionOpen(false);
+      setImageUrl("");
+    }
+  }, [editor, imageUrl]);
+
   if (!editor) {
     return null;
   }
@@ -70,6 +81,25 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
             Cancel
           </Button>
           <Button onClick={() => createLink()}>Set Link</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={isImageOptionOpen} onClose={setIsImageOptionOpen}>
+        <DialogBody>
+          <Field>
+            <Label>Image URL</Label>
+            <Input
+              name="imageUrl"
+              value={imageUrl}
+              onChange={(event) => setImageUrl(event.target.value)}
+              placeholder="https://example.com/image.jpg"
+            />
+          </Field>
+        </DialogBody>
+        <DialogActions>
+          <Button plain onClick={() => setIsImageOptionOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={insertImage}>Insert Image</Button>
         </DialogActions>
       </Dialog>
       <Sticky stickyClassName="z-[100]">
@@ -260,6 +290,14 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
               <Link1Icon />
             </button>
           )}
+          <button
+            onClick={() => setIsImageOptionOpen(true)}
+            className={cn(
+              "rounded-sm bg-slate-50 p-1 text-xs ring-1 ring-slate-500 dark:bg-slate-400",
+            )}
+          >
+            <ImageIcon />
+          </button>
 
           <button
             onClick={() => editor.chain().focus().undo().run()}
