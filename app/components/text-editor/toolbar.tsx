@@ -51,11 +51,12 @@ export const Toolbar = ({ editor }: { editor: Editor | null }) => {
   }, [editor, link]);
 
   const insertImage = useCallback(() => {
-    if (editor && imageUrl) {
-      editor.chain().focus().setImage({ src: imageUrl }).run();
-      setIsImageOptionOpen(false);
-      setImageUrl("");
+    if (!editor || !imageUrl) {
+      return;
     }
+    editor.chain().focus().setImage({ src: imageUrl }).run();
+    setIsImageOptionOpen(false);
+    setImageUrl("");
   }, [editor, imageUrl]);
 
   if (!editor) {

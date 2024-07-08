@@ -23,7 +23,7 @@ const editorOptions: Partial<EditorOptions> = {
       class:
         "prose prose-base grow break-words xl:prose-lg dark:prose-invert focus:outline-none  prose-p:leading-normal mx-auto",
     },
-    handlePaste: (view, event, slice) => {
+    handlePaste: (view, event) => {
       const pastedContent = event.clipboardData?.getData("text/plain");
       if (
         pastedContent &&
