@@ -1,6 +1,6 @@
+import { User } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { User } from "@supabase/supabase-js";
 
 import {
   INFINITE_BLOGS_QUERY_KEY,
@@ -13,15 +13,15 @@ export function useDeleteBlog(loggedInUser: User | null) {
   const queryClient = useQueryClient();
   const supabase = createClient();
 
-  async function mutationFn(blogId: number) {
-    await supabase.from("blogs").delete().eq("id", blogId);
+  async function mutationFn(blogTitle: string) {
+    await supabase.from("blogs").delete().eq("title", blogTitle);
 
     await supabase.functions.invoke("meilisearch", {
       body: {
         op: "delete",
         data: {
           index: "blogs",
-          id: blogId,
+          title: blogTitle,
         },
       },
     });

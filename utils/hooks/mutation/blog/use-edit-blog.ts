@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { BLOGS_QUERY_KEY } from "@/constants/query-keys";
 
@@ -10,13 +10,13 @@ export function useEditBlog(loggedInUser: User | null) {
   const supabase = createClient();
 
   async function mutationFn({
-    blogId,
+    blogTitle,
     title,
     content,
     rawText,
     isPublic,
   }: {
-    blogId: number;
+    blogTitle: number;
     title: string;
     content: string;
     rawText: string;
@@ -41,7 +41,7 @@ export function useEditBlog(loggedInUser: User | null) {
         user_id: user?.id,
         is_public: isPublic,
       })
-      .eq("id", blogId);
+      .eq("title", blogTitle);
 
     await supabase.functions.invoke("meilisearch", {
       body: {
@@ -49,7 +49,7 @@ export function useEditBlog(loggedInUser: User | null) {
         data: {
           index: "blogs",
           doc: {
-            id: blogId,
+            title: blogTitle,
             text: content,
             raw_text: rawText,
             user_id: user?.id,

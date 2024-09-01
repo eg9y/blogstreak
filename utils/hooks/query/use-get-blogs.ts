@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { User } from "@supabase/supabase-js";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
 import { INFINITE_BLOGS_QUERY_KEY } from "@/constants/query-keys";

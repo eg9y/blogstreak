@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { useUsername } from "@/app/components/subdomain-context";
 

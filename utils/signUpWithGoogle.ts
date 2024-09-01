@@ -12,6 +12,8 @@ export const signUpWithGoogle = async () => {
     process.env.NODE_ENV === "production"
       ? "https://blogstreak.com"
       : "http://localhost:3000";
+
+  console.log("baseUrl", baseUrl);
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {

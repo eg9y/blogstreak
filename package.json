@@ -56,6 +56,7 @@
     "sse.js": "^2.4.1",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "url-slug": "^4.0.1",
     "use-debounce": "^10.0.0",
     "zustand": "^4.4.7"
   },
